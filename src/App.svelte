@@ -15,6 +15,7 @@
   import Footer from "./lib/Footer.svelte"
 </script>
 
+<div class="container">
 <Heading></Heading>
 <hr>
 <NCL></NCL>
@@ -50,3 +51,4 @@
 <Abilities></Abilities>
 <hr>
 <Footer></Footer>
+</div>

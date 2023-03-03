@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col">
       {#each DICE_SIZES.reverse() as size}
-          <div class ="input-group form-control mb-1">
+          <div class ="input-group mb-2">
             <div class="col">
             <div class="form-floating">
               <select class="form-select" aria-label="Default select example" id="select{size}">
