@@ -13,42 +13,43 @@
   import Abilities from "./lib/Abilities.svelte"
   import Focus from "./lib/Focus.svelte"
   import Footer from "./lib/Footer.svelte"
+  import CharacterWizard from "./lib/wizard/CharacterWizard.svelte"
 </script>
 
 <div class="container">
-<Heading></Heading>
+<CharacterWizard />
+<Heading />
 <hr>
-<NCL></NCL>
+<NCL />
 <hr>
-<Speeds></Speeds>
+<Speeds />
 <hr>
 <div class="container">
   <div class="d-flex parent-container">
-    <Resources></Resources>
+    <Resources />
     <div class="justify-content-end">
-      <Demise></Demise>
+      <Demise />
     </div>
   </div>
 </div>
 <hr>
 <div class="container">
   <div class="d-flex parent-container">
-    <Traits></Traits>
-    <Skills></Skills>
+    <Traits />
+    <Skills />
   </div>
 </div>
 <hr> 
-<ToolSkills></ToolSkills>
+<ToolSkills />
 <hr>
-<WeaponSkills></WeaponSkills>
+<WeaponSkills />
 <hr>
-<Currency></Currency>
+<Currency />
+<Inventory />
 <hr>
-<Inventory></Inventory>
+<Focus />
 <hr>
-<Focus></Focus>
+<Abilities />
 <hr>
-<Abilities></Abilities>
-<hr>
-<Footer></Footer>
+<Footer />
 </div>
