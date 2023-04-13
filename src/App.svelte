@@ -17,9 +17,11 @@
 </script>
 
 <div class="container">
-<CharacterWizard />
+
 <Heading />
 <hr>
+<CharacterWizard />
+<hr />
 <NCL />
 <hr>
 <Speeds />
