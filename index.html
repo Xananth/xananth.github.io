@@ -560,57 +560,6 @@
       padding-bottom: 4px;
     }
 
-    /* =========================================================================
-       WRAPPED NET-DECK FRAME OVERLAY (UNIFIED SPA LAUNCHER VIEW)
-       ========================================================================= */
-    .deck-frame-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: #050a07;
-      display: none;
-      flex-direction: column;
-    }
-
-    .deck-frame-overlay.active {
-      display: flex;
-    }
-
-    .deck-frame-bar {
-      height: 34px;
-      background: linear-gradient(90deg, #122117 0%, #243f2c 100%);
-      border-bottom: 1px solid var(--brand-lime);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      font-size: 12px;
-    }
-
-    .deck-frame-btn {
-      background: rgba(8, 16, 11, 0.9);
-      color: var(--brand-lime);
-      border: 1px solid var(--brand-lime);
-      padding: 3px 10px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .deck-frame-btn:hover {
-      background: var(--brand-lime);
-      color: #060c08;
-    }
-
-    .deck-iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-      background: #08100b;
-    }
-
     /* Responsive adjustments */
     @media (max-width: 1024px) {
       .workspace-grid {
@@ -727,18 +676,6 @@
   </main>
 
   <!-- =========================================================================
-       WRAPPED NET-DECK FRAME OVERLAY (UNIFIED SPA LAUNCHER VIEW)
-       ========================================================================= -->
-  <div id="deckFrameOverlay" class="deck-frame-overlay" aria-hidden="true">
-    <div class="deck-frame-bar">
-      <button id="closeDeckFrameBtn" class="deck-frame-btn">[&lt;- RETURN TO NET-DECK HUB (ESC)]</button>
-      <span id="deckFrameTitle" class="lime-glow" style="font-weight:700; color:var(--brand-lime);">APP // RUNNING</span>
-      <a id="deckFrameRawLink" href="#" target="_blank" rel="noopener" class="deck-frame-btn">[OPEN RAW TAB ↗]</a>
-    </div>
-    <iframe id="deckIframe" class="deck-iframe" title="SPA Workspace"></iframe>
-  </div>
-
-  <!-- =========================================================================
        PROJECT REGISTRY & APPLICATION LOGIC
        ========================================================================= -->
   <script>
@@ -757,11 +694,6 @@
     const spaGrid = document.getElementById('spaGrid');
     const crtToggle = document.getElementById('crtToggle');
     const crtLabel = document.getElementById('crtLabel');
-    const deckFrameOverlay = document.getElementById('deckFrameOverlay');
-    const deckIframe = document.getElementById('deckIframe');
-    const deckFrameTitle = document.getElementById('deckFrameTitle');
-    const deckFrameRawLink = document.getElementById('deckFrameRawLink');
-    const closeDeckFrameBtn = document.getElementById('closeDeckFrameBtn');
 
     // =========================================================================
     // RENDER SPA WINDOW CARD
@@ -789,7 +721,7 @@
 
               <div>
                 <div class="spa-actions">
-                  <a href="${proj.url}" class="btn-launch" data-launch-id="${proj.id}">
+                  <a href="${proj.url}" class="btn-launch">
                     LAUNCH &rarr;
                   </a>
                   <button class="btn-info" data-info-id="info-${proj.id}">
@@ -805,16 +737,6 @@
           </article>
         `;
       }).join('');
-
-      spaGrid.querySelectorAll('.btn-launch').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const proj = SPA_PROJECTS.find(p => p.id === btn.dataset.launchId);
-          if (!proj) return;
-          if (e.ctrlKey || e.metaKey || e.button === 1) return;
-          e.preventDefault();
-          launchSpaInDeck(proj);
-        });
-      });
 
       spaGrid.querySelectorAll('.btn-info').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -839,25 +761,6 @@
         };
       });
     }
-
-    // =========================================================================
-    // WRAPPED NET-DECK LAUNCHER
-    // =========================================================================
-    function launchSpaInDeck(proj) {
-      deckFrameTitle.textContent = `${proj.title} // [${proj.status}]`;
-      deckFrameRawLink.href = proj.url;
-      deckIframe.src = proj.url;
-      deckFrameOverlay.classList.add('active');
-      deckFrameOverlay.setAttribute('aria-hidden', 'false');
-    }
-
-    function closeDeckFrame() {
-      deckFrameOverlay.classList.remove('active');
-      deckFrameOverlay.setAttribute('aria-hidden', 'true');
-      deckIframe.src = 'about:blank';
-    }
-
-    closeDeckFrameBtn.addEventListener('click', closeDeckFrame);
 
     // =========================================================================
     // CRT FX TOGGLE & LIVE AEST CLOCK
@@ -894,21 +797,15 @@
     // =========================================================================
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (deckFrameOverlay.classList.contains('active')) {
-          closeDeckFrame();
-          return;
-        }
         document.querySelectorAll('.os-window.minimized').forEach(w => w.classList.remove('minimized'));
         return;
       }
-
-      if (deckFrameOverlay.classList.contains('active')) return;
 
       if ((e.key === 'Enter' && document.activeElement === document.body) || e.key === '1') {
         e.preventDefault();
         const targetProj = SPA_PROJECTS[0];
         if (targetProj) {
-          launchSpaInDeck(targetProj);
+          window.location.href = targetProj.url;
         }
       }
     });
