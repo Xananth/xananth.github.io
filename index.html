@@ -581,7 +581,7 @@
     <!-- Left: Brand Logo & Status -->
     <div class="brand-cluster">
       <div class="brand-logo-wrap" title="Xananth // Net-Deck">
-        <img src="Xananth Logo Fold 3 Inner~2.png"alt="Xananth Logo" onerror="this.style.display='none'; document.getElementById('xananth-svg-logo').style.display='block';" />
+        <img src="Xananth Logo Fold 3 Inner~2.png" alt="Xananth Logo" onerror="this.style.display='none'; document.getElementById('xananth-svg-logo').style.display='block';" />
         <svg id="xananth-svg-logo" style="display:none;" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
           <g fill="#8de500">
             <polygon points="74,12 126,12 142,42 63,118 47,62" />
@@ -652,7 +652,7 @@
         </section>
       </aside>
 
-      <!-- RIGHT COLUMN: SPA Launcher Window -->
+      <!-- RIGHT COLUMN: SPA LAUNCHER WINDOW -->
       <section>
         <div id="spaGrid" class="spa-grid">
           <!-- Populated dynamically from SPA_PROJECTS registry -->
@@ -670,7 +670,7 @@
       </div>
 
       <div class="kb-legend">
-        ESC to close / reset &nbsp;|&nbsp; Enter or 1 to launch
+        ESC to close / reset &nbsp;|&nbsp; Enter or 1–2 to launch
       </div>
     </footer>
   </main>
@@ -688,6 +688,15 @@
         description: 'Interactive Sunshine Coast seasonal species matrix, tackle specs, and local fishing spots.',
         url: './fishingcal.html',
         info: '<strong>Build v1.4:</strong> 12-month seasonal matrix covering canals, estuaries, and offshore reefs—sortable by seasonal availability, eating quality, or species name, with tackle specs, local hotspots, and a light/dark mode toggle.'
+      },
+      {
+        id: 'magepunk-character-creator',
+        title: 'MAGEPUNK CHARACTER CREATOR',
+        status: 'LIVE',
+        tag: 'TTRPG & Character Matrix',
+        description: '6-step TTRPG character builder, interactive play sheet, step-dice roller, and bidirectional Fari v6 JSON matrix.',
+        url: './magepunk.html',
+        info: '<strong>Fari v6 Matrix:</strong> Features a 6-step compilation wizard (identity, step-dice traits, skills, trade features, foci, grimoire, and wealth), an active play sheet with live HP/Mana and Fatigue/Demise trackers, an upsize/downsize step-dice roller (d4–d20) with Web Audio synth FX, 5 archetype presets, and full Fari v6 JSON import/export.'
       }
     ];
 
@@ -793,7 +802,7 @@
     setInterval(updateClock, 15000);
 
     // =========================================================================
-    // KEYBOARD SHORTCUTS (1, Enter, Esc)
+    // KEYBOARD SHORTCUTS (1-9, Enter, Esc)
     // =========================================================================
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -801,12 +810,18 @@
         return;
       }
 
-      if ((e.key === 'Enter' && document.activeElement === document.body) || e.key === '1') {
+      if (e.key === 'Enter' && document.activeElement === document.body) {
         e.preventDefault();
-        const targetProj = SPA_PROJECTS[0];
-        if (targetProj) {
-          window.location.href = targetProj.url;
+        if (SPA_PROJECTS[0]) {
+          window.location.href = SPA_PROJECTS[0].url;
         }
+        return;
+      }
+
+      const num = parseInt(e.key, 10);
+      if (!isNaN(num) && num >= 1 && num <= SPA_PROJECTS.length) {
+        e.preventDefault();
+        window.location.href = SPA_PROJECTS[num - 1].url;
       }
     });
 
