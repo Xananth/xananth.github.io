@@ -1,0 +1,3964 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XANANTH // MAGEPUNK CHAR-MATRIX</title>
+  <!-- Google Fonts from XANANTH // NET-DECK -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS via allowlisted CDN -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --brand-lime: #8de500;
+      --brand-lime-tint: rgba(141, 229, 0, 0.14);
+      --brand-lime-glow: rgba(141, 229, 0, 0.38);
+      --win-surface: rgba(10, 18, 13, 0.88);
+      --win-surface-solid: #0a120d;
+      --win-surface-deep: #070d09;
+      --win-header-start: #192e20;
+      --win-header-end: #2f5239;
+      --border-main: #3d6147;
+      --border-bevel: #5a8a66;
+      --border-dark: #070d09;
+      --text-primary: #e8f3ec;
+      --text-secondary: #8fb89d;
+      --status-live: #8de500;
+      --font-display: 'Chakra Petch', sans-serif;
+      --font-pixel: 'Silkscreen', monospace;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 20%, #0e1c13 0%, #060b08 85%);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--brand-lime);
+      color: #050a06;
+    }
+
+    .font-cinzel, .font-display { font-family: var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+    .font-mono { font-family: var(--font-mono); }
+    .font-pixel { font-family: var(--font-pixel); }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070d09; }
+    ::-webkit-scrollbar-thumb { background: #2f5239; border: 1px solid #3d6147; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--brand-lime); }
+
+    /* =========================================================================
+       CRT SCANLINE & PHOSPHOR FX LAYER
+       ========================================================================= */
+    body.crt-enabled::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.22) 3px,
+        rgba(0, 0, 0, 0.22) 4px
+      );
+    }
+
+    body.crt-enabled .lime-glow {
+      text-shadow: 0 0 8px var(--brand-lime-glow);
+    }
+
+    .glow-lime {
+      box-shadow: 0 0 14px -2px var(--brand-lime-glow);
+    }
+
+    /* =========================================================================
+       STICKY TOP SYSTEM BAR
+       ========================================================================= */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 14, 10, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-main);
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
+      padding: 10px 20px;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .brand-logo-wrap {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 5px rgba(141, 229, 0, 0.25));
+    }
+
+    .brand-logo-wrap img,
+    .brand-logo-wrap svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .online-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9px;
+      font-family: var(--font-pixel);
+      color: var(--brand-lime);
+      letter-spacing: 0.08em;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .online-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--brand-lime);
+      box-shadow: 0 0 6px var(--brand-lime);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    .brand-heading {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--brand-lime);
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+
+    .crt-toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 11px;
+      color: var(--text-primary);
+    }
+
+    .crt-switch {
+      width: 34px;
+      height: 18px;
+      background: #121f16;
+      border: 1px solid var(--border-main);
+      border-radius: 10px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .crt-switch-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--text-secondary);
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    }
+
+    body.crt-enabled .crt-switch {
+      border-color: var(--brand-lime);
+    }
+
+    body.crt-enabled .crt-switch-thumb {
+      transform: translateX(14px);
+      background: var(--brand-lime);
+      box-shadow: 0 0 6px var(--brand-lime);
+    }
+
+    /* =========================================================================
+       OS WINDOW CHROME (SHARED CARD SYSTEM)
+       ========================================================================= */
+    .os-window {
+      background: var(--win-surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border-main);
+      box-shadow:
+        inset 1px 1px 0 var(--border-bevel),
+        inset -1px -1px 0 var(--border-dark),
+        0 10px 24px rgba(0, 0, 0, 0.65);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+
+    .os-window.kb-focused {
+      border-color: var(--brand-lime);
+      box-shadow:
+        0 0 0 1px var(--brand-lime),
+        0 10px 26px rgba(0, 0, 0, 0.75);
+    }
+
+    .win-titlebar {
+      height: 26px;
+      background: linear-gradient(90deg, var(--win-header-start) 0%, var(--win-header-end) 100%);
+      border-bottom: 1px solid var(--border-main);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px 0 10px;
+      user-select: none;
+    }
+
+    .win-title-text {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .win-close-btn {
+      width: 16px;
+      height: 16px;
+      background: #486b53;
+      border-top: 1px solid #84ab90;
+      border-left: 1px solid #84ab90;
+      border-right: 1px solid #16241a;
+      border-bottom: 1px solid #16241a;
+      color: #09120b;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 13px;
+      text-align: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .win-close-btn:hover {
+      background: var(--brand-lime);
+      color: #050a06;
+    }
+
+    .os-window.minimized .win-body {
+      display: none !important;
+    }
+
+    /* =========================================================================
+       NET-DECK BUTTONS, BADGES & INPUTS
+       ========================================================================= */
+    .btn-launch {
+      background: rgba(12, 24, 16, 0.92);
+      color: var(--brand-lime);
+      border: 1px solid var(--brand-lime);
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-launch:hover {
+      background: var(--brand-lime-tint);
+      box-shadow: 0 0 10px rgba(141, 229, 0, 0.28);
+    }
+
+    .btn-launch:active {
+      transform: translateY(1px);
+    }
+
+    .btn-info {
+      background: rgba(15, 25, 18, 0.82);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-main);
+      box-shadow: inset 1px 1px 0 rgba(90, 138, 102, 0.25);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-info:hover,
+    .btn-info.active {
+      color: var(--brand-lime);
+      border-color: var(--brand-lime);
+      background: rgba(25, 46, 32, 0.85);
+    }
+
+    .retro-badge {
+      background: rgba(9, 17, 12, 0.9);
+      border: 1px solid var(--border-main);
+      box-shadow:
+        inset 1px 1px 0 var(--border-bevel),
+        inset -1px -1px 0 #050906,
+        0 3px 8px rgba(0, 0, 0, 0.55);
+      padding: 4px 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      user-select: none;
+      transition: border-color 0.15s, color 0.15s, transform 0.1s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+
+    .retro-badge:hover {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      box-shadow:
+        inset 1px 1px 0 var(--brand-lime),
+        0 0 10px rgba(141, 229, 0, 0.22);
+    }
+
+    .status-pill {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 2px;
+      color: #071009;
+      background-color: var(--status-live);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .net-input {
+      background: #060b08;
+      border: 1px solid var(--border-main);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      padding: 7px 11px;
+      font-size: 13px;
+      box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.8);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .net-input:focus {
+      outline: none;
+      border-color: var(--brand-lime);
+      box-shadow: 0 0 8px rgba(141, 229, 0, 0.22);
+    }
+
+    .net-subcard {
+      background: rgba(7, 13, 9, 0.85);
+      border: 1px solid var(--border-main);
+      box-shadow: inset 1px 1px 0 rgba(90, 138, 102, 0.2);
+    }
+
+    .net-subcard:hover {
+      border-color: var(--border-bevel);
+    }
+
+    /* Remap legacy utility classes inside layout to match Net-Deck theme */
+    .bg-slate-950, .bg-slate-950\/80, .bg-slate-950\/60, .bg-slate-950\/50 {
+      background-color: #070d09 !important;
+    }
+    .bg-slate-900, .bg-slate-900\/90, .bg-slate-900\/80, .bg-slate-900\/70, .bg-slate-900\/60 {
+      background-color: rgba(10, 18, 13, 0.9) !important;
+    }
+    .bg-slate-800 {
+      background-color: #16261b !important;
+    }
+    .hover\:bg-slate-700:hover, .hover\:bg-slate-800:hover {
+      background-color: #213828 !important;
+    }
+    .border-slate-800, .border-slate-700, .border-slate-800\/80, .border-slate-800\/60 {
+      border-color: var(--border-main) !important;
+    }
+    .text-slate-100, .text-slate-200 {
+      color: var(--text-primary) !important;
+    }
+    .text-slate-300, .text-slate-400, .text-slate-500 {
+      color: var(--text-secondary) !important;
+    }
+    .text-cyan-400, .text-cyan-300, .text-amber-400, .text-amber-300, .text-purple-400, .text-purple-300 {
+      color: var(--brand-lime) !important;
+    }
+    .border-cyan-500\/30, .border-cyan-500\/40, .border-amber-500\/30, .border-purple-500\/30, .border-purple-500\/40 {
+      border-color: var(--border-main) !important;
+    }
+    .bg-cyan-950, .bg-cyan-950\/50, .bg-cyan-950\/60, .bg-purple-950, .bg-amber-950 {
+      background-color: rgba(25, 46, 32, 0.9) !important;
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background: white !important; color: black !important; font-size: 11pt; }
+      body.crt-enabled::after { display: none !important; }
+      .no-print { display: none !important; }
+      .os-window { background: white !important; border: 1px solid #333 !important; box-shadow: none !important; }
+      .win-titlebar { background: #eee !important; color: black !important; border-bottom: 1px solid #333 !important; }
+      .card-print { break-inside: avoid; margin-bottom: 1rem; }
+    }
+
+    /* Pulse animation for dice rolls */
+    @keyframes rollShake {
+      0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      20% { transform: translate(-3px, 2px) rotate(-6deg) scale(1.05); }
+      40% { transform: translate(4px, -2px) rotate(6deg) scale(1.08); }
+      60% { transform: translate(-2px, -3px) rotate(-3deg) scale(1.05); }
+      80% { transform: translate(3px, 3px) rotate(3deg) scale(1.02); }
+    }
+    .animate-roll {
+      animation: rollShake 0.45s ease-in-out;
+    }
+  </style>
+</head>
+<body class="crt-enabled min-h-screen antialiased flex flex-col">
+
+  <!-- =========================================================================
+       STICKY TOP SYSTEM BAR (XANANTH // NET-DECK CHROME)
+       ========================================================================= -->
+  <header class="no-print top-bar">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Left: Brand Logo & Status -->
+      <div class="flex items-center gap-4">
+        <a href="./index.html" class="brand-cluster" title="Return to Xananth // Net-Deck">
+          <div class="brand-logo-wrap">
+            <img src="Xananth Logo Fold 3 Inner~2.png" alt="Xananth Logo" onerror="this.style.display='none'; document.getElementById('xananth-svg-logo').style.display='block';" />
+            <svg id="xananth-svg-logo" style="display:none;" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#8de500">
+                <polygon points="74,12 126,12 142,42 63,118 47,62" />
+                <polygon points="36,80 51,131 24,157 8,130" />
+                <polygon points="56,149 62,172 34,172" />
+                <polygon points="150,58 192,130 168,172 75,172 68,139" />
+              </g>
+              <text x="77" y="164" fill="#050805" font-family="cursive, sans-serif" font-weight="900" font-style="italic" font-size="25" letter-spacing="0.5">ananth</text>
+            </svg>
+          </div>
+          <div class="flex flex-col justify-center">
+            <div class="online-pill">
+              <span class="online-dot"></span>
+              <span>FARI.V6 // ONLINE</span>
+            </div>
+            <h1 class="brand-heading lime-glow">MAGEPUNK // CHAR-MATRIX</h1>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center: Navigation & Mode Tabs -->
+      <div class="flex items-center gap-1.5 bg-[#060b08] p-1 border border-[#3d6147]">
+        <button id="btn-mode-builder" onclick="switchAppMode('builder')" class="btn-launch text-xs py-1 px-3">
+          [1] BUILDER WIZARD
+        </button>
+        <button id="btn-mode-sheet" onclick="switchAppMode('sheet')" class="btn-info text-xs py-1 px-3">
+          [2] PLAY SHEET
+        </button>
+        <button id="btn-mode-json" onclick="switchAppMode('json')" class="btn-info text-xs py-1 px-3">
+          [3] JSON DATA
+        </button>
+      </div>
+
+      <!-- Right: Actions, Presets, Clock & CRT Toggle -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <!-- Preset Dropdown -->
+        <select id="preset-selector" onchange="loadPresetCharacter(this.value)" class="net-input text-xs py-1.5 px-2.5 cursor-pointer text-[#8de500] font-semibold">
+          <option value="artist">PRESET: ARTIST (SAMPLE)</option>
+          <option value="operative">PRESET: ARCANE OPERATIVE</option>
+          <option value="knight">PRESET: RUNEBLADE KNIGHT</option>
+          <option value="gearsmith">PRESET: ARC-GEARSMITH</option>
+          <option value="channeler">PRESET: TEMPEST CHANNELER</option>
+          <option value="blank">TEMPLATE: BLANK</option>
+        </select>
+
+        <!-- Import JSON Button -->
+        <button onclick="openImportModal()" class="btn-info text-xs py-1.5 px-2.5">
+          IMPORT
+        </button>
+
+        <!-- Export JSON Button -->
+        <button onclick="exportCharacterJSON()" class="btn-launch text-xs py-1.5 px-3">
+          EXPORT .JSON
+        </button>
+
+        <!-- Quick Roller Toggle -->
+        <button onclick="toggleDiceDrawer()" class="retro-badge text-xs py-1.5 px-2.5" title="Open Magepunk Dice Roller">
+          [DICE]
+        </button>
+
+        <!-- System Clock & CRT Switch -->
+        <div class="hidden xl:flex items-center gap-3 pl-2 border-l border-[#3d6147] text-xs">
+          <span id="clockReadout" class="text-[#8fb89d] font-medium">AEST --:--</span>
+          <div id="crtToggle" class="crt-toggle-wrap" role="switch" aria-checked="true" tabindex="0" title="Toggle CRT Scanline & Phosphor FX">
+            <span id="crtLabel">[CRT: ON]</span>
+            <div class="crt-switch">
+              <div class="crt-switch-thumb"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 flex flex-col gap-6">
+
+    <!-- CHARACTER HEADER BANNER (OS WINDOW) -->
+    <section class="os-window kb-focused" id="win-char-banner">
+      <div class="win-titlebar">
+        <span class="win-title-text">system://operator_vitals_matrix</span>
+        <button class="win-close-btn" data-minimize="win-char-banner" title="Minimize Window">x</button>
+      </div>
+      <div class="win-body p-4 lg:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-[#060b08] border-2 border-[#8de500] flex flex-col items-center justify-center shadow-inner">
+              <span class="text-[9px] uppercase font-pixel tracking-widest text-[#8de500]">LVL</span>
+              <input type="number" id="header-char-level" min="1" max="20" onchange="updateCharLevel(this.value)" class="w-12 bg-transparent text-center font-display font-bold text-2xl text-[#e8f3ec] focus:outline-none">
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-3">
+                <input type="text" id="header-char-name" placeholder="Character Name..." oninput="updateCharField('name', this.value)" class="bg-transparent font-display font-bold text-2xl lg:text-3xl text-[#8de500] lime-glow focus:outline-none focus:bg-[#060b08] px-2 py-0.5 border border-transparent hover:border-[#3d6147] focus:border-[#8de500] transition">
+                <span id="header-char-badge" class="status-pill">Elf Artist</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-3 text-xs text-[#8fb89d] mt-1 font-mono">
+                <span>TRADE: <strong id="header-char-trade" class="text-[#e8f3ec]">Artist</strong></span>
+                <span class="text-[#3d6147]">//</span>
+                <span>NICHE: <strong id="header-char-niche" class="text-[#e8f3ec]">Aether Calligrapher</strong></span>
+                <span class="text-[#3d6147]">//</span>
+                <span>FACTION: <strong id="header-char-group" class="text-[#8de500]">Steelspire Resistance</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Vitals Quickbar -->
+          <div class="flex flex-wrap items-center gap-2.5 bg-[#060b08] p-2.5 border border-[#3d6147]">
+            <!-- Threshold -->
+            <div class="px-3 py-1 bg-[#0a120d] border border-[#3d6147] text-center">
+              <div class="text-[10px] font-mono uppercase text-[#8fb89d]">Threshold</div>
+              <div id="quick-threshold" class="font-bold text-base text-[#8de500]">3</div>
+            </div>
+            <!-- HP -->
+            <div class="px-3 py-1 bg-[#0a120d] border border-[#3d6147] text-center">
+              <div class="text-[10px] font-mono uppercase text-[#8fb89d]">HP (MAX <span id="quick-hp-max">30</span>)</div>
+              <div class="flex items-center gap-1.5 justify-center mt-0.5">
+                <button onclick="adjustHealth(-1)" class="text-xs px-1.5 py-0.2 bg-[#16261b] hover:bg-[#2f5239] text-[#e8f3ec] border border-[#3d6147]">-</button>
+                <span id="quick-hp-val" class="font-bold text-base text-[#8de500] min-w-[22px]">0</span>
+                <button onclick="adjustHealth(1)" class="text-xs px-1.5 py-0.2 bg-[#16261b] hover:bg-[#2f5239] text-[#e8f3ec] border border-[#3d6147]">+</button>
+              </div>
+            </div>
+            <!-- Mana -->
+            <div class="px-3 py-1 bg-[#0a120d] border border-[#3d6147] text-center">
+              <div class="text-[10px] font-mono uppercase text-[#8fb89d]">MANA (MAX <span id="quick-mana-max">46</span>)</div>
+              <div class="flex items-center gap-1.5 justify-center mt-0.5">
+                <button onclick="adjustMana(-1)" class="text-xs px-1.5 py-0.2 bg-[#16261b] hover:bg-[#2f5239] text-[#e8f3ec] border border-[#3d6147]">-</button>
+                <span id="quick-mana-val" class="font-bold text-base text-[#8de500] min-w-[22px]">0</span>
+                <button onclick="adjustMana(1)" class="text-xs px-1.5 py-0.2 bg-[#16261b] hover:bg-[#2f5239] text-[#e8f3ec] border border-[#3d6147]">+</button>
+              </div>
+            </div>
+            <!-- Mana Ceiling -->
+            <div class="px-3 py-1 bg-[#0a120d] border border-[#3d6147] text-center">
+              <div class="text-[10px] font-mono uppercase text-[#8fb89d]">Ceiling</div>
+              <div id="quick-mana-ceiling" class="font-bold text-base text-[#e8f3ec]">20</div>
+            </div>
+            <!-- Recovery Pool -->
+            <div class="px-3 py-1 bg-[#0a120d] border border-[#3d6147] text-center">
+              <div class="text-[10px] font-mono uppercase text-[#8fb89d]">Rec. d6</div>
+              <div id="quick-recovery-pool" class="font-bold text-base text-[#8de500]">6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW MODE 1: BUILDER WIZARD -->
+    <!-- ========================================================================= -->
+    <div id="view-builder" class="flex flex-col gap-6">
+      
+      <!-- Wizard Navigation Steps -->
+      <div class="os-window">
+        <div class="win-titlebar">
+          <span class="win-title-text">nav://character_compilation_steps</span>
+        </div>
+        <div class="win-body p-2.5 flex flex-wrap items-center justify-between gap-2 overflow-x-auto">
+          <button onclick="setWizardStep(1)" id="wiz-btn-1" class="wiz-step-btn btn-launch text-xs py-1.5 px-3">
+            [01] BIO &amp; IDENTITY
+          </button>
+          <button onclick="setWizardStep(2)" id="wiz-btn-2" class="wiz-step-btn btn-info text-xs py-1.5 px-3">
+            [02] SPECIES &amp; TRAITS
+          </button>
+          <button onclick="setWizardStep(3)" id="wiz-btn-3" class="wiz-step-btn btn-info text-xs py-1.5 px-3">
+            [03] SKILLS &amp; REACTIONS
+          </button>
+          <button onclick="setWizardStep(4)" id="wiz-btn-4" class="wiz-step-btn btn-info text-xs py-1.5 px-3">
+            [04] TRADE &amp; FOCI
+          </button>
+          <button onclick="setWizardStep(5)" id="wiz-btn-5" class="wiz-step-btn btn-info text-xs py-1.5 px-3">
+            [05] SPELLS &amp; ARSENAL
+          </button>
+          <button onclick="setWizardStep(6)" id="wiz-btn-6" class="wiz-step-btn btn-info text-xs py-1.5 px-3">
+            [06] GEAR &amp; GOALS
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 1: BIO & IDENTITY -->
+      <div id="wiz-step-1" class="wiz-content-step flex flex-col gap-6">
+        <div class="os-window" id="win-step-1">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://01_character_identity_and_vitals</span>
+            <button class="win-close-btn" data-minimize="win-step-1" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-6 flex flex-col gap-5">
+            <div class="flex flex-wrap items-center justify-between border-b border-[#3d6147] pb-3 gap-2">
+              <div>
+                <h2 class="font-display text-xl font-bold text-[#e8f3ec] flex items-center gap-2">
+                  <span class="text-[#8de500]">►</span> STEP 01: CHARACTER IDENTITY &amp; VITALS
+                </h2>
+                <p class="text-xs text-[#8fb89d]">Establish your operator's persona, level, syndicate faction, and baseline vitals.</p>
+              </div>
+              <button onclick="randomizeIdentity()" class="btn-info text-xs">
+                [RANDOMIZE ORIGIN]
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">CHARACTER NAME</label>
+                <input type="text" id="wiz-char-name" oninput="updateCharField('name', this.value)" class="net-input" placeholder="e.g. Vespera Vane">
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">LEVEL (1 - 20)</label>
+                <input type="number" id="wiz-char-level" min="1" max="20" onchange="updateCharLevel(this.value)" class="net-input" value="2">
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">SPECIES</label>
+                <input type="text" id="wiz-char-species" oninput="updateCharSpecies(this.value)" class="net-input" placeholder="e.g. Elf, Human, Construct">
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">TRADE (ARCHETYPE)</label>
+                <input type="text" id="wiz-char-trade" oninput="updateCharTrade(this.value)" class="net-input text-[#8de500]" placeholder="e.g. Artist, Mage-Knight">
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">NICHE (SPECIALTY)</label>
+                <input type="text" id="wiz-char-niche" oninput="updateCharField('niche', this.value)" class="net-input" placeholder="e.g. Aether Calligrapher">
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">CAMPAIGN GROUP / SYNDICATE</label>
+                <input type="text" id="wiz-char-group" oninput="updateCharField('group', this.value)" class="net-input" placeholder="e.g. Steelspire Resistance">
+              </div>
+            </div>
+
+            <!-- Status & Resource Vitals Settings -->
+            <div class="border-t border-[#3d6147] pt-4 mt-2">
+              <h3 class="text-xs font-bold font-mono text-[#8de500] uppercase tracking-wider mb-3">RESOURCE &amp; STATUS CONFIGURATION</h3>
+              <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">THRESHOLD</label>
+                  <input type="number" id="wiz-threshold" onchange="updateStatusField('threshold', this.value)" class="w-full net-input font-bold text-[#8de500] mt-1">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">MAX HP</label>
+                  <input type="number" id="wiz-hp-max" onchange="updateStatusField('hpMax', this.value)" class="w-full net-input font-bold text-[#8de500] mt-1">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">MANA CEILING</label>
+                  <input type="number" id="wiz-mana-ceiling" onchange="updateStatusField('manaCeiling', this.value)" class="w-full net-input font-bold text-[#e8f3ec] mt-1">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">MAX MANA</label>
+                  <input type="number" id="wiz-mana-max" onchange="updateStatusField('manaMax', this.value)" class="w-full net-input font-bold text-[#8de500] mt-1">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">RECOVERY POOL (d6)</label>
+                  <input type="number" id="wiz-recovery-pool" onchange="updateStatusField('recoveryPool', this.value)" class="w-full net-input font-bold text-[#8de500] mt-1">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button onclick="setWizardStep(2)" class="btn-launch px-6 py-2.5">
+            NEXT: SPECIES &amp; TRAITS &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: SPECIES & TRAITS -->
+      <div id="wiz-step-2" class="wiz-content-step hidden flex flex-col gap-6">
+        
+        <!-- Step Dice Array Assigner -->
+        <div class="os-window" id="win-step-2a">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://02_trait_step_dice_assignment</span>
+            <button class="win-close-btn" data-minimize="win-step-2a" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-6 flex flex-col gap-5">
+            <div class="flex flex-wrap items-center justify-between border-b border-[#3d6147] pb-3 gap-3">
+              <div>
+                <h2 class="font-display text-xl font-bold text-[#e8f3ec] flex items-center gap-2">
+                  <span class="text-[#8de500]">►</span> STEP 02: TRAIT STEP-DICE ASSIGNMENT
+                </h2>
+                <p class="text-xs text-[#8fb89d]">Magepunk uses standard step dice: <code>[1d4, 1d6, 1d8, 1d10, 1d12, 1d20]</code>. Distribute one die to each of your 6 traits.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="applyStandardDiceArray()" class="btn-launch text-xs">
+                  AUTO-ASSIGN BALANCED ARRAY
+                </button>
+                <button onclick="resetTraitDice()" class="btn-info text-xs">
+                  RESET DICE
+                </button>
+              </div>
+            </div>
+
+            <!-- Unassigned Dice Tray -->
+            <div class="net-subcard p-3.5 flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-mono text-[#8fb89d] uppercase tracking-wider">STANDARD DICE ARRAY STATUS:</span>
+              <div id="dice-tray" class="flex flex-wrap items-center gap-2"></div>
+            </div>
+
+            <!-- 6 Traits Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              
+              <!-- Strength -->
+              <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-display font-bold text-base text-[#e8f3ec]">STRENGTH</span>
+                    <p class="text-[11px] text-[#8fb89d]">Physical might, heavy exertion, raw force</p>
+                  </div>
+                  <button onclick="rollDirect('Strength', getTraitDie('strength'))" class="btn-info text-xs px-2 py-1" title="Roll Strength">[ROLL]</button>
+                </div>
+                <select id="trait-select-strength" onchange="setTraitDie('strength', this.value)" class="w-full net-input font-bold text-[#8de500]">
+                  <option value="1d4">1d4 (Novice)</option>
+                  <option value="1d6">1d6 (Trained)</option>
+                  <option value="1d8">1d8 (Competent)</option>
+                  <option value="1d10">1d10 (Expert)</option>
+                  <option value="1d12">1d12 (Master)</option>
+                  <option value="1d20">1d20 (Paragon)</option>
+                </select>
+              </div>
+
+              <!-- Finesse -->
+              <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-display font-bold text-base text-[#e8f3ec]">FINESSE</span>
+                    <p class="text-[11px] text-[#8fb89d]">Agility, precision, reflexes, balance</p>
+                  </div>
+                  <button onclick="rollDirect('Finesse', getTraitDie('finesse'))" class="btn-info text-xs px-2 py-1" title="Roll Finesse">[ROLL]</button>
+                </div>
+                <select id="trait-select-finesse" onchange="setTraitDie('finesse', this.value)" class="w-full net-input font-bold text-[#8de500]">
+                  <option value="1d4">1d4 (Novice)</option>
+                  <option value="1d6">1d6 (Trained)</option>
+                  <option value="1d8">1d8 (Competent)</option>
+                  <option value="1d10">1d10 (Expert)</option>
+                  <option value="1d12">1d12 (Master)</option>
+                  <option value="1d20">1d20 (Paragon)</option>
+                </select>
+              </div>
+
+              <!-- Toughness -->
+              <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-display font-bold text-base text-[#e8f3ec]">TOUGHNESS</span>
+                    <p class="text-[11px] text-[#8fb89d]">Endurance, stamina, pain tolerance, armor</p>
+                  </div>
+                  <button onclick="rollDirect('Toughness', getTraitDie('toughness'))" class="btn-info text-xs px-2 py-1" title="Roll Toughness">[ROLL]</button>
+                </div>
+                <select id="trait-select-toughness" onchange="setTraitDie('toughness', this.value)" class="w-full net-input font-bold text-[#8de500]">
+                  <option value="1d4">1d4 (Novice)</option>
+                  <option value="1d6">1d6 (Trained)</option>
+                  <option value="1d8">1d8 (Competent)</option>
+                  <option value="1d10">1d10 (Expert)</option>
+                  <option value="1d12">1d12 (Master)</option>
+                  <option value="1d20">1d20 (Paragon)</option>
+                </select>
+              </div>
+
+              <!-- Will -->
+              <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-display font-bold text-base text-[#e8f3ec]">WILL</span>
+                    <p class="text-[11px] text-[#8fb89d]">Mental fortitude, resolve, arcane focus</p>
+                  </div>
+                  <button onclick="rollDirect('Will', getTraitDie('will'))" class="btn-info text-xs px-2 py-1" title="Roll Will">[ROLL]</button>
+                </div>
+                <select id="trait-select-will" onchange="setTraitDie('will', this.value)" class="w-full net-input font-bold text-[#8de500]">
+                  <option value="1d4">1d4 (Novice)</option>
+                  <option value="1d6">1d6 (Trained)</option>
+                  <option value="1d8">1d8 (Competent)</option>
+                  <option value="1d10">1d10 (Expert)</option>
+                  <option value="1d12">1d12 (Master)</option>
+                  <option value="1d20">1d20 (Paragon)</option>
+                </select>
+              </div>
+
+              <!-- Curiosity -->
+              <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-display font-bold text-base text-[#e8f3ec]">CURIOSITY</span>
+                    <p class="text-[11px] text-[#8fb89d]">Investigation, deduction, lore, perception</p>
+                  </div>
+                  <button onclick="rollDirect('Curiosity', getTraitDie('curiosity'))" class="btn-info text-xs px-2 py-1" title="Roll Curiosity">[ROLL]</button>
+                </div>
+                <select id="trait-select-curiosity" onchange="setTraitDie('curiosity', this.value)" class="w-full net-input font-bold text-[#8de500]">
+                  <option value="1d4">1d4 (Novice)</option>
+                  <option value="1d6">1d6 (Trained)</option>
+                  <option value="1d8">1d8 (Competent)</option>
+                  <option value="1d10">1d10 (Expert)</option>
+                  <option value="1d12">1d12 (Master)</option>
+                  <option value="1d20">1d20 (Paragon)</option>
+                </select>
+              </div>
+
+              <!-- Charm -->
+              <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-display font-bold text-base text-[#e8f3ec]">CHARM</span>
+                    <p class="text-[11px] text-[#8fb89d]">Influence, artistry, charisma, deception</p>
+                  </div>
+                  <button onclick="rollDirect('Charm', getTraitDie('charm'))" class="btn-info text-xs px-2 py-1" title="Roll Charm">[ROLL]</button>
+                </div>
+                <select id="trait-select-charm" onchange="setTraitDie('charm', this.value)" class="w-full net-input font-bold text-[#8de500]">
+                  <option value="1d4">1d4 (Novice)</option>
+                  <option value="1d6">1d6 (Trained)</option>
+                  <option value="1d8">1d8 (Competent)</option>
+                  <option value="1d10">1d10 (Expert)</option>
+                  <option value="1d12">1d12 (Master)</option>
+                  <option value="1d20">1d20 (Paragon)</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Species Lore & Species Attributes Builder -->
+        <div class="os-window" id="win-step-2b">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://02b_species_lore_and_attributes</span>
+            <button class="win-close-btn" data-minimize="win-step-2b" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-6 flex flex-col gap-5">
+            <div class="border-b border-[#3d6147] pb-3">
+              <h2 class="font-display text-xl font-bold text-[#e8f3ec] flex items-center gap-2">
+                <span class="text-[#8de500]">►</span> SPECIES LORE &amp; BIOLOGICAL ATTRIBUTES
+              </h2>
+              <p class="text-xs text-[#8fb89d]">Configure species habitat and unique biological/cultural attribute features.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">HABITAT</label>
+                <input type="text" id="wiz-species-habitat" oninput="updateCharField('habitat', this.value)" class="net-input" placeholder="e.g. Terrestrial, Arboreal">
+              </div>
+              <div class="md:col-span-2 flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">SPECIES PHYSIOLOGICAL LORE</label>
+                <input type="text" id="wiz-species-desc" oninput="updateCharField('speciesDescription', this.value)" class="net-input" placeholder="e.g. Elves stand 1.5-2.5m tall with extended lifespans...">
+              </div>
+            </div>
+
+            <!-- Species Attributes List -->
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono uppercase text-[#8fb89d]">SPECIES ATTRIBUTES &amp; FEATURES</span>
+                <button onclick="addSpeciesAttributePrompt()" class="btn-launch text-xs py-1 px-2.5">+ ADD ATTRIBUTE</button>
+              </div>
+              <div id="wiz-species-attributes-list" class="flex flex-col gap-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <button onclick="setWizardStep(1)" class="btn-info px-5 py-2.5">
+            &larr; BACK: IDENTITY
+          </button>
+          <button onclick="setWizardStep(3)" class="btn-launch px-6 py-2.5">
+            NEXT: SKILLS &amp; REACTIONS &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: SKILLS & REACTIONS -->
+      <div id="wiz-step-3" class="wiz-content-step hidden flex flex-col gap-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- 7 Magepunk Skills -->
+          <div class="lg:col-span-2 os-window" id="win-step-3a">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://03_skills_and_modifiers</span>
+              <button class="win-close-btn" data-minimize="win-step-3a" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-5">
+              <div class="border-b border-[#3d6147] pb-3">
+                <h2 class="font-display text-xl font-bold text-[#e8f3ec] flex items-center gap-2">
+                  <span class="text-[#8de500]">►</span> STEP 03: SKILLS &amp; MODIFIERS
+                </h2>
+                <p class="text-xs text-[#8fb89d]">Skills provide static bonuses (+0 to +5) added to rolls and reactions.</p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">POWER</span>
+                    <p class="text-[11px] text-[#8fb89d]">Adds to Guard &amp; heavy blows</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('power', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-power" class="w-6 text-center font-mono font-bold text-[#8de500]">0</span>
+                    <button onclick="changeSkill('power', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">SPEED</span>
+                    <p class="text-[11px] text-[#8fb89d]">Adds to Dive &amp; movement bursts</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('speed', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-speed" class="w-6 text-center font-mono font-bold text-[#8de500]">0</span>
+                    <button onclick="changeSkill('speed', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">FORETHOUGHT</span>
+                    <p class="text-[11px] text-[#8fb89d]">Preparation &amp; tactical foresight</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('forethought', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-forethought" class="w-6 text-center font-mono font-bold text-[#8de500]">1</span>
+                    <button onclick="changeSkill('forethought', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">PANACHE</span>
+                    <p class="text-[11px] text-[#8fb89d]">Flair, spell flair &amp; accuracy</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('panache', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-panache" class="w-6 text-center font-mono font-bold text-[#8de500]">3</span>
+                    <button onclick="changeSkill('panache', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">INSTINCT</span>
+                    <p class="text-[11px] text-[#8fb89d]">Adds to Initiative &amp; gut awareness</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('instinct', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-instinct" class="w-6 text-center font-mono font-bold text-[#8de500]">1</span>
+                    <button onclick="changeSkill('instinct', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">GRACE</span>
+                    <p class="text-[11px] text-[#8fb89d]">Poise, elegance, acrobatic finesse</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('grace', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-grace" class="w-6 text-center font-mono font-bold text-[#8de500]">3</span>
+                    <button onclick="changeSkill('grace', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-sm text-[#e8f3ec]">GUILE</span>
+                    <p class="text-[11px] text-[#8fb89d]">Subterfuge, bluffing &amp; trickery</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="changeSkill('guile', -1)" class="btn-info w-7 h-7 p-0">-</button>
+                    <span id="skill-val-guile" class="w-6 text-center font-mono font-bold text-[#8de500]">2</span>
+                    <button onclick="changeSkill('guile', 1)" class="btn-info w-7 h-7 p-0">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Computed Reactions & Pace -->
+          <div class="flex flex-col gap-5">
+            <!-- Reactions Panel -->
+            <div class="os-window" id="win-step-3b">
+              <div class="win-titlebar">
+                <span class="win-title-text">calc://combat_reactions</span>
+              </div>
+              <div class="win-body p-5 flex flex-col gap-4">
+                <div>
+                  <h3 class="font-display text-base font-bold text-[#e8f3ec]">CALCULATED REACTIONS</h3>
+                  <p class="text-xs text-[#8fb89d]">Auto-computed from assigned traits + skills.</p>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <div class="text-xs font-bold text-[#e8f3ec]">INITIATIVE</div>
+                    <div class="text-[10px] font-mono text-[#8fb89d]">Finesse + Instinct</div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="calc-initiative-formula" class="font-mono font-bold text-[#8de500] text-sm">1d10 + 1</span>
+                    <button onclick="rollReaction('Initiative')" class="btn-info text-xs px-2 py-1">[ROLL]</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <div class="text-xs font-bold text-[#e8f3ec]">GUARD</div>
+                    <div class="text-[10px] font-mono text-[#8fb89d]">Toughness + Power</div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="calc-guard-formula" class="font-mono font-bold text-[#8de500] text-sm">1d12 + 0</span>
+                    <button onclick="rollReaction('Guard')" class="btn-info text-xs px-2 py-1">[ROLL]</button>
+                  </div>
+                </div>
+
+                <div class="net-subcard p-3.5 flex items-center justify-between">
+                  <div>
+                    <div class="text-xs font-bold text-[#e8f3ec]">DIVE</div>
+                    <div class="text-[10px] font-mono text-[#8fb89d]">Finesse + Speed</div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="calc-dive-formula" class="font-mono font-bold text-[#8de500] text-sm">1d10 + 0</span>
+                    <button onclick="rollReaction('Dive')" class="btn-info text-xs px-2 py-1">[ROLL]</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pace Panel -->
+            <div class="os-window">
+              <div class="win-titlebar">
+                <span class="win-title-text">calc://movement_pace_meters</span>
+              </div>
+              <div class="win-body p-5 flex flex-col gap-3">
+                <h3 class="font-display text-base font-bold text-[#e8f3ec]">MOVEMENT PACE (M)</h3>
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="net-subcard p-2.5 text-center">
+                    <span class="text-[10px] font-mono text-[#8fb89d]">LAND</span>
+                    <input type="number" id="wiz-pace-land" onchange="updatePace('land', this.value)" class="w-full net-input text-center font-bold text-[#8de500] mt-1" value="12">
+                  </div>
+                  <div class="net-subcard p-2.5 text-center">
+                    <span class="text-[10px] font-mono text-[#8fb89d]">SWIM</span>
+                    <input type="number" id="wiz-pace-swim" onchange="updatePace('swim', this.value)" class="w-full net-input text-center font-bold text-[#8de500] mt-1" value="8">
+                  </div>
+                  <div class="net-subcard p-2.5 text-center">
+                    <span class="text-[10px] font-mono text-[#8fb89d]">FLY</span>
+                    <input type="number" id="wiz-pace-fly" onchange="updatePace('fly', this.value)" class="w-full net-input text-center font-bold text-[#8de500] mt-1" value="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <button onclick="setWizardStep(2)" class="btn-info px-5 py-2.5">
+            &larr; BACK: TRAITS
+          </button>
+          <button onclick="setWizardStep(4)" class="btn-launch px-6 py-2.5">
+            NEXT: TRADE &amp; FOCI &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: TRADE FEATURES & FOCI -->
+      <div id="wiz-step-4" class="wiz-content-step hidden flex flex-col gap-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Trade Features -->
+          <div class="os-window" id="win-step-4a">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://04_trade_features</span>
+              <button class="win-close-btn" data-minimize="win-step-4a" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-3">
+                <div>
+                  <h2 class="font-display text-xl font-bold text-[#e8f3ec]">TRADE FEATURES</h2>
+                  <p class="text-xs text-[#8fb89d]">Core abilities unlocked by your Trade/Profession.</p>
+                </div>
+                <button onclick="addTradeFeatureModal()" class="btn-launch text-xs py-1 px-2.5">
+                  + ADD FEATURE
+                </button>
+              </div>
+              <div id="wiz-trade-features-list" class="flex flex-col gap-3"></div>
+            </div>
+          </div>
+
+          <!-- Combat Foci -->
+          <div class="os-window" id="win-step-4b">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://04_combat_foci</span>
+              <button class="win-close-btn" data-minimize="win-step-4b" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-3">
+                <div>
+                  <h2 class="font-display text-xl font-bold text-[#e8f3ec]">COMBAT FOCI</h2>
+                  <p class="text-xs text-[#8fb89d]">Tactical stances declared at start of turn (e.g. Defence, Offence).</p>
+                </div>
+                <button onclick="addFocusModal()" class="btn-launch text-xs py-1 px-2.5">
+                  + ADD FOCUS
+                </button>
+              </div>
+              <div id="wiz-foci-list" class="flex flex-col gap-3"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex justify-between">
+          <button onclick="setWizardStep(3)" class="btn-info px-5 py-2.5">
+            &larr; BACK: SKILLS
+          </button>
+          <button onclick="setWizardStep(5)" class="btn-launch px-6 py-2.5">
+            NEXT: SPELLS &amp; ARSENAL &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 5: SPELLS, WEAPONS & TOOLS -->
+      <div id="wiz-step-5" class="wiz-content-step hidden flex flex-col gap-6">
+        
+        <!-- Spells Section -->
+        <div class="os-window" id="win-step-5a">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://05_grimoire_and_spells</span>
+            <button class="win-close-btn" data-minimize="win-step-5a" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-6 flex flex-col gap-4">
+            <div class="flex flex-wrap items-center justify-between border-b border-[#3d6147] pb-3 gap-3">
+              <div>
+                <h2 class="font-display text-xl font-bold text-[#e8f3ec]">GRIMOIRE &amp; SPELLS</h2>
+                <p class="text-xs text-[#8fb89d]">Manage arcane glyphs, incantations, dust requirements, and spell effects.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="openSpellLibraryModal()" class="btn-info text-xs">
+                  [BROWSE SPELL LIBRARY]
+                </button>
+                <button onclick="addNewSpellModal()" class="btn-launch text-xs">
+                  + CUSTOM SPELL
+                </button>
+              </div>
+            </div>
+            <div id="wiz-spells-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          </div>
+        </div>
+
+        <!-- Weapons & Tools Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Weapons Arsenal -->
+          <div class="os-window" id="win-step-5b">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://05_weapons_arsenal</span>
+              <button class="win-close-btn" data-minimize="win-step-5b" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-3">
+                <div>
+                  <h3 class="font-display text-lg font-bold text-[#e8f3ec]">WEAPONS ARSENAL</h3>
+                  <p class="text-xs text-[#8fb89d]">Accuracy &amp; Damage formulas.</p>
+                </div>
+                <button onclick="addNewWeaponModal()" class="btn-launch text-xs py-1 px-2.5">
+                  + ADD WEAPON
+                </button>
+              </div>
+              <div id="wiz-weapons-list" class="flex flex-col gap-3"></div>
+            </div>
+          </div>
+
+          <!-- Tool Skills -->
+          <div class="os-window" id="win-step-5c">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://05_tool_proficiencies</span>
+              <button class="win-close-btn" data-minimize="win-step-5c" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-3">
+                <div>
+                  <h3 class="font-display text-lg font-bold text-[#e8f3ec]">TOOL PROFICIENCIES</h3>
+                  <p class="text-xs text-[#8fb89d]">Adept (1) / Expert (2) ranks in artisan tools.</p>
+                </div>
+                <button onclick="addNewToolModal()" class="btn-launch text-xs py-1 px-2.5">
+                  + ADD TOOL
+                </button>
+              </div>
+              <div id="wiz-tools-list" class="flex flex-col gap-2.5"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex justify-between">
+          <button onclick="setWizardStep(4)" class="btn-info px-5 py-2.5">
+            &larr; BACK: TRADE
+          </button>
+          <button onclick="setWizardStep(6)" class="btn-launch px-6 py-2.5">
+            NEXT: GEAR &amp; GOALS &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 6: GEAR, GOALS & REVIEW -->
+      <div id="wiz-step-6" class="wiz-content-step hidden flex flex-col gap-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Inventory & Currencies -->
+          <div class="os-window" id="win-step-6a">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://06_currency_and_inventory</span>
+              <button class="win-close-btn" data-minimize="win-step-6a" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-4">
+              <div class="border-b border-[#3d6147] pb-3">
+                <h2 class="font-display text-xl font-bold text-[#e8f3ec]">CURRENCY &amp; WEALTH</h2>
+                <p class="text-xs text-[#8fb89d]">Magepunk economy including mystical Arc Dust.</p>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">SILVER</label>
+                  <input type="number" id="wiz-money-silver" onchange="updateMoney('silver', this.value)" class="w-full net-input font-bold mt-1" placeholder="0">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8de500]">GOLD</label>
+                  <input type="number" id="wiz-money-gold" onchange="updateMoney('gold', this.value)" class="w-full net-input font-bold text-[#8de500] mt-1" placeholder="0">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8fb89d]">PLATINUM</label>
+                  <input type="number" id="wiz-money-plat" onchange="updateMoney('platinum', this.value)" class="w-full net-input font-bold mt-1" placeholder="0">
+                </div>
+                <div class="net-subcard p-3">
+                  <label class="text-[11px] font-mono text-[#8de500]">ARC DUST</label>
+                  <input type="number" id="wiz-money-dust" onchange="updateMoney('arcDust', this.value)" class="w-full net-input font-bold text-[#8de500] mt-1" placeholder="0">
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-1.5 mt-2">
+                <label class="text-xs font-mono text-[#8fb89d]">INVENTORY ITEMS (ARMOR, MEDIUMS, SUPPLIES)</label>
+                <textarea id="wiz-inventory-text" rows="6" oninput="updateCharInventory(this.value)" class="net-input font-mono text-sm" placeholder="Leather armour&#10;Staff&#10;Bow&#10;Tattoo ink infused with arc (3)..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campaign Goals -->
+          <div class="os-window" id="win-step-6b">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://06_campaign_goals</span>
+              <button class="win-close-btn" data-minimize="win-step-6b" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-6 flex flex-col gap-4">
+              <div class="border-b border-[#3d6147] pb-3">
+                <h2 class="font-display text-xl font-bold text-[#e8f3ec]">CAMPAIGN GOALS &amp; DRIVES</h2>
+                <p class="text-xs text-[#8fb89d]">Drive progression, XP, and narrative arcs.</p>
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8de500]">PERSONAL CHARACTER GOALS</label>
+                <textarea id="wiz-goals-personal" rows="4" oninput="updateCharGoals('personal', this.value)" class="net-input text-sm" placeholder="Complete a great work of art.&#10;Inspire an ally."></textarea>
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-mono text-[#8fb89d]">GROUP / SYNDICATE CAMPAIGN GOALS</label>
+                <textarea id="wiz-goals-group" rows="4" oninput="updateCharGoals('group', this.value)" class="net-input text-sm" placeholder="Strike a blow to one of the syndicate's levers of power.&#10;Stop syndicate expansion plans..."></textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Finish / Export Actions -->
+        <div class="os-window kb-focused">
+          <div class="win-titlebar">
+            <span class="win-title-text">system://deployment_ready</span>
+          </div>
+          <div class="win-body p-5 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h3 class="font-display text-lg font-bold text-[#8de500] lime-glow">CHARACTER MATRIX READY FOR DEPLOYMENT</h3>
+              <p class="text-xs text-[#8fb89d]">Launch into active play sheet mode or download the standard Fari v6 JSON file.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button onclick="switchAppMode('sheet')" class="btn-info px-5 py-2.5">
+                [OPEN PLAY SHEET]
+              </button>
+              <button onclick="exportCharacterJSON()" class="btn-launch px-6 py-2.5">
+                DOWNLOAD FARI .JSON &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VIEW MODE 2: INTERACTIVE PLAY SHEET -->
+    <!-- ========================================================================= -->
+    <div id="view-sheet" class="hidden flex flex-col gap-6">
+      
+      <!-- Sheet Sub-tab Selector -->
+      <div class="no-print os-window">
+        <div class="win-titlebar">
+          <span class="win-title-text">nav://active_play_sheet_pages</span>
+        </div>
+        <div class="win-body p-2.5 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button onclick="setSheetTab('main')" id="tab-btn-main" class="sheet-tab-btn btn-launch text-xs py-1.5 px-3">
+              MAIN VITALS &amp; TRAITS
+            </button>
+            <button onclick="setSheetTab('spells')" id="tab-btn-spells" class="sheet-tab-btn btn-info text-xs py-1.5 px-3">
+              SPELLS, WEAPONS &amp; TOOLS
+            </button>
+            <button onclick="setSheetTab('trade')" id="tab-btn-trade" class="sheet-tab-btn btn-info text-xs py-1.5 px-3">
+              TRADE FEATURES &amp; FOCI
+            </button>
+            <button onclick="setSheetTab('species')" id="tab-btn-species" class="sheet-tab-btn btn-info text-xs py-1.5 px-3">
+              SPECIES &amp; BACKGROUND
+            </button>
+            <button onclick="setSheetTab('inventory')" id="tab-btn-inventory" class="sheet-tab-btn btn-info text-xs py-1.5 px-3">
+              INVENTORY &amp; GOALS
+            </button>
+            <button onclick="setSheetTab('all')" id="tab-btn-all" class="sheet-tab-btn btn-info text-xs py-1.5 px-3">
+              UNIFIED VIEW (ALL)
+            </button>
+          </div>
+
+          <button onclick="window.print()" class="retro-badge text-xs py-1.5 px-3">
+            [PRINT SHEET]
+          </button>
+        </div>
+      </div>
+
+      <!-- PAGE 1: MAIN (Traits, Skills, Reactions, Tracks) -->
+      <div id="sheet-page-main" class="sheet-page-view grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left: Traits (Step Dice) -->
+        <div class="os-window card-print" id="win-sheet-traits">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://traits_and_reactions</span>
+            <button class="win-close-btn" data-minimize="win-sheet-traits" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">TRAITS (STEP DICE)</h3>
+              <span class="text-[11px] font-mono text-[#8de500]">[CLICK TO ROLL]</span>
+            </div>
+
+            <div id="sheet-traits-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+
+            <!-- Reactions Display -->
+            <div class="border-t border-[#3d6147] pt-3 flex flex-col gap-2">
+              <span class="text-xs font-mono uppercase text-[#8fb89d] tracking-wider">COMBAT REACTIONS</span>
+              <div class="grid grid-cols-3 gap-2">
+                <div onclick="rollReaction('Initiative')" class="net-subcard p-2.5 hover:border-[#8de500] cursor-pointer transition text-center group">
+                  <div class="text-[10px] font-mono text-[#8fb89d] group-hover:text-[#8de500]">INITIATIVE</div>
+                  <div id="sheet-react-init" class="font-mono font-bold text-[#8de500] text-sm mt-0.5">1d10+1</div>
+                </div>
+                <div onclick="rollReaction('Guard')" class="net-subcard p-2.5 hover:border-[#8de500] cursor-pointer transition text-center group">
+                  <div class="text-[10px] font-mono text-[#8fb89d] group-hover:text-[#8de500]">GUARD</div>
+                  <div id="sheet-react-guard" class="font-mono font-bold text-[#8de500] text-sm mt-0.5">1d12+0</div>
+                </div>
+                <div onclick="rollReaction('Dive')" class="net-subcard p-2.5 hover:border-[#8de500] cursor-pointer transition text-center group">
+                  <div class="text-[10px] font-mono text-[#8fb89d] group-hover:text-[#8de500]">DIVE</div>
+                  <div id="sheet-react-dive" class="font-mono font-bold text-[#8de500] text-sm mt-0.5">1d10+0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: Skills -->
+        <div class="os-window card-print" id="win-sheet-skills">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://skill_modifiers</span>
+            <button class="win-close-btn" data-minimize="win-sheet-skills" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">SKILLS</h3>
+              <span class="text-[11px] font-mono text-[#8fb89d]">MODIFIERS</span>
+            </div>
+
+            <div id="sheet-skills-list" class="flex flex-col gap-2"></div>
+
+            <!-- Pace in Main Sheet -->
+            <div class="border-t border-[#3d6147] pt-3 flex items-center justify-around net-subcard p-2">
+              <div class="text-center"><span class="text-[10px] font-mono text-[#8fb89d] block">LAND PACE</span><strong id="sheet-pace-land" class="text-sm text-[#8de500]">12m</strong></div>
+              <div class="text-center"><span class="text-[10px] font-mono text-[#8fb89d] block">SWIM PACE</span><strong id="sheet-pace-swim" class="text-sm text-[#8de500]">8m</strong></div>
+              <div class="text-center"><span class="text-[10px] font-mono text-[#8fb89d] block">FLY PACE</span><strong id="sheet-pace-fly" class="text-sm text-[#8de500]">0m</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Status Tracks (Fatigue & Demise Clock) -->
+        <div class="os-window card-print" id="win-sheet-tracks">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://fatigue_and_demise_tracks</span>
+            <button class="win-close-btn" data-minimize="win-sheet-tracks" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-5">
+            <div class="border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">DAMAGE &amp; STATUS TRACKS</h3>
+              <p class="text-xs text-[#8fb89d]">Interactive slot trackers matching Fari v6 schema.</p>
+            </div>
+
+            <!-- Fatigue Track (1 to 7) -->
+            <div class="net-subcard p-4 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono font-bold text-[#8de500] uppercase">FATIGUE TRACK</span>
+                <button onclick="clearFatigue()" class="text-[10px] text-[#8fb89d] hover:text-[#8de500]">[CLEAR]</button>
+              </div>
+              <div id="sheet-fatigue-track" class="grid grid-cols-7 gap-1.5"></div>
+            </div>
+
+            <!-- Demise Track (1, d4, d6, d8, d10, d12, d20) -->
+            <div class="net-subcard p-4 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono font-bold text-[#e8f3ec] uppercase">DEMISE TRACK (CLOCK)</span>
+                <button onclick="clearDemise()" class="text-[10px] text-[#8fb89d] hover:text-[#8de500]">[CLEAR]</button>
+              </div>
+              <div id="sheet-demise-track" class="grid grid-cols-7 gap-1.5"></div>
+            </div>
+
+            <!-- Quick Rest Recovery -->
+            <div class="flex items-center justify-between gap-2 border-t border-[#3d6147] pt-3">
+              <button onclick="shortRestRecovery()" class="btn-info w-full text-xs py-2">
+                SHORT REST (d6)
+              </button>
+              <button onclick="fullRestRecovery()" class="btn-launch w-full text-xs py-2">
+                FULL REST
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE 2: SPELLS, WEAPONS & TOOLS -->
+      <div id="sheet-page-spells" class="sheet-page-view hidden flex flex-col gap-6">
+        
+        <!-- Spells -->
+        <div class="os-window card-print" id="win-sheet-spells">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://spells_and_invocations</span>
+            <button class="win-close-btn" data-minimize="win-sheet-spells" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">SPELLS &amp; INVOCATIONS</h3>
+              <button onclick="openSpellLibraryModal()" class="btn-launch text-xs py-1 px-2.5">+ ADD SPELL</button>
+            </div>
+            <div id="sheet-spells-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Weapons -->
+          <div class="os-window card-print" id="win-sheet-weapons">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://equipped_weapons</span>
+              <button class="win-close-btn" data-minimize="win-sheet-weapons" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-5 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+                <h3 class="font-display text-lg font-bold text-[#e8f3ec]">WEAPONS</h3>
+                <button onclick="addNewWeaponModal()" class="btn-launch text-xs py-1 px-2.5">+ ADD WEAPON</button>
+              </div>
+              <div id="sheet-weapons-container" class="flex flex-col gap-3"></div>
+            </div>
+          </div>
+
+          <!-- Tool Skills -->
+          <div class="os-window card-print" id="win-sheet-tools">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://tool_skills</span>
+              <button class="win-close-btn" data-minimize="win-sheet-tools" title="Minimize Window">x</button>
+            </div>
+            <div class="win-body p-5 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+                <h3 class="font-display text-lg font-bold text-[#e8f3ec]">TOOL SKILLS</h3>
+                <button onclick="addNewToolModal()" class="btn-launch text-xs py-1 px-2.5">+ ADD TOOL</button>
+              </div>
+              <div id="sheet-tools-container" class="flex flex-col gap-2.5"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE 3: TRADE FEATURES & FOCI -->
+      <div id="sheet-page-trade" class="sheet-page-view hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <div class="os-window card-print" id="win-sheet-trade">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://trade_features</span>
+            <button class="win-close-btn" data-minimize="win-sheet-trade" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">TRADE FEATURES</h3>
+              <button onclick="addTradeFeatureModal()" class="btn-info text-xs py-1 px-2.5">+ ADD FEATURE</button>
+            </div>
+            <div id="sheet-trade-features-container" class="flex flex-col gap-3"></div>
+          </div>
+        </div>
+
+        <div class="os-window card-print" id="win-sheet-foci">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://combat_foci</span>
+            <button class="win-close-btn" data-minimize="win-sheet-foci" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">FOCI</h3>
+              <button onclick="addFocusModal()" class="btn-info text-xs py-1 px-2.5">+ ADD FOCUS</button>
+            </div>
+            <div id="sheet-foci-container" class="flex flex-col gap-3"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE 4: SPECIES & BACKGROUND -->
+      <div id="sheet-page-species" class="sheet-page-view hidden os-window card-print" id="win-sheet-species">
+        <div class="win-titlebar">
+          <span class="win-title-text">module://species_profile_and_background</span>
+        </div>
+        <div class="win-body p-6 flex flex-col gap-5">
+          <div class="flex items-center justify-between border-b border-[#3d6147] pb-3">
+            <div>
+              <h3 class="font-display text-xl font-bold text-[#e8f3ec]">
+                SPECIES PROFILE: <span id="sheet-species-name" class="text-[#8de500]">Elf</span>
+              </h3>
+              <p class="text-xs text-[#8fb89d]">HABITAT: <strong id="sheet-species-habitat-val" class="text-[#8de500]">Terrestrial</strong></p>
+            </div>
+          </div>
+
+          <div class="net-subcard p-4">
+            <span class="text-xs font-mono uppercase text-[#8fb89d] block mb-1">PHYSIOLOGICAL DESCRIPTION &amp; LORE</span>
+            <p id="sheet-species-desc-val" class="text-sm text-[#e8f3ec] leading-relaxed"></p>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <span class="text-xs font-mono uppercase text-[#8fb89d]">SPECIES ATTRIBUTES</span>
+            <div id="sheet-species-attributes-container" class="flex flex-col gap-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 5: INVENTORY & GOALS -->
+      <div id="sheet-page-inventory" class="sheet-page-view hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Inventory & Wealth -->
+        <div class="os-window card-print" id="win-sheet-inv">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://inventory_and_currency</span>
+            <button class="win-close-btn" data-minimize="win-sheet-inv" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">INVENTORY &amp; CURRENCY</h3>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 net-subcard p-3 text-center">
+              <div><span class="text-[10px] font-mono text-[#8fb89d]">SILVER</span><div id="sheet-money-silver" class="font-bold text-[#e8f3ec]">0</div></div>
+              <div><span class="text-[10px] font-mono text-[#8de500]">GOLD</span><div id="sheet-money-gold" class="font-bold text-[#8de500]">0</div></div>
+              <div><span class="text-[10px] font-mono text-[#8fb89d]">PLATINUM</span><div id="sheet-money-plat" class="font-bold text-[#e8f3ec]">0</div></div>
+              <div><span class="text-[10px] font-mono text-[#8de500]">ARC DUST</span><div id="sheet-money-dust" class="font-bold text-[#8de500]">0</div></div>
+            </div>
+
+            <div class="net-subcard p-4 flex flex-col gap-2">
+              <span class="text-xs font-mono uppercase text-[#8fb89d]">POSSESSIONS &amp; EQUIPMENT</span>
+              <div id="sheet-inventory-list" class="text-sm font-mono text-[#e8f3ec] whitespace-pre-wrap leading-relaxed"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Goals -->
+        <div class="os-window card-print" id="win-sheet-goals">
+          <div class="win-titlebar">
+            <span class="win-title-text">module://campaign_goals</span>
+            <button class="win-close-btn" data-minimize="win-sheet-goals" title="Minimize Window">x</button>
+          </div>
+          <div class="win-body p-5 flex flex-col gap-4">
+            <div class="border-b border-[#3d6147] pb-2">
+              <h3 class="font-display text-lg font-bold text-[#e8f3ec]">CAMPAIGN GOALS</h3>
+            </div>
+
+            <div class="net-subcard p-4 flex flex-col gap-2">
+              <span class="text-xs font-mono uppercase text-[#8de500]">PERSONAL GOALS</span>
+              <div id="sheet-goals-personal" class="text-sm text-[#e8f3ec] whitespace-pre-wrap leading-relaxed"></div>
+            </div>
+
+            <div class="net-subcard p-4 flex flex-col gap-2">
+              <span class="text-xs font-mono uppercase text-[#8fb89d]">GROUP GOALS</span>
+              <div id="sheet-goals-group" class="text-sm text-[#e8f3ec] whitespace-pre-wrap leading-relaxed"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VIEW MODE 3: JSON INSPECTOR & EDITOR -->
+    <!-- ========================================================================= -->
+    <div id="view-json" class="hidden flex flex-col gap-4">
+      <div class="os-window" id="win-json-inspector">
+        <div class="win-titlebar">
+          <span class="win-title-text">system://raw_fari_v6_json_inspector</span>
+          <button class="win-close-btn" data-minimize="win-json-inspector" title="Minimize Window">x</button>
+        </div>
+        <div class="win-body p-5 flex flex-col gap-4">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#3d6147] pb-3">
+            <div>
+              <h2 class="font-display text-lg font-bold text-[#e8f3ec]">RAW FARI V6 JSON DATA INSPECTOR</h2>
+              <p class="text-xs text-[#8fb89d]">Live bidirectional synchronization with the Magepunk builder &amp; character sheet.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="copyJSONToClipboard()" class="btn-info text-xs">
+                [COPY TO CLIPBOARD]
+              </button>
+              <button onclick="applyJSONEditorChanges()" class="btn-launch text-xs">
+                APPLY JSON CHANGES
+              </button>
+            </div>
+          </div>
+
+          <textarea id="json-raw-editor" rows="22" class="w-full net-input font-mono text-xs text-[#8de500] leading-relaxed"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         FOOTER DOCK (XANANTH // NET-DECK STYLE)
+         ========================================================================= -->
+    <footer class="no-print mt-4 pt-3 border-t border-[#3d6147]/50 flex flex-col items-center gap-3">
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="switchAppMode('builder')" class="retro-badge">Builder Matrix</button>
+        <button onclick="switchAppMode('sheet')" class="retro-badge">Interactive Sheet</button>
+        <button onclick="openSpellLibraryModal()" class="retro-badge">Spell Grimoire</button>
+        <button onclick="toggleDiceDrawer()" class="retro-badge">Step-Dice Roller</button>
+      </div>
+      <div class="text-xs text-[#8fb89d] text-center pb-2">
+        ESC to restore minimized windows / close modals &nbsp;|&nbsp; Fari v6 Schema Compatible
+      </div>
+    </footer>
+
+  </main>
+
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING MAGEPUNK DICE ROLLER DRAWER (OS WINDOW) -->
+  <!-- ========================================================================= -->
+  <div id="dice-drawer" class="no-print fixed bottom-4 right-4 z-50 w-80 sm:w-96 os-window kb-focused transform transition-all duration-300 translate-y-0">
+    <div class="win-titlebar">
+      <span class="win-title-text">util://step_dice_roller.exe</span>
+      <div class="flex items-center gap-1">
+        <button onclick="toggleDiceSound()" id="dice-sound-toggle" class="win-close-btn" title="Toggle Dice Audio">🔊</button>
+        <button onclick="toggleDiceDrawer()" class="win-close-btn" title="Hide Roller">x</button>
+      </div>
+    </div>
+    <div class="win-body p-4 flex flex-col gap-3.5">
+      <!-- Active Roll Display -->
+      <div id="dice-display-box" class="net-subcard p-3 flex flex-col items-center justify-center min-h-[90px] relative overflow-hidden">
+        <div id="dice-roll-label" class="text-[11px] font-mono text-[#8fb89d] uppercase tracking-widest">READY TO ROLL</div>
+        <div id="dice-roll-result" class="font-display font-bold text-4xl text-[#8de500] lime-glow my-1">-</div>
+        <div id="dice-roll-breakdown" class="text-xs font-mono text-[#e8f3ec]">Click any trait, reaction, or weapon to roll</div>
+      </div>
+
+      <!-- Upsize / Downsize Magepunk Modifier Toolbar -->
+      <div class="flex items-center justify-between gap-1.5 net-subcard p-1.5">
+        <span class="text-[10px] font-mono uppercase text-[#8fb89d] ml-1">STEP MOD:</span>
+        <div class="flex items-center gap-1">
+          <button onclick="adjustUpsize(-1)" id="btn-downsize" class="btn-info text-[11px] py-0.5 px-2" title="Step down die (e.g. d10 -> d8)">
+            ▼ DOWNSIZE
+          </button>
+          <span id="upsize-step-indicator" class="text-xs font-mono font-bold px-1.5 text-[#8de500]">Normal</span>
+          <button onclick="adjustUpsize(1)" id="btn-upsize" class="btn-launch text-[11px] py-0.5 px-2" title="Step up die (e.g. d10 -> d12 -> d20)">
+            ▲ UPSIZE
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Dice Tray -->
+      <div class="grid grid-cols-6 gap-1">
+        <button onclick="rollCustomDice('1d4')" class="btn-info py-1.5 px-1 text-xs font-bold">d4</button>
+        <button onclick="rollCustomDice('1d6')" class="btn-info py-1.5 px-1 text-xs font-bold">d6</button>
+        <button onclick="rollCustomDice('1d8')" class="btn-info py-1.5 px-1 text-xs font-bold">d8</button>
+        <button onclick="rollCustomDice('1d10')" class="btn-info py-1.5 px-1 text-xs font-bold">d10</button>
+        <button onclick="rollCustomDice('1d12')" class="btn-info py-1.5 px-1 text-xs font-bold">d12</button>
+        <button onclick="rollCustomDice('1d20')" class="btn-launch py-1.5 px-1 text-xs font-bold">d20</button>
+      </div>
+
+      <!-- Roll History Log -->
+      <div class="border-t border-[#3d6147] pt-2 flex flex-col gap-1 max-h-24 overflow-y-auto" id="dice-history-log">
+        <div class="text-[10px] font-mono text-[#8fb89d] text-center">Roll history will appear here</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODALS (OS WINDOW STYLE) -->
+  <!-- ========================================================================= -->
+
+  <!-- IMPORT JSON MODAL -->
+  <div id="modal-import" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="os-window kb-focused max-w-xl w-full">
+      <div class="win-titlebar">
+        <span class="win-title-text">sys://import_character_json</span>
+        <button onclick="closeImportModal()" class="win-close-btn">x</button>
+      </div>
+      <div class="win-body p-6 flex flex-col gap-4">
+        <div id="drop-zone" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-[#3d6147] hover:border-[#8de500] p-8 flex flex-col items-center justify-center gap-2 cursor-pointer bg-[#060b08] transition">
+          <div class="font-pixel text-[#8de500] text-sm">[ UPLOAD FARI .JSON ]</div>
+          <p class="text-xs text-[#e8f3ec]">Click or Drag &amp; Drop Fari Character JSON</p>
+          <p class="text-[11px] text-[#8fb89d]">Supports .json files matching the Magepunk character template</p>
+          <input type="file" id="file-input" accept=".json" onchange="handleFileSelect(event)" class="hidden">
+        </div>
+
+        <div class="flex items-center justify-between">
+          <button onclick="loadSampleDefault()" class="text-xs text-[#8de500] hover:underline">
+            [Reset to default "Artist Sample" character]
+          </button>
+          <button onclick="closeImportModal()" class="btn-info text-xs">
+            CANCEL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPELL LIBRARY BROWSER MODAL -->
+  <div id="modal-spell-library" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="os-window kb-focused max-w-3xl w-full max-h-[85vh] flex flex-col">
+      <div class="win-titlebar">
+        <span class="win-title-text">db://magepunk_spell_grimoire</span>
+        <button onclick="closeSpellLibraryModal()" class="win-close-btn">x</button>
+      </div>
+      <div class="win-body p-6 flex flex-col gap-4 overflow-hidden">
+        <div class="border-b border-[#3d6147] pb-2">
+          <h3 class="font-display text-lg font-bold text-[#8de500]">MAGEPUNK SPELL LIBRARY</h3>
+          <p class="text-xs text-[#8fb89d]">Select any spell below to append it to your character's grimoire.</p>
+        </div>
+        <div id="spell-library-container" class="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-3.5 pr-1"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT LOGIC & ENGINE -->
+  <!-- ========================================================================= -->
+  <script>
+    const DICE_STEPS = ["1d4", "1d6", "1d8", "1d10", "1d12", "1d20"];
+    const STANDARD_ARRAY = ["1d4", "1d6", "1d8", "1d10", "1d12", "1d20"];
+
+    const DEFAULT_SAMPLE_JSON = {
+      "id": "5eafe968-f53e-4203-a849-1da10329fa35",
+      "lastUpdated": 1786371932,
+      "name": "Artist Sample",
+      "template": "Blank",
+      "version": 6,
+      "wide": true,
+      "group": "Steelspire Resistance",
+      "fariType": "character",
+      "pages": [
+        {
+          "id": "f1872657-a040-4ba7-8afe-148decae1d82",
+          "label": "Main",
+          "rows": [
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "a27fa41c-a2b7-4cdc-96d6-b2e788071322",
+                      "label": "Bio",
+                      "blocks": [
+                        { "id": "f5544422-e864-409b-b4a5-8278d6421144", "label": "Name:", "type": "Text", "value": "Vespera Vane", "meta": { "width": 0.5 } },
+                        { "id": "72432c22-0efc-452d-aaa5-e1341799cc45", "label": "Level:", "type": "Text", "value": "2", "meta": { "width": 0.5 } },
+                        { "id": "f02a5a6a-004c-4b1a-8258-8f5c0fbc2934", "label": "Species", "type": "Text", "value": "Elf", "meta": {} },
+                        { "id": "6a631aba-b84c-4b74-9d20-d7cfea1fa287", "label": "Trade:", "type": "Text", "value": "Artist", "meta": { "width": 0.5 } },
+                        { "id": "80acb275-1d47-4a3e-80b0-a60c7e07a9d2", "label": "Niche:", "type": "Text", "value": "Aether Calligrapher", "meta": { "width": 0.5 } }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "sections": [
+                    {
+                      "id": "d376935d-3532-461d-95a8-3bc3d975e94d",
+                      "label": "Status",
+                      "blocks": [
+                        { "id": "18817857-0c1f-474f-b3fc-c6a8352ef306", "label": "Threshold", "type": "PointCounter", "meta": { "isMainPointCounter": false, "width": 0.5 }, "value": "3" },
+                        { "id": "f34e3632-7b74-48c8-8b64-10564b982854", "label": "HP", "type": "PointCounter", "meta": { "max": "30", "isMainPointCounter": false, "width": 0.5 }, "value": "24" },
+                        { "id": "7e48a857-332a-4827-a49f-6dc115977d04", "label": "Mana Ceiling", "type": "PointCounter", "meta": { "isMainPointCounter": false, "width": 0.5 }, "value": "20" },
+                        { "id": "b0d8d15a-2890-4592-b7fe-818678489544", "label": "Mana", "type": "PointCounter", "meta": { "max": "46", "isMainPointCounter": false, "width": 0.5 }, "value": "38" },
+                        { "id": "87e9ddc5-fc3d-492c-93a8-cf09ab1a7977", "label": "Recovery Pool (d6)", "type": "PointCounter", "meta": { "max": "6", "isMainPointCounter": false }, "value": "6" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "9f8d79d6-41b6-430f-acfd-0fa8796e3cbd",
+                      "label": "Traits",
+                      "blocks": [
+                        { "id": "a53cd17f-fc74-495b-9e23-4d1aafd6d441", "label": "Strength", "type": "DicePool", "value": "", "meta": { "commands": ["1d4"], "width": 0.33 } },
+                        { "id": "3fc8b87a-f6bc-4b6a-9854-1617ddec8fec", "label": "Finesse", "type": "DicePool", "value": "", "meta": { "commands": ["1d10"], "width": 0.33 } },
+                        { "id": "69ca7a7d-6d11-4d3c-9901-cc7491062ef8", "label": "Toughness", "type": "DicePool", "value": "", "meta": { "commands": ["1d12"], "width": 0.33 } },
+                        { "id": "a07b8b13-2bce-4950-b363-b1e95ccfa6ff", "label": "Will", "type": "DicePool", "value": "", "meta": { "commands": ["1d8"], "width": 0.33 } },
+                        { "id": "1f9873d3-1287-41b5-aad7-f1440374c0ba", "label": "Curiosity", "type": "DicePool", "value": "", "meta": { "commands": ["1d6"], "width": 0.33 } },
+                        { "id": "101cbd89-f9c6-400a-8d10-1cbed174370f", "label": "Charm", "type": "DicePool", "value": "", "meta": { "commands": ["1d20"], "width": 0.33 } }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "sections": [
+                    {
+                      "id": "25c7a5eb-029d-4809-ac55-d213b1131284",
+                      "label": "Skills",
+                      "blocks": [
+                        { "id": "9a925694-47cc-461d-bc1d-2847baacc797", "label": "Power", "type": "Numeric", "value": "0", "meta": { "width": 0.5 } },
+                        { "id": "542110dd-2833-4204-a834-1e93e51250a2", "label": "Speed", "type": "Numeric", "value": "0", "meta": { "width": 0.5 } },
+                        { "id": "11ab9e84-8909-465b-ae16-ca202b5d3c96", "label": "Forethought", "type": "Numeric", "value": "1", "meta": { "width": 0.5 } },
+                        { "id": "bd6ebef0-fc67-4b61-8779-670573c848bb", "label": "Panache", "type": "Numeric", "value": "3", "meta": { "width": 0.5 } },
+                        { "id": "d0bc0534-ca7f-43e9-bca5-0b4e0c9ec1fa", "label": "Instinct", "type": "Numeric", "value": "1", "meta": { "width": 0.33 } },
+                        { "id": "4eff337b-b762-4fda-a355-4af5546b42d0", "label": "Grace", "type": "Numeric", "value": "3", "meta": { "width": 0.33 } },
+                        { "id": "6ef629fd-0b84-4898-b14f-adae23335cf0", "label": "Guile", "type": "Numeric", "value": "2", "meta": { "width": 0.33 } }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "43a7c6f3-fd05-4343-862e-644606ab8a72",
+                      "label": "Reactions",
+                      "blocks": [
+                        { "id": "ace5363f-8538-4a69-86af-508fec8d31d7", "label": "Initiative", "type": "Skill", "value": "1", "meta": { "commands": ["1d10"], "helperText": "finesse + instinct" } },
+                        { "id": "d31892f5-0878-432b-a06a-78c7fb795b49", "label": "Guard", "type": "Skill", "value": "0", "meta": { "commands": ["1d12"], "width": 0.5, "helperText": "toughness + power" } },
+                        { "id": "48c085e8-ec80-4ec8-a58d-62d1081881d0", "label": "Dive", "type": "Skill", "value": "0", "meta": { "commands": ["1d10"], "width": 0.5, "helperText": "finesse + speed" } }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "sections": [
+                    {
+                      "id": "8dfc9037-5538-4750-bcf8-6fd8161ee1ae",
+                      "label": "Pace (m)",
+                      "blocks": [
+                        { "id": "78f2e88c-ebdf-430a-979c-4be633e86a23", "label": "Land", "type": "Numeric", "value": "12", "meta": { "width": 0.33 } },
+                        { "id": "444bf6a3-e4ea-44e2-a30c-10b29635be32", "label": "Swim", "type": "Numeric", "value": "8", "meta": { "width": 0.33 } },
+                        { "id": "cdd59a7f-18e2-48f6-bc3d-0455046fab80", "label": "Fly", "type": "Numeric", "value": "0", "meta": { "width": 0.33 } }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "aee5e97a-4dcb-4fde-88b8-c6118392cac6",
+                      "label": "Tracks",
+                      "blocks": [
+                        {
+                          "id": "3046750f-4990-4c1f-ab47-90be873c82af",
+                          "label": "Fatigue",
+                          "type": "SlotTracker",
+                          "meta": {},
+                          "value": [
+                            { "label": "1", "checked": false },
+                            { "label": "2", "checked": false },
+                            { "label": "3", "checked": false },
+                            { "label": "4", "checked": false },
+                            { "label": "5", "checked": false },
+                            { "label": "6", "checked": false },
+                            { "label": "7", "checked": false }
+                          ]
+                        },
+                        {
+                          "id": "b078c8fe-3fee-43c6-bbee-cb6b8631d415",
+                          "label": "Demise",
+                          "type": "SlotTracker",
+                          "meta": { "asClock": false },
+                          "value": [
+                            { "label": "1", "checked": false },
+                            { "label": "d4", "checked": false },
+                            { "label": "d6", "checked": false },
+                            { "label": "d8", "checked": false },
+                            { "label": "d10", "checked": false },
+                            { "label": "d12", "checked": false },
+                            { "label": "d20", "checked": false }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5594207a-0864-4d75-8f05-0b804e2d64dd",
+          "label": "Spells, Weapons & Tools",
+          "rows": [
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "64923b13-f2f4-42a8-b95d-83bf65059b6e",
+                      "label": "Spells",
+                      "blocks": [
+                        {
+                          "id": "eaa98eae-3b26-496e-a884-278573724a45",
+                          "label": "Diplomatic Speech",
+                          "type": "Text",
+                          "value": "Cost: 1 Mana\nTarget: Self\nDuration: 1 Hour\n\nDraw a glyph in the air before yourself. Until this spell ends you are able to understand all spoken language you can hear as if it were spoken in your native tongue and others who hear you speak will hear your speech in their native tongue. Additionally the glyph will remain suspended in front of you, visible only to you, forming written words in a language you know, translating any written text you run your finger over.",
+                          "meta": {}
+                        },
+                        {
+                          "id": "19089272-a4d9-4431-9b2b-47dfea35ce37",
+                          "label": "Dispell",
+                          "type": "Text",
+                          "value": "Cost: 5 + X Mana\nRange: Touch\nTarget: 1 Creature or Object\nDuration: Instant\n\nYou lay your hands upon an enchanted object or creature and channel your focus to deconstruct the spell effecting it. Declare a value for X. If X is greater than the mana cost of the spell affecting the creature or object you end the effects of that spell. If X is lower than the mana cost of the spell, roll 1d20 + X against double the target spell's mana cost. On a success end the spell.",
+                          "meta": {}
+                        },
+                        {
+                          "id": "0d8d784d-6a77-4eeb-a3c8-d38d43d90362",
+                          "label": "Inspired Strike",
+                          "type": "Text",
+                          "value": "Cost: 5 Mana\nRange: 24m\nTarget: 1 Creature\nDuration: Instant\nMaterial Cost: Paint, Ink or other Medium Infused with 1 Arc of Dust\n\nThe paint, ink or other medium, gathers in a suspended droplet before you for a moment before darting above your target to form a cloud. Make an accuracy check with panache (1d20 + 3) against your target. On a successful hit the target takes 4d6 lightning damage as a lightning bolt, coloured the hues of it's creator's thoughts, strikes the target.",
+                          "meta": {}
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "sections": [
+                    {
+                      "id": "8735345d-4046-4c70-9490-fdfe99a8213e",
+                      "label": "Weapons",
+                      "blocks": [
+                        { "id": "8c3cac5a-5689-4d69-b113-cf3a0debd277", "label": "Staff", "type": "Text", "value": "Range: 2m Qualities: Simple", "meta": {} },
+                        { "id": "601f0135-971e-4ca9-9c33-678119aa18e3", "label": "Accuracy", "type": "Skill", "value": "3", "meta": { "commands": ["1d12"], "width": 0.5 } },
+                        { "id": "c05bc2a2-8da3-44c6-8c7f-96708f53ddd1", "label": "Damage", "type": "Skill", "value": "3", "meta": { "commands": ["1d12"], "width": 0.5 } }
+                      ]
+                    },
+                    {
+                      "id": "a08babce-7b28-4a8b-b938-d7afb6c7a16b",
+                      "label": "Tool Skills",
+                      "blocks": [
+                        { "id": "b66edaa5-9df1-460c-9376-5e03258a702e", "label": "Tool name", "type": "Text", "value": "Calligraphy Supplies", "meta": { "width": 0.5 } },
+                        { "id": "76659822-9755-4933-bd9d-281b6a4777f5", "label": "Adept", "type": "Numeric", "value": "0", "meta": { "width": 0.5 } }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "sections": [
+                    {
+                      "id": "3c0da25e-1ef6-43d1-a9ef-b06f69eaa8b8",
+                      "label": "",
+                      "blocks": [
+                        { "id": "6aa94cab-bccc-4c78-b6d3-859fae6becba", "label": "Bow", "type": "Text", "value": "Range: 30m Qualities: Ranged, Simple", "meta": {} },
+                        { "id": "7ddcd861-e89a-47ad-85ed-44e6dfdb19f7", "label": "Accuracy", "type": "Skill", "value": "0", "meta": { "commands": ["1d10"], "width": 0.5 } },
+                        { "id": "20e4094b-ac73-4cf5-b5a2-5a72e68df165", "label": "Damage", "type": "Skill", "value": "0", "meta": { "commands": ["1d6", "1d6"], "width": 0.5 } }
+                      ]
+                    },
+                    {
+                      "id": "b9d55429-c3ba-4296-81c3-e37b1ac755d0",
+                      "label": "",
+                      "blocks": [
+                        { "id": "2174feb3-765c-4636-8af5-327c00c82b39", "label": "Tool name", "type": "Text", "value": "Tattoo Kit", "meta": { "width": 0.5 } },
+                        { "id": "6fe40efe-df7a-4f77-b731-c733b22b5557", "label": "Adept", "type": "Numeric", "value": "0", "meta": { "width": 0.5 } }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "e8639ae1-31fa-44b6-b627-fe458b63b02f",
+          "label": "Trade Features & Foci",
+          "rows": [
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "c66dacfc-c2cc-45dc-8a2e-9caac8b0b30a",
+                      "label": "Trade Features",
+                      "blocks": [
+                        {
+                          "id": "850dbe2f-d29b-4cb6-a353-4f5775926bb5",
+                          "label": "Tasteful Magic",
+                          "type": "Text",
+                          "value": "Artists have access to spells from the artistry list and learn 2 spells at level 1. They can change one of these learnt spells when levelling up. Artists use the charm trait for their casting related rolls.",
+                          "meta": { "helperText": "" }
+                        },
+                        {
+                          "id": "c56ec0cc-e21f-4bfb-905d-e69c668f349d",
+                          "label": "Misdirection",
+                          "type": "Text",
+                          "value": "Your natural ability to pull focus and make yourself the centre of attention allows you to be a wonderful distraction. As an action, you may dance, sing or otherwise perform to draw the attention of a combatant away from one of your allies. Make a d20 + 3 roll against the combatant's will + instinct. On a success, that combatant is distracted by your performance and all allies roll against that combatant upsized until the start of your next turn.",
+                          "meta": {}
+                        },
+                        {
+                          "id": "47b49722-3632-47f7-a943-d7f2cc4ed2b1",
+                          "label": "Beautiful Form",
+                          "type": "Text",
+                          "value": "There is an air of artistry about yourself, down to your very movements. Whenever you make a roll that calls for panache, grace or guile, you may roll a d12 instead of the dice you would usually roll.",
+                          "meta": {}
+                        }
+                      ]
+                    },
+                    {
+                      "id": "458fafef-117a-4cab-bf12-6357c87cca07",
+                      "label": "Foci",
+                      "blocks": [
+                        { "id": "236f9c19-be6c-4cf0-b220-0cbe2960d244", "label": "Defence", "type": "Text", "value": "You are positioned to defend yourself from any incoming attacks. You upsize your dice for any guard or dive roll made until your next turn", "meta": {} },
+                        { "id": "4c348790-0d94-4b64-a89d-b77d625c9750", "label": "Offence", "type": "Text", "value": "You are keenly aware of any opportunity to catch a foe unprepared. If a combatant attacks a combatant other than yourself while within your currently wielded melee weapons range or leaves your weapons range you may make a single weapon attack against that combatant.", "meta": {} },
+                        { "id": "bcffca4f-db75-420c-850a-707c0d738ad2", "label": "Details", "type": "Text", "value": "Your well trained eye can spot swells of magic moments before they coalesce as spells. You gain the focus option \"details\". When you declare details as your focus for a turn, anytime a combatant casts a spell you can shout or otherwise communicate a warning, if able to communicate in some way, to that spell's target. Any target's of the spell warned by you, including yourself, can upsize any roll made to resist the effects of the spell, or upsize their dive or guard roll against the spell.", "meta": {} }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "98c7904d-9260-48a8-b39e-e82553b91eaf",
+          "label": "Species & Background",
+          "rows": [
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "7e9a683b-7087-4a7a-ab62-194c90e853b1",
+                      "label": "Species",
+                      "blocks": [
+                        { "id": "8e38cd8f-34a7-42fb-a660-979302022f57", "label": "Description", "type": "Text", "value": "Elves are typically between 1.5 and 2.5 metres tall, weighing between 50 and 150kg. Like humans, they have two hands with opposable thumbs making them good tool and weapon users as well as being excellent climbers. Their lives are long leading some to hoard knowledge and value secrecy, while others cannot remain in the present moment thinking about far off futures.", "meta": {} },
+                        { "id": "18a13dfa-cecf-468c-8afe-d966d7a840d8", "label": "Habitat", "type": "Text", "value": "Terrestrial", "meta": {} },
+                        { "id": "8b01f13b-686a-4578-9253-1ff8dc94a9b1", "label": "Attributes", "type": "Text", "value": "Treetop Natives (1 point)\nYour species has built homes among the canopies of large trees and live comfortably among the foliage.\n- You can climb trees and other natural surfaces such as stone at your normal land pace\n- You upsize your dice on any finesse check made to maintain balance on a high surface, leap between two surfaces, or stop yourself midfall\n\nEnduring (1 point)\nYour species has a vastly extended lifespan and looks into the far future to consider the implications of their actions well down the line.\n- You add your forethought twice to any forethought roll aside from damage rolls.\n\nToolworker (2 points)\nYour species developed complex tools to supplement their abilities.\n- You are adept with two tools from the tool list or expert with one;\n- Additionally you upsize your dice for any tool check, you upsize an additional time if you are an expert with that tool\n\nGifted (1 points)\nYour species is in tune with the arcane waves.\n- You know a spell of your choice with mana cost of exactly 1. This spell is in addition to those granted by your trade.\n- Add 1d4 to your recovery pool\n\nAttractive (1 point)\nYour species has beguiling quality that others respect, revere, and/or admire.\n- When you make a charm + panache roll, you upsize your dice and may treat your looks as a tool with which you are an expert.", "meta": {} }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fab8e62d-8ab0-4af3-aa91-46346083495b",
+          "label": "Inventory & Goals",
+          "rows": [
+            {
+              "columns": [
+                {
+                  "sections": [
+                    {
+                      "id": "72e70f6e-e0a1-4efd-a86b-917c202f978d",
+                      "label": "Inventory",
+                      "blocks": [
+                        { "id": "0f4c17ae-47df-44b7-9865-0ab4f8f6ab8d", "label": "Info Text", "type": "InfoText", "value": "Leather armour<br>Staff<br>Bow<br>Tattoo ink infused with arc (3)<br>Calligraphy supplies<br>Tattoo gun + ink<br><br>", "meta": {} }
+                      ]
+                    },
+                    {
+                      "id": "8c9f1180-9da4-4a8d-8e84-39276f41a986",
+                      "label": "Money",
+                      "blocks": [
+                        { "id": "64d17a40-16cd-41ae-b274-b6ab0b866251", "label": "Silver", "type": "Numeric", "value": "150", "meta": { "width": 0.5 } },
+                        { "id": "3d093acc-f2f7-4f6e-b946-0f0e7f61a8ab", "label": "Gold", "type": "Numeric", "value": "45", "meta": { "width": 0.5 } },
+                        { "id": "a4602ff7-b8e3-405e-811a-b1d8ebf8a833", "label": "Platinum", "type": "Numeric", "value": "2", "meta": { "width": 0.5 } },
+                        { "id": "4b9b46d4-288a-4abc-b1a2-32845ea87844", "label": "Arc Dust", "type": "Numeric", "value": "12", "meta": { "width": 0.5 } }
+                      ]
+                    },
+                    {
+                      "id": "d98fc880-327a-4654-a851-0008fcfb0458",
+                      "label": "Goals",
+                      "blocks": [
+                        { "id": "a2f74530-1929-4331-8736-abffede29300", "label": "Personal", "type": "Text", "value": "Complete a great work of art.\nInspire an ally.", "meta": {} },
+                        { "id": "f5231680-bc44-4acb-bde1-34d0031df8b8", "label": "Group", "type": "Text", "value": "Strike a blow to one of the syndicates levers of power.\nStop syndicate plans to expand their levers of power.\nUncover all the syndicates levers of power.\nMake a positive meaningful impact to the community.", "meta": {} }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const SPELL_LIBRARY_DATA = [
+      {
+        label: "Diplomatic Speech",
+        cost: "1 Mana",
+        target: "Self",
+        duration: "1 Hour",
+        material: "None",
+        description: "Draw a glyph in the air before yourself. Until this spell ends you are able to understand all spoken language you can hear as if it were spoken in your native tongue and others who hear you speak will hear your speech in their native tongue. Additionally the glyph will remain suspended in front of you, translating written text."
+      },
+      {
+        label: "Dispell",
+        cost: "5 + X Mana",
+        target: "1 Creature or Object",
+        duration: "Instant",
+        material: "None",
+        description: "You lay your hands upon an enchanted object or creature and channel your focus to deconstruct the spell effecting it. Declare a value for X. If X is greater than the mana cost, end the effect. If lower, roll 1d20 + X vs double target mana cost."
+      },
+      {
+        label: "Inspired Strike",
+        cost: "5 Mana",
+        target: "1 Creature (24m)",
+        duration: "Instant",
+        material: "Medium infused with 1 Arc Dust",
+        description: "The ink or paint darts above target forming a cloud. Make accuracy check with panache (1d20 + Panache). On hit, target takes 4d6 lightning damage as a prismatic bolt strikes."
+      },
+      {
+        label: "Aether Aegis",
+        cost: "3 Mana",
+        target: "Self or Ally within 10m",
+        duration: "1 Round",
+        material: "None",
+        description: "Summon a shimmering crystalline barrier of hardened mana. The target upsize their Guard dice twice against the next incoming attack, absorbing up to 15 damage."
+      },
+      {
+        label: "Kinetic Pulse",
+        cost: "2 Mana",
+        target: "Cone (6m)",
+        duration: "Instant",
+        material: "None",
+        description: "Release a shockwave of concussive force. Targets in the area must make a Guard check or take 2d8 force damage and be pushed back 4 meters."
+      },
+      {
+        label: "Shadow Weave",
+        cost: "4 Mana",
+        target: "Self",
+        duration: "10 Minutes",
+        material: "1 Arc Dust",
+        description: "Bend light and ambient ether around your form. You become invisible in dim light or darkness and upsize all Guile rolls."
+      }
+    ];
+
+    let character = null;
+    let currentMode = "builder";
+    let currentWizardStep = 1;
+    let currentSheetTab = "main";
+    let diceAudioEnabled = true;
+    let upsizeModifier = 0;
+    let rollHistory = [];
+
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    // =========================================================================
+    // XANANTH // NET-DECK SYSTEM CONTROLS (CRT FX, CLOCK, MINIMIZE)
+    // =========================================================================
+
+    function initSystemChrome() {
+      const crtToggle = document.getElementById('crtToggle');
+      const crtLabel = document.getElementById('crtLabel');
+
+      function toggleCrt() {
+        const enabled = document.body.classList.toggle('crt-enabled');
+        if (crtToggle) crtToggle.setAttribute('aria-checked', String(enabled));
+        if (crtLabel) crtLabel.textContent = enabled ? '[CRT: ON]' : '[CRT: OFF]';
+      }
+
+      if (crtToggle) {
+        crtToggle.addEventListener('click', toggleCrt);
+        crtToggle.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleCrt();
+          }
+        });
+      }
+
+      function updateClock() {
+        const el = document.getElementById('clockReadout');
+        if (!el) return;
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-AU', {
+          timeZone: 'Australia/Brisbane',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        });
+        el.textContent = `AEST ${timeStr}`;
+      }
+      updateClock();
+      setInterval(updateClock, 15000);
+
+      document.querySelectorAll('[data-minimize]').forEach(btn => {
+        btn.onclick = () => {
+          const target = document.getElementById(btn.dataset.minimize);
+          if (target) target.classList.toggle('minimized');
+        };
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.os-window.minimized').forEach(w => w.classList.remove('minimized'));
+          closeImportModal();
+          closeSpellLibraryModal();
+        }
+      });
+    }
+
+    // =========================================================================
+    // PARSER & MODEL CONVERTER (Fari JSON <-> Character State)
+    // =========================================================================
+
+    function parseFariJSON(json) {
+      const state = {
+        raw: json,
+        id: json.id || uuidv4(),
+        name: json.name || "Unnamed Magepunk",
+        group: json.group || "Resistance",
+        template: json.template || "Blank",
+        version: json.version || 6,
+        wide: json.wide !== undefined ? json.wide : true,
+        level: 1,
+        species: "Elf",
+        speciesDescription: "",
+        habitat: "Terrestrial",
+        speciesAttributesText: "",
+        trade: "Artist",
+        niche: "",
+        status: {
+          threshold: 3,
+          hp: 20,
+          hpMax: 20,
+          manaCeiling: 20,
+          mana: 20,
+          manaMax: 20,
+          recoveryPool: 6
+        },
+        traits: {
+          strength: "1d4",
+          finesse: "1d10",
+          toughness: "1d12",
+          will: "1d8",
+          curiosity: "1d6",
+          charm: "1d20"
+        },
+        skills: {
+          power: 0,
+          speed: 0,
+          forethought: 1,
+          panache: 3,
+          instinct: 1,
+          grace: 3,
+          guile: 2
+        },
+        pace: {
+          land: 12,
+          swim: 8,
+          fly: 0
+        },
+        fatigue: [false, false, false, false, false, false, false],
+        demise: [
+          { label: "1", checked: false },
+          { label: "d4", checked: false },
+          { label: "d6", checked: false },
+          { label: "d8", checked: false },
+          { label: "d10", checked: false },
+          { label: "d12", checked: false },
+          { label: "d20", checked: false }
+        ],
+        spells: [],
+        weapons: [],
+        toolSkills: [],
+        tradeFeatures: [],
+        foci: [],
+        inventory: "",
+        money: { silver: 0, gold: 0, platinum: 0, arcDust: 0 },
+        goals: { personal: "", group: "" }
+      };
+
+      if (!json.pages || !Array.isArray(json.pages)) return state;
+
+      json.pages.forEach(page => {
+        (page.rows || []).forEach(row => {
+          (row.columns || []).forEach(col => {
+            (col.sections || []).forEach(sec => {
+              const secLabel = (sec.label || "").toLowerCase();
+              
+              (sec.blocks || []).forEach(b => {
+                const bLabel = (b.label || "").toLowerCase();
+                const bVal = b.value;
+                const bMeta = b.meta || {};
+
+                if (bLabel.includes("name")) {
+                  state.name = bVal && bVal !== "<br>" ? bVal : state.name;
+                } else if (bLabel.includes("level")) {
+                  state.level = parseInt(bVal) || 1;
+                } else if (bLabel.includes("species") && secLabel.includes("bio")) {
+                  state.species = bVal || "Elf";
+                } else if (bLabel.includes("trade")) {
+                  state.trade = bVal || "Artist";
+                } else if (bLabel.includes("niche")) {
+                  state.niche = bVal && bVal !== "<br>" ? bVal : "";
+                }
+                else if (bLabel === "threshold") {
+                  state.status.threshold = parseInt(bVal) || 3;
+                } else if (bLabel === "hp") {
+                  state.status.hp = parseInt(bVal) || 0;
+                  state.status.hpMax = parseInt(bMeta.max) || 30;
+                } else if (bLabel.includes("mana ceiling")) {
+                  state.status.manaCeiling = parseInt(bVal) || 20;
+                } else if (bLabel === "mana") {
+                  state.status.mana = parseInt(bVal) || 0;
+                  state.status.manaMax = parseInt(bMeta.max) || 46;
+                } else if (bLabel.includes("recovery pool")) {
+                  state.status.recoveryPool = parseInt(bMeta.max) || parseInt(bVal) || 6;
+                }
+                else if (bLabel === "strength" && b.type === "DicePool") {
+                  state.traits.strength = (bMeta.commands && bMeta.commands[0]) || "1d4";
+                } else if (bLabel === "finesse" && b.type === "DicePool") {
+                  state.traits.finesse = (bMeta.commands && bMeta.commands[0]) || "1d10";
+                } else if (bLabel === "toughness" && b.type === "DicePool") {
+                  state.traits.toughness = (bMeta.commands && bMeta.commands[0]) || "1d12";
+                } else if (bLabel === "will" && b.type === "DicePool") {
+                  state.traits.will = (bMeta.commands && bMeta.commands[0]) || "1d8";
+                } else if (bLabel === "curiosity" && b.type === "DicePool") {
+                  state.traits.curiosity = (bMeta.commands && bMeta.commands[0]) || "1d6";
+                } else if (bLabel === "charm" && b.type === "DicePool") {
+                  state.traits.charm = (bMeta.commands && bMeta.commands[0]) || "1d20";
+                }
+                else if (bLabel === "power" && b.type === "Numeric") {
+                  state.skills.power = parseInt(bVal) || 0;
+                } else if (bLabel === "speed" && b.type === "Numeric") {
+                  state.skills.speed = parseInt(bVal) || 0;
+                } else if (bLabel === "forethought" && b.type === "Numeric") {
+                  state.skills.forethought = parseInt(bVal) || 0;
+                } else if (bLabel === "panache" && b.type === "Numeric") {
+                  state.skills.panache = parseInt(bVal) || 0;
+                } else if (bLabel === "instinct" && b.type === "Numeric") {
+                  state.skills.instinct = parseInt(bVal) || 0;
+                } else if (bLabel === "grace" && b.type === "Numeric") {
+                  state.skills.grace = parseInt(bVal) || 0;
+                } else if (bLabel === "guile" && b.type === "Numeric") {
+                  state.skills.guile = parseInt(bVal) || 0;
+                }
+                else if (bLabel === "land" && secLabel.includes("pace")) {
+                  state.pace.land = parseInt(bVal) || 12;
+                } else if (bLabel === "swim" && secLabel.includes("pace")) {
+                  state.pace.swim = parseInt(bVal) || 8;
+                } else if (bLabel === "fly" && secLabel.includes("pace")) {
+                  state.pace.fly = parseInt(bVal) || 0;
+                }
+                else if (bLabel === "fatigue" && b.type === "SlotTracker" && Array.isArray(bVal)) {
+                  state.fatigue = bVal.map(slot => slot.checked === true);
+                } else if (bLabel === "demise" && b.type === "SlotTracker" && Array.isArray(bVal)) {
+                  state.demise = bVal;
+                }
+                else if (secLabel.includes("spell") && b.type === "Text") {
+                  state.spells.push({
+                    id: b.id || uuidv4(),
+                    label: b.label || "Spell",
+                    text: bVal || ""
+                  });
+                }
+                else if (secLabel.includes("trade feature") && b.type === "Text") {
+                  state.tradeFeatures.push({
+                    id: b.id || uuidv4(),
+                    label: b.label || "Feature",
+                    text: bVal || ""
+                  });
+                }
+                else if (secLabel.includes("foci") && b.type === "Text") {
+                  state.foci.push({
+                    id: b.id || uuidv4(),
+                    label: b.label || "Focus",
+                    text: bVal || ""
+                  });
+                }
+                else if (secLabel.includes("species") && bLabel.includes("description")) {
+                  state.speciesDescription = bVal || "";
+                } else if (secLabel.includes("species") && bLabel.includes("habitat")) {
+                  state.habitat = bVal || "Terrestrial";
+                } else if (secLabel.includes("species") && bLabel.includes("attribute")) {
+                  state.speciesAttributesText = bVal || "";
+                }
+                else if (secLabel.includes("inventory") && (b.type === "InfoText" || b.type === "Text")) {
+                  state.inventory = (bVal || "").replace(/<br>/g, "\n");
+                } else if (bLabel === "silver") {
+                  state.money.silver = parseInt(bVal) || 0;
+                } else if (bLabel === "gold") {
+                  state.money.gold = parseInt(bVal) || 0;
+                } else if (bLabel === "platinum") {
+                  state.money.platinum = parseInt(bVal) || 0;
+                } else if (bLabel === "arc dust") {
+                  state.money.arcDust = parseInt(bVal) || 0;
+                } else if (secLabel.includes("goal") && bLabel.includes("personal")) {
+                  state.goals.personal = bVal || "";
+                } else if (secLabel.includes("goal") && bLabel.includes("group")) {
+                  state.goals.group = bVal || "";
+                }
+              });
+
+              if (secLabel.includes("weapon") || (sec.blocks && sec.blocks.some(b => b.label === "Accuracy" || b.label === "Damage"))) {
+                let wName = "Weapon";
+                let wQual = "";
+                let wAccDie = "1d10";
+                let wAccVal = "0";
+                let wDmgDie = ["1d6"];
+                let wDmgVal = "0";
+
+                sec.blocks.forEach(b => {
+                  if (b.type === "Text" && b.label !== "Accuracy" && b.label !== "Damage") {
+                    wName = b.label || "Weapon";
+                    wQual = b.value || "";
+                  } else if (b.label === "Accuracy") {
+                    wAccDie = (b.meta && b.meta.commands && b.meta.commands[0]) || "1d10";
+                    wAccVal = b.value || "0";
+                  } else if (b.label === "Damage") {
+                    wDmgDie = (b.meta && b.meta.commands) || ["1d6"];
+                    wDmgVal = b.value || "0";
+                  }
+                });
+
+                state.weapons.push({
+                  id: sec.id || uuidv4(),
+                  name: wName,
+                  qualities: wQual,
+                  accuracyDie: wAccDie,
+                  accuracyBonus: parseInt(wAccVal) || 0,
+                  damageDice: Array.isArray(wDmgDie) ? wDmgDie.join(" + ") : wDmgDie,
+                  damageBonus: parseInt(wDmgVal) || 0
+                });
+              }
+
+              if (secLabel.includes("tool") || (sec.blocks && sec.blocks.some(b => b.label === "Tool name"))) {
+                for (let i = 0; i < sec.blocks.length; i += 2) {
+                  const bName = sec.blocks[i];
+                  const bAdept = sec.blocks[i+1];
+                  if (bName && bName.value && bName.value.trim() !== "") {
+                    state.toolSkills.push({
+                      id: bName.id || uuidv4(),
+                      name: bName.value,
+                      adeptLevel: bAdept ? parseInt(bAdept.value) || 0 : 0
+                    });
+                  }
+                }
+              }
+
+            });
+          });
+        });
+      });
+
+      return state;
+    }
+
+    function buildFariJSON(state) {
+      return {
+        id: state.id || uuidv4(),
+        lastUpdated: Math.floor(Date.now() / 1000),
+        name: state.name || "Magepunk Character",
+        template: "Blank",
+        version: 6,
+        wide: true,
+        group: state.group || "Steelspire Resistance",
+        fariType: "character",
+        pages: [
+          {
+            id: uuidv4(),
+            label: "Main",
+            rows: [
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Bio",
+                        blocks: [
+                          { id: uuidv4(), label: "Name:", type: "Text", value: state.name, meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Level:", type: "Text", value: String(state.level), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Species", type: "Text", value: state.species, meta: {} },
+                          { id: uuidv4(), label: "Trade:", type: "Text", value: state.trade, meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Niche:", type: "Text", value: state.niche || "<br>", meta: { width: 0.5 } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Status",
+                        blocks: [
+                          { id: uuidv4(), label: "Threshold", type: "PointCounter", meta: { isMainPointCounter: false, width: 0.5 }, value: String(state.status.threshold) },
+                          { id: uuidv4(), label: "HP", type: "PointCounter", meta: { max: String(state.status.hpMax), isMainPointCounter: false, width: 0.5 }, value: String(state.status.hp) },
+                          { id: uuidv4(), label: "Mana Ceiling", type: "PointCounter", meta: { isMainPointCounter: false, width: 0.5 }, value: String(state.status.manaCeiling) },
+                          { id: uuidv4(), label: "Mana", type: "PointCounter", meta: { max: String(state.status.manaMax), isMainPointCounter: false, width: 0.5 }, value: String(state.status.mana) },
+                          { id: uuidv4(), label: "Recovery Pool (d6)", type: "PointCounter", meta: { max: String(state.status.recoveryPool), isMainPointCounter: false }, value: "0" }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Traits",
+                        blocks: [
+                          { id: uuidv4(), label: "Strength", type: "DicePool", value: "", meta: { commands: [state.traits.strength], width: 0.33 } },
+                          { id: uuidv4(), label: "Finesse", type: "DicePool", value: "", meta: { commands: [state.traits.finesse], width: 0.33 } },
+                          { id: uuidv4(), label: "Toughness", type: "DicePool", value: "", meta: { commands: [state.traits.toughness], width: 0.33 } },
+                          { id: uuidv4(), label: "Will", type: "DicePool", value: "", meta: { commands: [state.traits.will], width: 0.33 } },
+                          { id: uuidv4(), label: "Curiosity", type: "DicePool", value: "", meta: { commands: [state.traits.curiosity], width: 0.33 } },
+                          { id: uuidv4(), label: "Charm", type: "DicePool", value: "", meta: { commands: [state.traits.charm], width: 0.33 } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Skills",
+                        blocks: [
+                          { id: uuidv4(), label: "Power", type: "Numeric", value: String(state.skills.power), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Speed", type: "Numeric", value: String(state.skills.speed), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Forethought", type: "Numeric", value: String(state.skills.forethought), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Panache", type: "Numeric", value: String(state.skills.panache), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Instinct", type: "Numeric", value: String(state.skills.instinct), meta: { width: 0.33 } },
+                          { id: uuidv4(), label: "Grace", type: "Numeric", value: String(state.skills.grace), meta: { width: 0.33 } },
+                          { id: uuidv4(), label: "Guile", type: "Numeric", value: String(state.skills.guile), meta: { width: 0.33 } }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Reactions",
+                        blocks: [
+                          { id: uuidv4(), label: "Initiative", type: "Skill", value: String(state.skills.instinct), meta: { commands: [state.traits.finesse], helperText: "finesse + instinct" } },
+                          { id: uuidv4(), label: "Guard", type: "Skill", value: String(state.skills.power), meta: { commands: [state.traits.toughness], width: 0.5, helperText: "toughness + power" } },
+                          { id: uuidv4(), label: "Dive", type: "Skill", value: String(state.skills.speed), meta: { commands: [state.traits.finesse], width: 0.5, helperText: "finesse + speed" } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Pace (m)",
+                        blocks: [
+                          { id: uuidv4(), label: "Land", type: "Numeric", value: String(state.pace.land), meta: { width: 0.33 } },
+                          { id: uuidv4(), label: "Swim", type: "Numeric", value: String(state.pace.swim), meta: { width: 0.33 } },
+                          { id: uuidv4(), label: "Fly", type: "Numeric", value: String(state.pace.fly), meta: { width: 0.33 } }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Tracks",
+                        blocks: [
+                          {
+                            id: uuidv4(),
+                            label: "Fatigue",
+                            type: "SlotTracker",
+                            meta: {},
+                            value: state.fatigue.map((chk, i) => ({ label: String(i + 1), checked: chk }))
+                          },
+                          {
+                            id: uuidv4(),
+                            label: "Demise",
+                            type: "SlotTracker",
+                            meta: { asClock: false },
+                            value: state.demise
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: uuidv4(),
+            label: "Spells, Weapons & Tools",
+            rows: [
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Spells",
+                        blocks: state.spells.map(s => ({
+                          id: s.id || uuidv4(),
+                          label: s.label,
+                          type: "Text",
+                          value: s.text,
+                          meta: {}
+                        }))
+                      }
+                    ]
+                  },
+                  {
+                    sections: [
+                      ...(state.weapons.map(w => ({
+                        id: uuidv4(),
+                        label: "Weapons",
+                        blocks: [
+                          { id: uuidv4(), label: w.name, type: "Text", value: w.qualities || "Range: 2m Qualities: Simple", meta: {} },
+                          { id: uuidv4(), label: "Accuracy", type: "Skill", value: String(w.accuracyBonus), meta: { commands: [w.accuracyDie || "1d10"], width: 0.5 } },
+                          { id: uuidv4(), label: "Damage", type: "Skill", value: String(w.damageBonus), meta: { commands: (w.damageDice || "1d6").split("+").map(d => d.trim()), width: 0.5 } }
+                        ]
+                      }))),
+                      {
+                        id: uuidv4(),
+                        label: "Tool Skills",
+                        blocks: state.toolSkills.flatMap(t => [
+                          { id: uuidv4(), label: "Tool name", type: "Text", value: t.name, meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Adept", type: "Numeric", value: String(t.adeptLevel), meta: { width: 0.5 } }
+                        ])
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: uuidv4(),
+            label: "Trade Features & Foci",
+            rows: [
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Trade Features",
+                        blocks: state.tradeFeatures.map(f => ({
+                          id: f.id || uuidv4(),
+                          label: f.label,
+                          type: "Text",
+                          value: f.text,
+                          meta: {}
+                        }))
+                      },
+                      {
+                        id: uuidv4(),
+                        label: "Foci",
+                        blocks: state.foci.map(f => ({
+                          id: f.id || uuidv4(),
+                          label: f.label,
+                          type: "Text",
+                          value: f.text,
+                          meta: {}
+                        }))
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: uuidv4(),
+            label: "Species & Background",
+            rows: [
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Species",
+                        blocks: [
+                          { id: uuidv4(), label: "Description", type: "Text", value: state.speciesDescription || "", meta: {} },
+                          { id: uuidv4(), label: "Habitat", type: "Text", value: state.habitat || "Terrestrial", meta: {} },
+                          { id: uuidv4(), label: "Attributes", type: "Text", value: state.speciesAttributesText || "", meta: {} }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: uuidv4(),
+            label: "Inventory & Goals",
+            rows: [
+              {
+                columns: [
+                  {
+                    sections: [
+                      {
+                        id: uuidv4(),
+                        label: "Inventory",
+                        blocks: [
+                          { id: uuidv4(), label: "Info Text", type: "InfoText", value: (state.inventory || "").replace(/\n/g, "<br>"), meta: {} }
+                        ]
+                      },
+                      {
+                        id: uuidv4(),
+                        label: "Money",
+                        blocks: [
+                          { id: uuidv4(), label: "Silver", type: "Numeric", value: String(state.money.silver || ""), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Gold", type: "Numeric", value: String(state.money.gold || ""), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Platinum", type: "Numeric", value: String(state.money.platinum || ""), meta: { width: 0.5 } },
+                          { id: uuidv4(), label: "Arc Dust", type: "Numeric", value: String(state.money.arcDust || ""), meta: { width: 0.5 } }
+                        ]
+                      },
+                      {
+                        id: uuidv4(),
+                        label: "Goals",
+                        blocks: [
+                          { id: uuidv4(), label: "Personal", type: "Text", value: state.goals.personal || "", meta: {} },
+                          { id: uuidv4(), label: "Group", type: "Text", value: state.goals.group || "", meta: {} }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+    }
+
+    // =========================================================================
+    // UI RENDERERS & STATE BINDINGS
+    // =========================================================================
+
+    function initApp() {
+      const saved = localStorage.getItem("magepunk_character_data");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          character = parseFariJSON(parsed);
+        } catch (e) {
+          character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+        }
+      } else {
+        character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+      }
+
+      initSystemChrome();
+      renderAll();
+      setupDragDrop();
+    }
+
+    function saveToLocalStorage() {
+      const fari = buildFariJSON(character);
+      localStorage.setItem("magepunk_character_data", JSON.stringify(fari));
+    }
+
+    function renderAll() {
+      renderHeaderVitals();
+      renderBuilderViews();
+      renderSheetViews();
+      renderJSONEditor();
+      saveToLocalStorage();
+    }
+
+    function renderHeaderVitals() {
+      document.getElementById("header-char-name").value = character.name;
+      document.getElementById("header-char-level").value = character.level;
+      document.getElementById("header-char-badge").innerText = `${character.species} ${character.trade}`;
+      document.getElementById("header-char-trade").innerText = character.trade;
+      document.getElementById("header-char-niche").innerText = character.niche || "None";
+      document.getElementById("header-char-group").innerText = character.group || "Unaffiliated";
+
+      document.getElementById("quick-threshold").innerText = character.status.threshold;
+      document.getElementById("quick-hp-val").innerText = character.status.hp;
+      document.getElementById("quick-hp-max").innerText = character.status.hpMax;
+      document.getElementById("quick-mana-val").innerText = character.status.mana;
+      document.getElementById("quick-mana-max").innerText = character.status.manaMax;
+      document.getElementById("quick-mana-ceiling").innerText = character.status.manaCeiling;
+      document.getElementById("quick-recovery-pool").innerText = character.status.recoveryPool;
+    }
+
+    function renderBuilderViews() {
+      document.getElementById("wiz-char-name").value = character.name;
+      document.getElementById("wiz-char-level").value = character.level;
+      document.getElementById("wiz-char-species").value = character.species;
+      document.getElementById("wiz-char-trade").value = character.trade;
+      document.getElementById("wiz-char-niche").value = character.niche;
+      document.getElementById("wiz-char-group").value = character.group;
+      document.getElementById("wiz-threshold").value = character.status.threshold;
+      document.getElementById("wiz-hp-max").value = character.status.hpMax;
+      document.getElementById("wiz-mana-ceiling").value = character.status.manaCeiling;
+      document.getElementById("wiz-mana-max").value = character.status.manaMax;
+      document.getElementById("wiz-recovery-pool").value = character.status.recoveryPool;
+
+      ["strength", "finesse", "toughness", "will", "curiosity", "charm"].forEach(trait => {
+        const sel = document.getElementById(`trait-select-${trait}`);
+        if (sel) sel.value = character.traits[trait] || "1d6";
+      });
+      renderDiceTray();
+
+      document.getElementById("wiz-species-habitat").value = character.habitat || "";
+      document.getElementById("wiz-species-desc").value = character.speciesDescription || "";
+      renderSpeciesAttributesList();
+
+      ["power", "speed", "forethought", "panache", "instinct", "grace", "guile"].forEach(sk => {
+        const el = document.getElementById(`skill-val-${sk}`);
+        if (el) el.innerText = character.skills[sk];
+      });
+
+      const initFormula = `${character.traits.finesse} + ${character.skills.instinct}`;
+      const guardFormula = `${character.traits.toughness} + ${character.skills.power}`;
+      const diveFormula = `${character.traits.finesse} + ${character.skills.speed}`;
+      document.getElementById("calc-initiative-formula").innerText = initFormula;
+      document.getElementById("calc-guard-formula").innerText = guardFormula;
+      document.getElementById("calc-dive-formula").innerText = diveFormula;
+
+      document.getElementById("wiz-pace-land").value = character.pace.land;
+      document.getElementById("wiz-pace-swim").value = character.pace.swim;
+      document.getElementById("wiz-pace-fly").value = character.pace.fly;
+
+      renderTradeFeaturesList();
+      renderFociList();
+      renderBuilderSpellsList();
+      renderBuilderWeaponsList();
+      renderBuilderToolsList();
+
+      document.getElementById("wiz-money-silver").value = character.money.silver || "";
+      document.getElementById("wiz-money-gold").value = character.money.gold || "";
+      document.getElementById("wiz-money-plat").value = character.money.platinum || "";
+      document.getElementById("wiz-money-dust").value = character.money.arcDust || "";
+      document.getElementById("wiz-inventory-text").value = character.inventory || "";
+      document.getElementById("wiz-goals-personal").value = character.goals.personal || "";
+      document.getElementById("wiz-goals-group").value = character.goals.group || "";
+    }
+
+    function renderDiceTray() {
+      const tray = document.getElementById("dice-tray");
+      if (!tray) return;
+
+      const assigned = Object.values(character.traits);
+      tray.innerHTML = STANDARD_ARRAY.map(die => {
+        const countAssigned = assigned.filter(d => d === die).length;
+        const isUsed = countAssigned > 0;
+        return `
+          <span class="px-2 py-0.5 text-xs font-mono font-bold ${isUsed ? 'bg-[#0a120d] text-[#8fb89d] border border-[#3d6147]' : 'bg-[#192e20] text-[#8de500] border border-[#8de500] glow-lime'}">
+            ${die} ${countAssigned > 1 ? `(x${countAssigned})` : ''}
+          </span>
+        `;
+      }).join("");
+    }
+
+    function renderSpeciesAttributesList() {
+      const container = document.getElementById("wiz-species-attributes-list");
+      if (!container) return;
+
+      const raw = character.speciesAttributesText || "";
+      if (!raw.trim()) {
+        container.innerHTML = `<div class="text-xs text-[#8fb89d] font-mono italic">No species attributes defined. Click '+ ADD ATTRIBUTE' to add.</div>`;
+        return;
+      }
+
+      const items = raw.split("\n\n").filter(Boolean);
+      container.innerHTML = items.map((item, idx) => `
+        <div class="net-subcard p-3 flex items-start justify-between gap-3">
+          <div class="text-xs text-[#e8f3ec] whitespace-pre-wrap leading-relaxed">${item}</div>
+          <button onclick="removeSpeciesAttribute(${idx})" class="win-close-btn" title="Remove">x</button>
+        </div>
+      `).join("");
+    }
+
+    function renderTradeFeaturesList() {
+      const container = document.getElementById("wiz-trade-features-list");
+      if (!container) return;
+
+      if (!character.tradeFeatures.length) {
+        container.innerHTML = `<div class="text-xs text-[#8fb89d] font-mono italic">No trade features added.</div>`;
+        return;
+      }
+
+      container.innerHTML = character.tradeFeatures.map((f, i) => `
+        <div class="net-subcard p-4 flex flex-col gap-1.5 relative">
+          <div class="flex items-center justify-between">
+            <span class="font-display font-bold text-[#8de500] text-sm">${f.label}</span>
+            <button onclick="removeTradeFeature(${i})" class="win-close-btn" title="Remove">x</button>
+          </div>
+          <p class="text-xs text-[#e8f3ec] leading-relaxed">${f.text}</p>
+        </div>
+      `).join("");
+    }
+
+    function renderFociList() {
+      const container = document.getElementById("wiz-foci-list");
+      if (!container) return;
+
+      if (!character.foci.length) {
+        container.innerHTML = `<div class="text-xs text-[#8fb89d] font-mono italic">No foci added.</div>`;
+        return;
+      }
+
+      container.innerHTML = character.foci.map((f, i) => `
+        <div class="net-subcard p-4 flex flex-col gap-1.5 relative">
+          <div class="flex items-center justify-between">
+            <span class="font-display font-bold text-[#8de500] text-sm">${f.label}</span>
+            <button onclick="removeFocus(${i})" class="win-close-btn" title="Remove">x</button>
+          </div>
+          <p class="text-xs text-[#e8f3ec] leading-relaxed">${f.text}</p>
+        </div>
+      `).join("");
+    }
+
+    function renderBuilderSpellsList() {
+      const container = document.getElementById("wiz-spells-list");
+      if (!container) return;
+
+      if (!character.spells.length) {
+        container.innerHTML = `<div class="col-span-3 text-xs text-[#8fb89d] font-mono italic">No spells learned yet. Click '[BROWSE SPELL LIBRARY]' to add spells.</div>`;
+        return;
+      }
+
+      container.innerHTML = character.spells.map((s, i) => `
+        <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between border-b border-[#3d6147] pb-1.5">
+              <span class="font-display font-bold text-[#8de500] text-sm">${s.label}</span>
+              <button onclick="removeSpell(${i})" class="win-close-btn" title="Remove">x</button>
+            </div>
+            <p class="text-xs text-[#e8f3ec] whitespace-pre-wrap leading-relaxed max-h-40 overflow-y-auto">${s.text}</p>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderBuilderWeaponsList() {
+      const container = document.getElementById("wiz-weapons-list");
+      if (!container) return;
+
+      if (!character.weapons.length) {
+        container.innerHTML = `<div class="text-xs text-[#8fb89d] font-mono italic">No weapons in arsenal.</div>`;
+        return;
+      }
+
+      container.innerHTML = character.weapons.map((w, i) => `
+        <div class="net-subcard p-3.5 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-display font-bold text-[#e8f3ec] text-sm">${w.name}</div>
+            <div class="text-[11px] text-[#8fb89d]">${w.qualities}</div>
+            <div class="flex items-center gap-3 text-xs font-mono mt-1">
+              <span class="text-[#8de500]">ACC: ${w.accuracyDie} + ${w.accuracyBonus}</span>
+              <span class="text-[#e8f3ec]">DMG: ${w.damageDice} + ${w.damageBonus}</span>
+            </div>
+          </div>
+          <button onclick="removeWeapon(${i})" class="win-close-btn" title="Remove">x</button>
+        </div>
+      `).join("");
+    }
+
+    function renderBuilderToolsList() {
+      const container = document.getElementById("wiz-tools-list");
+      if (!container) return;
+
+      if (!character.toolSkills.length) {
+        container.innerHTML = `<div class="text-xs text-[#8fb89d] font-mono italic">No tool skills assigned.</div>`;
+        return;
+      }
+
+      container.innerHTML = character.toolSkills.map((t, i) => `
+        <div class="net-subcard p-2.5 flex items-center justify-between gap-2">
+          <span class="text-xs font-medium text-[#e8f3ec]">${t.name}</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-mono font-bold text-[#8de500]">${t.adeptLevel === 0 ? 'Proficient' : t.adeptLevel === 1 ? 'Adept (+1)' : 'Expert (+2)'}</span>
+            <button onclick="removeTool(${i})" class="win-close-btn" title="Remove">x</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderSheetViews() {
+      const traitGrid = document.getElementById("sheet-traits-grid");
+      if (traitGrid) {
+        const traits = [
+          { key: "strength", name: "Strength" },
+          { key: "finesse", name: "Finesse" },
+          { key: "toughness", name: "Toughness" },
+          { key: "will", name: "Will" },
+          { key: "curiosity", name: "Curiosity" },
+          { key: "charm", name: "Charm" }
+        ];
+
+        traitGrid.innerHTML = traits.map(t => {
+          const die = character.traits[t.key] || "1d6";
+          return `
+            <div onclick="rollDirect('${t.name}', '${die}')" class="net-subcard p-3 hover:border-[#8de500] cursor-pointer transition flex flex-col items-center justify-center gap-1 group">
+              <span class="text-xs font-display font-bold text-[#e8f3ec] group-hover:text-[#8de500]">${t.name}</span>
+              <span class="font-mono font-bold text-lg text-[#8de500]">${die}</span>
+              <span class="text-[10px] text-[#8fb89d] group-hover:text-[#e8f3ec]">[ROLL]</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      document.getElementById("sheet-react-init").innerText = `${character.traits.finesse} + ${character.skills.instinct}`;
+      document.getElementById("sheet-react-guard").innerText = `${character.traits.toughness} + ${character.skills.power}`;
+      document.getElementById("sheet-react-dive").innerText = `${character.traits.finesse} + ${character.skills.speed}`;
+
+      const skillsList = document.getElementById("sheet-skills-list");
+      if (skillsList) {
+        const skillDefs = [
+          { key: "power", name: "Power" },
+          { key: "speed", name: "Speed" },
+          { key: "forethought", name: "Forethought" },
+          { key: "panache", name: "Panache" },
+          { key: "instinct", name: "Instinct" },
+          { key: "grace", name: "Grace" },
+          { key: "guile", name: "Guile" }
+        ];
+
+        skillsList.innerHTML = skillDefs.map(s => `
+          <div class="net-subcard px-3 py-2 flex items-center justify-between">
+            <span class="text-xs font-bold text-[#e8f3ec] uppercase">${s.name}</span>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-bold text-[#8de500] text-xs">+${character.skills[s.key]}</span>
+              <button onclick="rollSkillCheck('${s.name}', ${character.skills[s.key]})" class="btn-info text-[10px] py-0.5 px-2" title="Roll Skill Check">[ROLL]</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("sheet-pace-land").innerText = `${character.pace.land}m`;
+      document.getElementById("sheet-pace-swim").innerText = `${character.pace.swim}m`;
+      document.getElementById("sheet-pace-fly").innerText = `${character.pace.fly}m`;
+
+      const fatigueBox = document.getElementById("sheet-fatigue-track");
+      if (fatigueBox) {
+        fatigueBox.innerHTML = character.fatigue.map((checked, i) => `
+          <button onclick="toggleFatigueSlot(${i})" class="h-10 font-mono font-bold text-xs flex flex-col items-center justify-center transition border ${checked ? 'bg-[#192e20] text-[#8de500] border-[#8de500] glow-lime' : 'bg-[#060b08] text-[#8fb89d] border-[#3d6147] hover:border-[#5a8a66]'}">
+            <span>${i + 1}</span>
+            <span class="text-[9px]">${checked ? '■' : '□'}</span>
+          </button>
+        `).join("");
+      }
+
+      const demiseBox = document.getElementById("sheet-demise-track");
+      if (demiseBox) {
+        demiseBox.innerHTML = character.demise.map((slot, i) => `
+          <button onclick="toggleDemiseSlot(${i})" class="h-10 font-mono font-bold text-xs flex flex-col items-center justify-center transition border ${slot.checked ? 'bg-[#192e20] text-[#8de500] border-[#8de500] glow-lime' : 'bg-[#060b08] text-[#8fb89d] border-[#3d6147] hover:border-[#5a8a66]'}">
+            <span>${slot.label}</span>
+            <span class="text-[9px]">${slot.checked ? '☠' : '□'}</span>
+          </button>
+        `).join("");
+      }
+
+      const spellsCont = document.getElementById("sheet-spells-container");
+      if (spellsCont) {
+        spellsCont.innerHTML = character.spells.map((s) => `
+          <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between border-b border-[#3d6147] pb-1.5">
+                <span class="font-display font-bold text-[#8de500] text-sm">${s.label}</span>
+                <button onclick="castSpellPrompt('${s.label.replace(/'/g, "\\'")}', \`${s.text.replace(/`/g, "\\`")}\`)" class="btn-launch text-[11px] py-0.5 px-2">
+                  CAST &rarr;
+                </button>
+              </div>
+              <p class="text-xs text-[#e8f3ec] whitespace-pre-wrap leading-relaxed max-h-44 overflow-y-auto">${s.text}</p>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const wepCont = document.getElementById("sheet-weapons-container");
+      if (wepCont) {
+        wepCont.innerHTML = character.weapons.map(w => `
+          <div class="net-subcard p-4 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-display font-bold text-[#e8f3ec] text-sm">${w.name}</span>
+                <span class="text-xs text-[#8fb89d] ml-2">(${w.qualities})</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-1">
+              <button onclick="rollWeaponAccuracy('${w.name.replace(/'/g, "\\'")}', '${w.accuracyDie}', ${w.accuracyBonus})" class="btn-launch w-full text-xs py-1.5">
+                ACC (${w.accuracyDie} + ${w.accuracyBonus})
+              </button>
+              <button onclick="rollWeaponDamage('${w.name.replace(/'/g, "\\'")}', '${w.damageDice}', ${w.damageBonus})" class="btn-info w-full text-xs py-1.5">
+                DMG (${w.damageDice} + ${w.damageBonus})
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const toolCont = document.getElementById("sheet-tools-container");
+      if (toolCont) {
+        toolCont.innerHTML = character.toolSkills.map(t => `
+          <div class="net-subcard px-3 py-2 flex items-center justify-between">
+            <span class="text-xs font-medium text-[#e8f3ec]">${t.name}</span>
+            <button onclick="rollToolCheck('${t.name.replace(/'/g, "\\'")}', ${t.adeptLevel})" class="btn-info text-xs py-1 px-2.5">
+              [ROLL CHECK]
+            </button>
+          </div>
+        `).join("");
+      }
+
+      const tradeCont = document.getElementById("sheet-trade-features-container");
+      if (tradeCont) {
+        tradeCont.innerHTML = character.tradeFeatures.map(f => `
+          <div class="net-subcard p-4 flex flex-col gap-1.5">
+            <span class="font-display font-bold text-[#8de500] text-sm">${f.label}</span>
+            <p class="text-xs text-[#e8f3ec] leading-relaxed">${f.text}</p>
+          </div>
+        `).join("");
+      }
+
+      const fociCont = document.getElementById("sheet-foci-container");
+      if (fociCont) {
+        fociCont.innerHTML = character.foci.map(f => `
+          <div class="net-subcard p-4 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-display font-bold text-[#8de500] text-sm">${f.label}</span>
+              <button onclick="activateFocus('${f.label.replace(/'/g, "\\'")}')" class="btn-launch text-[11px] py-0.5 px-2">DECLARE FOCUS</button>
+            </div>
+            <p class="text-xs text-[#e8f3ec] leading-relaxed">${f.text}</p>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("sheet-species-name").innerText = character.species;
+      document.getElementById("sheet-species-habitat-val").innerText = character.habitat || "Terrestrial";
+      document.getElementById("sheet-species-desc-val").innerText = character.speciesDescription || "No detailed description recorded.";
+      
+      const specAttrCont = document.getElementById("sheet-species-attributes-container");
+      if (specAttrCont) {
+        const rawAttr = character.speciesAttributesText || "";
+        const items = rawAttr.split("\n\n").filter(Boolean);
+        specAttrCont.innerHTML = items.map(it => `
+          <div class="net-subcard p-3.5 text-xs text-[#e8f3ec] whitespace-pre-wrap leading-relaxed">
+            ${it}
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("sheet-money-silver").innerText = character.money.silver || "0";
+      document.getElementById("sheet-money-gold").innerText = character.money.gold || "0";
+      document.getElementById("sheet-money-plat").innerText = character.money.platinum || "0";
+      document.getElementById("sheet-money-dust").innerText = character.money.arcDust || "0";
+      document.getElementById("sheet-inventory-list").innerText = character.inventory || "Empty Inventory";
+      document.getElementById("sheet-goals-personal").innerText = character.goals.personal || "None specified.";
+      document.getElementById("sheet-goals-group").innerText = character.goals.group || "None specified.";
+    }
+
+    function renderJSONEditor() {
+      const editor = document.getElementById("json-raw-editor");
+      if (!editor) return;
+      const fari = buildFariJSON(character);
+      editor.value = JSON.stringify(fari, null, 2);
+    }
+
+    // =========================================================================
+    // NAVIGATION & VIEW SWITCHING
+    // =========================================================================
+
+    function switchAppMode(mode) {
+      currentMode = mode;
+      document.getElementById("view-builder").classList.toggle("hidden", mode !== "builder");
+      document.getElementById("view-sheet").classList.toggle("hidden", mode !== "sheet");
+      document.getElementById("view-json").classList.toggle("hidden", mode !== "json");
+
+      document.getElementById("btn-mode-builder").className = mode === "builder" ? "btn-launch text-xs py-1 px-3" : "btn-info text-xs py-1 px-3";
+      document.getElementById("btn-mode-sheet").className = mode === "sheet" ? "btn-launch text-xs py-1 px-3" : "btn-info text-xs py-1 px-3";
+      document.getElementById("btn-mode-json").className = mode === "json" ? "btn-launch text-xs py-1 px-3" : "btn-info text-xs py-1 px-3";
+
+      if (mode === "json") renderJSONEditor();
+    }
+
+    function setWizardStep(step) {
+      currentWizardStep = step;
+      for (let i = 1; i <= 6; i++) {
+        const stepEl = document.getElementById(`wiz-step-${i}`);
+        const btnEl = document.getElementById(`wiz-btn-${i}`);
+        if (stepEl) stepEl.classList.toggle("hidden", i !== step);
+        if (btnEl) {
+          btnEl.className = i === step
+            ? "wiz-step-btn btn-launch text-xs py-1.5 px-3"
+            : "wiz-step-btn btn-info text-xs py-1.5 px-3";
+        }
+      }
+    }
+
+    function setSheetTab(tab) {
+      currentSheetTab = tab;
+      const pages = ["main", "spells", "trade", "species", "inventory"];
+      
+      pages.forEach(p => {
+        const el = document.getElementById(`sheet-page-${p}`);
+        if (el) {
+          if (tab === "all") {
+            el.classList.remove("hidden");
+          } else {
+            el.classList.toggle("hidden", p !== tab);
+          }
+        }
+      });
+
+      document.querySelectorAll(".sheet-tab-btn").forEach(btn => {
+        btn.className = "sheet-tab-btn btn-info text-xs py-1.5 px-3";
+      });
+
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      if (activeBtn) {
+        activeBtn.className = "sheet-tab-btn btn-launch text-xs py-1.5 px-3";
+      }
+    }
+
+    // =========================================================================
+    // CHARACTER EDITING MUTATORS
+    // =========================================================================
+
+    function updateCharField(field, val) {
+      character[field] = val;
+      renderAll();
+    }
+
+    function updateCharLevel(val) {
+      character.level = Math.max(1, parseInt(val) || 1);
+      renderAll();
+    }
+
+    function updateCharSpecies(val) {
+      character.species = val;
+      renderAll();
+    }
+
+    function updateCharTrade(val) {
+      character.trade = val;
+      renderAll();
+    }
+
+    function updateStatusField(field, val) {
+      character.status[field] = parseInt(val) || 0;
+      renderAll();
+    }
+
+    function adjustHealth(delta) {
+      character.status.hp = Math.max(0, Math.min(character.status.hpMax, character.status.hp + delta));
+      renderAll();
+    }
+
+    function adjustMana(delta) {
+      character.status.mana = Math.max(0, Math.min(character.status.manaMax, character.status.mana + delta));
+      renderAll();
+    }
+
+    function setTraitDie(trait, die) {
+      character.traits[trait] = die;
+      renderAll();
+    }
+
+    function getTraitDie(trait) {
+      return character.traits[trait] || "1d6";
+    }
+
+    function applyStandardDiceArray() {
+      character.traits.strength = "1d4";
+      character.traits.finesse = "1d10";
+      character.traits.toughness = "1d12";
+      character.traits.will = "1d8";
+      character.traits.curiosity = "1d6";
+      character.traits.charm = "1d20";
+      renderAll();
+    }
+
+    function resetTraitDice() {
+      character.traits.strength = "1d6";
+      character.traits.finesse = "1d6";
+      character.traits.toughness = "1d6";
+      character.traits.will = "1d6";
+      character.traits.curiosity = "1d6";
+      character.traits.charm = "1d6";
+      renderAll();
+    }
+
+    function changeSkill(skill, delta) {
+      character.skills[skill] = Math.max(0, (character.skills[skill] || 0) + delta);
+      renderAll();
+    }
+
+    function updatePace(type, val) {
+      character.pace[type] = parseInt(val) || 0;
+      renderAll();
+    }
+
+    function toggleFatigueSlot(idx) {
+      character.fatigue[idx] = !character.fatigue[idx];
+      renderAll();
+    }
+
+    function clearFatigue() {
+      character.fatigue = [false, false, false, false, false, false, false];
+      renderAll();
+    }
+
+    function toggleDemiseSlot(idx) {
+      character.demise[idx].checked = !character.demise[idx].checked;
+      renderAll();
+    }
+
+    function clearDemise() {
+      character.demise.forEach(slot => slot.checked = false);
+      renderAll();
+    }
+
+    function shortRestRecovery() {
+      const roll = Math.floor(Math.random() * 6) + 1;
+      playDiceSound();
+      adjustHealth(roll);
+      alert(`SHORT REST: Rolled 1d6 = ${roll} HP recovered!`);
+    }
+
+    function fullRestRecovery() {
+      character.status.hp = character.status.hpMax;
+      character.status.mana = character.status.manaMax;
+      clearFatigue();
+      renderAll();
+      alert("FULL REST COMPLETED: HP & Mana fully restored, Fatigue cleared.");
+    }
+
+    function updateMoney(curr, val) {
+      character.money[curr] = parseInt(val) || 0;
+      renderAll();
+    }
+
+    function updateCharInventory(text) {
+      character.inventory = text;
+      renderAll();
+    }
+
+    function updateCharGoals(type, text) {
+      character.goals[type] = text;
+      renderAll();
+    }
+
+    function randomizeIdentity() {
+      const names = ["Vespera Vane", "Corvus Hex", "Zephyr Ironbark", "Sylas Thorne", "Lyra Caldera", "Balthazar Arc"];
+      const species = ["Elf", "Human", "Construct", "Aether-Born", "Deepfolk"];
+      const trades = ["Artist", "Arcane Operative", "Mage-Knight", "Gearsmith", "Tempest Channeler"];
+      const niches = ["Aether Calligrapher", "Shadow Weaver", "Runeblade", "Clockwork Alchemist", "Voltaic Prodigy"];
+
+      character.name = names[Math.floor(Math.random() * names.length)];
+      character.species = species[Math.floor(Math.random() * species.length)];
+      character.trade = trades[Math.floor(Math.random() * trades.length)];
+      character.niche = niches[Math.floor(Math.random() * niches.length)];
+      renderAll();
+    }
+
+    // =========================================================================
+    // DYNAMIC MODALS (Spells, Weapons, Foci, Traits)
+    // =========================================================================
+
+    function openSpellLibraryModal() {
+      const modal = document.getElementById("modal-spell-library");
+      const cont = document.getElementById("spell-library-container");
+      modal.classList.remove("hidden");
+
+      cont.innerHTML = SPELL_LIBRARY_DATA.map((s, idx) => `
+        <div class="net-subcard p-4 flex flex-col justify-between gap-3">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="font-display font-bold text-[#8de500] text-sm">${s.label}</span>
+              <span class="status-pill">${s.cost}</span>
+            </div>
+            <div class="text-[11px] text-[#8fb89d] mt-1">Target: ${s.target} // Dur: ${s.duration}</div>
+            <p class="text-xs text-[#e8f3ec] mt-2 leading-relaxed">${s.description}</p>
+          </div>
+          <button onclick="addSpellFromLibrary(${idx})" class="btn-launch w-full text-xs">
+            + ADD TO GRIMOIRE
+          </button>
+        </div>
+      `).join("");
+    }
+
+    function closeSpellLibraryModal() {
+      document.getElementById("modal-spell-library").classList.add("hidden");
+    }
+
+    function addSpellFromLibrary(idx) {
+      const s = SPELL_LIBRARY_DATA[idx];
+      character.spells.push({
+        id: uuidv4(),
+        label: s.label,
+        text: `Cost: ${s.cost}\nTarget: ${s.target}\nDuration: ${s.duration}\nMaterial: ${s.material}\n\n${s.description}`
+      });
+      closeSpellLibraryModal();
+      renderAll();
+    }
+
+    function addNewSpellModal() {
+      const name = prompt("Enter Spell Name:");
+      if (!name) return;
+      const text = prompt("Enter Spell Description (Cost, Target, Duration, Effect):", "Cost: 2 Mana\nTarget: 1 Creature\nDuration: Instant\n\nDeals arcane shock.");
+      if (text !== null) {
+        character.spells.push({ id: uuidv4(), label: name, text: text });
+        renderAll();
+      }
+    }
+
+    function removeSpell(idx) {
+      character.spells.splice(idx, 1);
+      renderAll();
+    }
+
+    function addNewWeaponModal() {
+      const name = prompt("Weapon Name:", "Arc Dagger");
+      if (!name) return;
+      const qual = prompt("Range & Qualities:", "Range: 2m Qualities: Finesse, Concealed");
+      const accDie = prompt("Accuracy Die (e.g. 1d10, 1d12):", "1d10");
+      const accBonus = parseInt(prompt("Accuracy Bonus (+0, +1, +3):", "0")) || 0;
+      const dmgDie = prompt("Damage Dice formula (e.g. 1d6, 2d6):", "1d6");
+      const dmgBonus = parseInt(prompt("Damage Bonus:", "0")) || 0;
+
+      character.weapons.push({
+        id: uuidv4(),
+        name: name,
+        qualities: qual || "Range: 2m",
+        accuracyDie: accDie || "1d10",
+        accuracyBonus: accBonus,
+        damageDice: dmgDie || "1d6",
+        damageBonus: dmgBonus
+      });
+      renderAll();
+    }
+
+    function removeWeapon(idx) {
+      character.weapons.splice(idx, 1);
+      renderAll();
+    }
+
+    function addNewToolModal() {
+      const name = prompt("Tool Name:", "Alchemist's Kit");
+      if (!name) return;
+      character.toolSkills.push({
+        id: uuidv4(),
+        name: name,
+        adeptLevel: 0
+      });
+      renderAll();
+    }
+
+    function removeTool(idx) {
+      character.toolSkills.splice(idx, 1);
+      renderAll();
+    }
+
+    function addTradeFeatureModal() {
+      const name = prompt("Feature Title:", "Arcane Surge");
+      if (!name) return;
+      const text = prompt("Feature Description:", "Once per encounter, channel raw ether to double your mana ceiling for 1 round.");
+      if (text !== null) {
+        character.tradeFeatures.push({ id: uuidv4(), label: name, text: text });
+        renderAll();
+      }
+    }
+
+    function removeTradeFeature(idx) {
+      character.tradeFeatures.splice(idx, 1);
+      renderAll();
+    }
+
+    function addFocusModal() {
+      const name = prompt("Focus Name (e.g. Skirmish, Warding):", "Warding");
+      if (!name) return;
+      const text = prompt("Focus Effect:", "When declared, upsize all guard checks by 1 step.");
+      if (text !== null) {
+        character.foci.push({ id: uuidv4(), label: name, text: text });
+        renderAll();
+      }
+    }
+
+    function removeFocus(idx) {
+      character.foci.splice(idx, 1);
+      renderAll();
+    }
+
+    function addSpeciesAttributePrompt() {
+      const name = prompt("Attribute Title & Point Cost:", "Aether Resilient (1 point)");
+      if (!name) return;
+      const text = prompt("Attribute Description:", "Upsize resistance checks against raw magical damage.");
+      if (text !== null) {
+        const full = `${name}\n${text}`;
+        character.speciesAttributesText = (character.speciesAttributesText ? character.speciesAttributesText + "\n\n" : "") + full;
+        renderAll();
+      }
+    }
+
+    function removeSpeciesAttribute(idx) {
+      const items = (character.speciesAttributesText || "").split("\n\n").filter(Boolean);
+      items.splice(idx, 1);
+      character.speciesAttributesText = items.join("\n\n");
+      renderAll();
+    }
+
+    function activateFocus(label) {
+      alert(`FOCUS DECLARED: "${label}". Upsize bonuses active!`);
+      adjustUpsize(1);
+    }
+
+    function castSpellPrompt(label, text) {
+      const costMatch = text.match(/Cost:\s*(\d+)/i);
+      if (costMatch) {
+        const cost = parseInt(costMatch[1]);
+        if (character.status.mana >= cost) {
+          adjustMana(-cost);
+          alert(`CAST "${label}"! Deducted ${cost} Mana. Remaining: ${character.status.mana}/${character.status.manaMax}`);
+        } else {
+          alert(`INSUFFICIENT MANA to cast "${label}"! Requires ${cost} Mana (Current: ${character.status.mana}).`);
+        }
+      } else {
+        alert(`CAST SPELL: "${label}"!`);
+      }
+    }
+
+    // =========================================================================
+    // MAGEPUNK DICE ROLLER & UPSIZE MECHANICS
+    // =========================================================================
+
+    function stepDie(dieStr, stepDelta) {
+      const match = dieStr.match(/(\d*)d(\d+)/);
+      if (!match) return dieStr;
+      const count = parseInt(match[1]) || 1;
+      const sides = parseInt(match[2]);
+
+      const sideOrder = [4, 6, 8, 10, 12, 20];
+      let idx = sideOrder.indexOf(sides);
+      if (idx === -1) idx = 1;
+
+      let newIdx = Math.max(0, Math.min(sideOrder.length - 1, idx + stepDelta));
+      return `${count}d${sideOrder[newIdx]}`;
+    }
+
+    function adjustUpsize(delta) {
+      upsizeModifier = Math.max(-2, Math.min(2, upsizeModifier + delta));
+      const ind = document.getElementById("upsize-step-indicator");
+      if (ind) {
+        if (upsizeModifier > 0) {
+          ind.innerText = `+${upsizeModifier} Step (Upsized)`;
+          ind.className = "text-xs font-mono font-bold px-1.5 text-[#8de500] animate-pulse";
+        } else if (upsizeModifier < 0) {
+          ind.innerText = `${upsizeModifier} Step (Downsized)`;
+          ind.className = "text-xs font-mono font-bold px-1.5 text-[#8fb89d]";
+        } else {
+          ind.innerText = "Normal";
+          ind.className = "text-xs font-mono font-bold px-1.5 text-[#8de500]";
+        }
+      }
+    }
+
+    function toggleDiceDrawer() {
+      const drawer = document.getElementById("dice-drawer");
+      drawer.classList.toggle("translate-y-[120%]");
+    }
+
+    function toggleDiceSound() {
+      diceAudioEnabled = !diceAudioEnabled;
+      document.getElementById("dice-sound-toggle").innerText = diceAudioEnabled ? "🔊" : "🔇";
+    }
+
+    function playDiceSound() {
+      if (!diceAudioEnabled) return;
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        
+        for (let i = 0; i < 3; i++) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(300 + Math.random() * 400, ctx.currentTime + i * 0.08);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.08 + 0.06);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.08);
+          osc.stop(ctx.currentTime + i * 0.08 + 0.07);
+        }
+      } catch (e) {}
+    }
+
+    function executeRoll(label, diceFormula, staticBonus = 0) {
+      playDiceSound();
+      
+      let effectiveDice = diceFormula;
+      if (upsizeModifier !== 0) {
+        effectiveDice = diceFormula.replace(/(\d*d\d+)/g, (match) => stepDie(match, upsizeModifier));
+      }
+
+      let diceParts = effectiveDice.split("+").map(s => s.trim());
+      let individualRolls = [];
+      let total = staticBonus;
+
+      diceParts.forEach(part => {
+        const match = part.match(/(\d*)d(\d+)/i);
+        if (match) {
+          const count = parseInt(match[1]) || 1;
+          const sides = parseInt(match[2]);
+          for (let i = 0; i < count; i++) {
+            const roll = Math.floor(Math.random() * sides) + 1;
+            individualRolls.push({ die: `d${sides}`, val: roll });
+            total += roll;
+          }
+        } else {
+          const num = parseInt(part);
+          if (!isNaN(num)) total += num;
+        }
+      });
+
+      const drawer = document.getElementById("dice-drawer");
+      drawer.classList.remove("translate-y-[120%]");
+
+      const displayBox = document.getElementById("dice-display-box");
+      displayBox.classList.remove("animate-roll");
+      void displayBox.offsetWidth;
+      displayBox.classList.add("animate-roll");
+
+      document.getElementById("dice-roll-label").innerText = label + (upsizeModifier !== 0 ? ` (${upsizeModifier > 0 ? '+' : ''}${upsizeModifier} Step)` : '');
+      document.getElementById("dice-roll-result").innerText = total;
+
+      const breakdownStr = individualRolls.map(r => `[${r.die}: ${r.val}]`).join(" + ") + (staticBonus !== 0 ? ` + ${staticBonus}` : "");
+      document.getElementById("dice-roll-breakdown").innerText = `${breakdownStr} = ${total}`;
+
+      rollHistory.unshift({
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        label: label,
+        formula: effectiveDice + (staticBonus ? `+${staticBonus}` : ''),
+        total: total,
+        breakdown: breakdownStr
+      });
+
+      renderRollHistory();
+      
+      if (upsizeModifier !== 0) {
+        adjustUpsize(-upsizeModifier);
+      }
+    }
+
+    function renderRollHistory() {
+      const cont = document.getElementById("dice-history-log");
+      if (!cont) return;
+
+      cont.innerHTML = rollHistory.slice(0, 5).map(h => `
+        <div class="flex items-center justify-between text-[11px] font-mono text-[#e8f3ec] py-0.5 border-b border-[#3d6147]/50">
+          <span class="text-[#8fb89d]">${h.label}:</span>
+          <span class="text-[#8de500] font-bold">${h.total}</span>
+          <span class="text-[10px] text-[#8fb89d] font-mono">(${h.breakdown})</span>
+        </div>
+      `).join("");
+    }
+
+    function rollDirect(traitName, die) {
+      executeRoll(`Trait: ${traitName}`, die, 0);
+    }
+
+    function rollReaction(reactName) {
+      let formula = "1d10";
+      let bonus = 0;
+      if (reactName === "Initiative") {
+        formula = character.traits.finesse;
+        bonus = character.skills.instinct;
+      } else if (reactName === "Guard") {
+        formula = character.traits.toughness;
+        bonus = character.skills.power;
+      } else if (reactName === "Dive") {
+        formula = character.traits.finesse;
+        bonus = character.skills.speed;
+      }
+      executeRoll(`Reaction: ${reactName}`, formula, bonus);
+    }
+
+    function rollSkillCheck(skillName, bonus) {
+      executeRoll(`Skill: ${skillName}`, "1d20", bonus);
+    }
+
+    function rollWeaponAccuracy(wName, accDie, bonus) {
+      executeRoll(`${wName} Accuracy`, accDie, bonus);
+    }
+
+    function rollWeaponDamage(wName, dmgDice, bonus) {
+      executeRoll(`${wName} Damage`, dmgDice, bonus);
+    }
+
+    function rollToolCheck(toolName, adeptLevel) {
+      const bonus = adeptLevel * 2;
+      executeRoll(`Tool Check: ${toolName}`, "1d20", bonus);
+    }
+
+    function rollCustomDice(die) {
+      executeRoll("Quick Roll", die, 0);
+    }
+
+    // =========================================================================
+    // PRESETS & JSON IMPORT / EXPORT
+    // =========================================================================
+
+    function loadPresetCharacter(presetKey) {
+      if (presetKey === "artist") {
+        character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+      } else if (presetKey === "operative") {
+        character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+        character.name = "Corvus Hex";
+        character.trade = "Arcane Operative";
+        character.niche = "Shadow Weaver";
+        character.traits = { strength: "1d4", finesse: "1d20", toughness: "1d8", will: "1d10", curiosity: "1d12", charm: "1d6" };
+        character.skills = { power: 0, speed: 3, forethought: 2, panache: 1, instinct: 3, grace: 2, guile: 3 };
+        character.weapons = [{ id: uuidv4(), name: "Arc Dagger", qualities: "Range: 2m Qualities: Finesse, Concealed", accuracyDie: "1d20", accuracyBonus: 3, damageDice: "1d8", damageBonus: 2 }];
+      } else if (presetKey === "knight") {
+        character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+        character.name = "Valeria Ironbrand";
+        character.trade = "Mage-Knight";
+        character.niche = "Runeblade Vanguard";
+        character.traits = { strength: "1d20", finesse: "1d8", toughness: "1d12", will: "1d10", curiosity: "1d4", charm: "1d6" };
+        character.skills = { power: 3, speed: 1, forethought: 1, panache: 1, instinct: 2, grace: 0, guile: 0 };
+        character.weapons = [{ id: uuidv4(), name: "Runed Greatsword", qualities: "Range: 3m Qualities: Heavy, Reach", accuracyDie: "1d20", accuracyBonus: 3, damageDice: "2d8", damageBonus: 3 }];
+      } else if (presetKey === "gearsmith") {
+        character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+        character.name = "Tinkerer Baruch";
+        character.trade = "Gearsmith";
+        character.niche = "Arc-Artificer";
+        character.traits = { strength: "1d6", finesse: "1d8", toughness: "1d10", will: "1d4", curiosity: "1d20", charm: "1d12" };
+        character.skills = { power: 1, speed: 0, forethought: 3, panache: 2, instinct: 1, grace: 0, guile: 2 };
+      } else if (presetKey === "channeler") {
+        character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+        character.name = "Astraea Stormborn";
+        character.trade = "Tempest Channeler";
+        character.niche = "Voltaic Elementalist";
+        character.traits = { strength: "1d4", finesse: "1d6", toughness: "1d8", will: "1d20", curiosity: "1d10", charm: "1d12" };
+        character.skills = { power: 2, speed: 1, forethought: 1, panache: 3, instinct: 2, grace: 1, guile: 1 };
+      } else if (presetKey === "blank") {
+        character = parseFariJSON({
+          id: uuidv4(),
+          name: "New Hero",
+          group: "Resistance",
+          pages: []
+        });
+      }
+
+      renderAll();
+    }
+
+    function openImportModal() {
+      document.getElementById("modal-import").classList.remove("hidden");
+    }
+
+    function closeImportModal() {
+      document.getElementById("modal-import").classList.add("hidden");
+    }
+
+    function loadSampleDefault() {
+      character = parseFariJSON(DEFAULT_SAMPLE_JSON);
+      closeImportModal();
+      renderAll();
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const json = JSON.parse(e.target.result);
+          character = parseFariJSON(json);
+          closeImportModal();
+          renderAll();
+          alert(`IMPORT SUCCESS: Loaded "${character.name}"!`);
+        } catch (err) {
+          alert("ERROR parsing JSON file: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function setupDragDrop() {
+      const zone = document.getElementById("drop-zone");
+      if (!zone) return;
+
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        zone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      zone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            try {
+              const json = JSON.parse(evt.target.result);
+              character = parseFariJSON(json);
+              closeImportModal();
+              renderAll();
+              alert(`IMPORT SUCCESS: Loaded "${character.name}"!`);
+            } catch (err) {
+              alert("ERROR parsing JSON: " + err.message);
+            }
+          };
+          reader.readAsText(file);
+        }
+      });
+    }
+
+    function exportCharacterJSON() {
+      const fari = buildFariJSON(character);
+      const str = JSON.stringify(fari, null, 2);
+      const blob = new Blob([str], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${(character.name || "character").replace(/\s+/g, "_")}_magepunk_fari.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function copyJSONToClipboard() {
+      const fari = buildFariJSON(character);
+      const str = JSON.stringify(fari, null, 2);
+      navigator.clipboard.writeText(str).then(() => {
+        alert("Fari JSON copied to clipboard!");
+      });
+    }
+
+    function applyJSONEditorChanges() {
+      const editor = document.getElementById("json-raw-editor");
+      try {
+        const parsed = JSON.parse(editor.value);
+        character = parseFariJSON(parsed);
+        renderAll();
+        alert("JSON changes applied successfully!");
+      } catch (err) {
+        alert("Invalid JSON format: " + err.message);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>

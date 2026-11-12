@@ -1,0 +1,5 @@
+{
+  "summary": "Single Page Web Application Character Creator and Interactive Sheet for the Magepunk Tabletop Game. Built with Tailwind CSS, bidirectional Fari JSON import/export, step-by-step wizard, interactive play sheet, computed reactions, step-dice assignment, spell/weapon arsenal, demise/fatigue trackers, and integrated dice roller with upsize/downsize mechanics.",
+  "updatedAt": "2026-09-02T10:34:10.640590314Z",
+  "userFacing": true
+}

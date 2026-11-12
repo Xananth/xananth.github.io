@@ -1,0 +1,843 @@
+{
+  "id": "5eafe968-f53e-4203-a849-1da10329fa35",
+  "lastUpdated": 1786371932,
+  "name": "Artist Sample",
+  "pages": [
+    {
+      "id": "f1872657-a040-4ba7-8afe-148decae1d82",
+      "label": "Main",
+      "rows": [
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "a27fa41c-a2b7-4cdc-96d6-b2e788071322",
+                  "label": "Bio",
+                  "blocks": [
+                    {
+                      "id": "f5544422-e864-409b-b4a5-8278d6421144",
+                      "label": "Name:",
+                      "type": "Text",
+                      "value": "Vespera Vane",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "72432c22-0efc-452d-aaa5-e1341799cc45",
+                      "label": "Level:",
+                      "type": "Text",
+                      "value": "2",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "f02a5a6a-004c-4b1a-8258-8f5c0fbc2934",
+                      "label": "Species",
+                      "type": "Text",
+                      "value": "Elf",
+                      "meta": {}
+                    },
+                    {
+                      "id": "6a631aba-b84c-4b74-9d20-d7cfea1fa287",
+                      "label": "Trade:",
+                      "type": "Text",
+                      "value": "Artist",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "80acb275-1d47-4a3e-80b0-a60c7e07a9d2",
+                      "label": "Niche:",
+                      "type": "Text",
+                      "value": "Aether Calligrapher",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "sections": [
+                {
+                  "id": "d376935d-3532-461d-95a8-3bc3d975e94d",
+                  "label": "Status",
+                  "blocks": [
+                    {
+                      "id": "18817857-0c1f-474f-b3fc-c6a8352ef306",
+                      "label": "Threshold",
+                      "type": "PointCounter",
+                      "meta": {
+                        "isMainPointCounter": false,
+                        "width": 0.5
+                      },
+                      "value": "3"
+                    },
+                    {
+                      "id": "f34e3632-7b74-48c8-8b64-10564b982854",
+                      "label": "HP",
+                      "type": "PointCounter",
+                      "meta": {
+                        "max": "30",
+                        "isMainPointCounter": false,
+                        "width": 0.5
+                      },
+                      "value": "0"
+                    },
+                    {
+                      "id": "7e48a857-332a-4827-a49f-6dc115977d04",
+                      "label": "Mana Ceiling",
+                      "type": "PointCounter",
+                      "meta": {
+                        "isMainPointCounter": false,
+                        "width": 0.5
+                      },
+                      "value": "20"
+                    },
+                    {
+                      "id": "b0d8d15a-2890-4592-b7fe-818678489544",
+                      "label": "Mana",
+                      "type": "PointCounter",
+                      "meta": {
+                        "max": "46",
+                        "isMainPointCounter": false,
+                        "width": 0.5
+                      },
+                      "value": "0"
+                    },
+                    {
+                      "id": "87e9ddc5-fc3d-492c-93a8-cf09ab1a7977",
+                      "label": "Recovery Pool (d6)",
+                      "type": "PointCounter",
+                      "meta": {
+                        "max": "6",
+                        "isMainPointCounter": false
+                      },
+                      "value": "0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "9f8d79d6-41b6-430f-acfd-0fa8796e3cbd",
+                  "label": "Traits",
+                  "blocks": [
+                    {
+                      "id": "a53cd17f-fc74-495b-9e23-4d1aafd6d441",
+                      "label": "Strength",
+                      "type": "DicePool",
+                      "value": "",
+                      "meta": {
+                        "commands": [
+                          "1d4"
+                        ],
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "3fc8b87a-f6bc-4b6a-9854-1617ddec8fec",
+                      "label": "Finesse",
+                      "type": "DicePool",
+                      "value": "",
+                      "meta": {
+                        "commands": [
+                          "1d10"
+                        ],
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "69ca7a7d-6d11-4d3c-9901-cc7491062ef8",
+                      "label": "Toughness",
+                      "type": "DicePool",
+                      "value": "",
+                      "meta": {
+                        "commands": [
+                          "1d12"
+                        ],
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "a07b8b13-2bce-4950-b363-b1e95ccfa6ff",
+                      "label": "Will",
+                      "type": "DicePool",
+                      "value": "",
+                      "meta": {
+                        "commands": [
+                          "1d8"
+                        ],
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "1f9873d3-1287-41b5-aad7-f1440374c0ba",
+                      "label": "Curiosity",
+                      "type": "DicePool",
+                      "value": "",
+                      "meta": {
+                        "commands": [
+                          "1d6"
+                        ],
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "101cbd89-f9c6-400a-8d10-1cbed174370f",
+                      "label": "Charm",
+                      "type": "DicePool",
+                      "value": "",
+                      "meta": {
+                        "commands": [
+                          "1d20"
+                        ],
+                        "width": 0.33
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "sections": [
+                {
+                  "id": "25c7a5eb-029d-4809-ac55-d213b1131284",
+                  "label": "Skills",
+                  "blocks": [
+                    {
+                      "id": "9a925694-47cc-461d-bc1d-2847baacc797",
+                      "label": "Power",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "542110dd-2833-4204-a834-1e93e51250a2",
+                      "label": "Speed",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "11ab9e84-8909-465b-ae16-ca202b5d3c96",
+                      "label": "Forethought",
+                      "type": "Numeric",
+                      "value": "1",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "bd6ebef0-fc67-4b61-8779-670573c848bb",
+                      "label": "Panache",
+                      "type": "Numeric",
+                      "value": "3",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "d0bc0534-ca7f-43e9-bca5-0b4e0c9ec1fa",
+                      "label": "Instinct",
+                      "type": "Numeric",
+                      "value": "1",
+                      "meta": {
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "4eff337b-b762-4fda-a355-4af5546b42d0",
+                      "label": "Grace",
+                      "type": "Numeric",
+                      "value": "3",
+                      "meta": {
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "6ef629fd-0b84-4898-b14f-adae23335cf0",
+                      "label": "Guile",
+                      "type": "Numeric",
+                      "value": "2",
+                      "meta": {
+                        "width": 0.33
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "43a7c6f3-fd05-4343-862e-644606ab8a72",
+                  "label": "Reactions",
+                  "blocks": [
+                    {
+                      "id": "ace5363f-8538-4a69-86af-508fec8d31d7",
+                      "label": "Initiative",
+                      "type": "Skill",
+                      "value": "1",
+                      "meta": {
+                        "commands": [
+                          "1d10"
+                        ],
+                        "helperText": "finesse + instinct"
+                      }
+                    },
+                    {
+                      "id": "d31892f5-0878-432b-a06a-78c7fb795b49",
+                      "label": "Guard",
+                      "type": "Skill",
+                      "value": "0",
+                      "meta": {
+                        "commands": [
+                          "1d12"
+                        ],
+                        "width": 0.5,
+                        "helperText": "toughness + power"
+                      }
+                    },
+                    {
+                      "id": "48c085e8-ec80-4ec8-a58d-62d1081881d0",
+                      "label": "Dive",
+                      "type": "Skill",
+                      "value": "0",
+                      "meta": {
+                        "commands": [
+                          "1d10"
+                        ],
+                        "width": 0.5,
+                        "helperText": "finesse + speed"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "sections": [
+                {
+                  "id": "8dfc9037-5538-4750-bcf8-6fd8161ee1ae",
+                  "label": "Pace (m)",
+                  "blocks": [
+                    {
+                      "id": "78f2e88c-ebdf-430a-979c-4be633e86a23",
+                      "label": "Land",
+                      "type": "Numeric",
+                      "value": "12",
+                      "meta": {
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "444bf6a3-e4ea-44e2-a30c-10b29635be32",
+                      "label": "Swim",
+                      "type": "Numeric",
+                      "value": "8",
+                      "meta": {
+                        "width": 0.33
+                      }
+                    },
+                    {
+                      "id": "cdd59a7f-18e2-48f6-bc3d-0455046fab80",
+                      "label": "Fly",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.33
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "aee5e97a-4dcb-4fde-88b8-c6118392cac6",
+                  "label": "Tracks",
+                  "blocks": [
+                    {
+                      "id": "3046750f-4990-4c1f-ab47-90be873c82af",
+                      "label": "Fatigue",
+                      "type": "SlotTracker",
+                      "meta": {},
+                      "value": [
+                        { "label": "1", "checked": false },
+                        { "label": "2", "checked": false },
+                        { "label": "3", "checked": false },
+                        { "label": "4", "checked": false },
+                        { "label": "5", "checked": false },
+                        { "label": "6", "checked": false },
+                        { "label": "7", "checked": false }
+                      ]
+                    },
+                    {
+                      "id": "b078c8fe-3fee-43c6-bbee-cb6b8631d415",
+                      "label": "Demise",
+                      "type": "SlotTracker",
+                      "meta": {
+                        "asClock": false
+                      },
+                      "value": [
+                        { "label": "1", "checked": false },
+                        { "label": "d4", "checked": false },
+                        { "label": "d6", "checked": false },
+                        { "label": "d8", "checked": false },
+                        { "label": "d10", "checked": false },
+                        { "label": "d12", "checked": false },
+                        { "label": "d20", "checked": false }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5594207a-0864-4d75-8f05-0b804e2d64dd",
+      "label": "Spells, Weapons & Tools",
+      "rows": [
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "64923b13-f2f4-42a8-b95d-83bf65059b6e",
+                  "label": "Spells",
+                  "blocks": [
+                    {
+                      "id": "eaa98eae-3b26-496e-a884-278573724a45",
+                      "label": "Diplomatic Speech",
+                      "type": "Text",
+                      "value": "Cost: 1 Mana\nTarget: Self\nDuration: 1 Hour\n\nDraw a glyph in the air before yourself. Until this spell ends you are able to understand all spoken language you can hear as if it were spoken in your native tongue and others who hear you speak will hear your speech in their native tongue. Additionally the glyph will remain suspended in front of you, visible only to you, forming written words in a language you know, translating any written text you run your finger over.",
+                      "meta": {}
+                    },
+                    {
+                      "id": "19089272-a4d9-4431-9b2b-47dfea35ce37",
+                      "label": "Dispell",
+                      "type": "Text",
+                      "value": "Cost: 5 + X Mana\nRange: Touch\nTarget: 1 Creature or Object\nDuration: Instant\n\nYou lay your hands upon an enchanted object or creature and channel your focus to deconstruct the spell effecting it. Declare a value for X. If X is greater than the mana cost of the spell affecting the creature or object you end the effects of that spell. If X is lower than the mana cost of the spell, roll 1d20 + X against double the target spell's mana cost. On a success end the spell.",
+                      "meta": {}
+                    },
+                    {
+                      "id": "0d8d784d-6a77-4eeb-a3c8-d38d43d90362",
+                      "label": "Inspired Strike",
+                      "type": "Text",
+                      "value": "Cost: 5 Mana\nRange: 24m\nTarget: 1 Creature\nDuration: Instant\nMaterial Cost: Paint, Ink or other Medium Infused with 1 Arc of Dust\n\nThe paint, ink or other medium, gathers in a suspended droplet before you for a moment before darting above your target to form a cloud. Make an accuracy check with panache (1d20 + 3) against your target. On a successful hit the target takes 4d6 lightning damage as a lightning bolt, coloured the hues of it's creator's thoughts, strikes the target.",
+                      "meta": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "8735345d-4046-4c70-9490-fdfe99a8213e",
+                  "label": "Weapons",
+                  "blocks": [
+                    {
+                      "id": "8c3cac5a-5689-4d69-b113-cf3a0debd277",
+                      "label": "Staff",
+                      "type": "Text",
+                      "value": "Range: 2m Qualities: Simple",
+                      "meta": {}
+                    },
+                    {
+                      "id": "601f0135-971e-4ca9-9c33-678119aa18e3",
+                      "label": "Accuracy",
+                      "type": "Skill",
+                      "value": "3",
+                      "meta": {
+                        "commands": [
+                          "1d12"
+                        ],
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "c05bc2a2-8da3-44c6-8c7f-96708f53ddd1",
+                      "label": "Damage",
+                      "type": "Skill",
+                      "value": "3",
+                      "meta": {
+                        "commands": [
+                          "1d12"
+                        ],
+                        "width": 0.5
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "a08babce-7b28-4a8b-b938-d7afb6c7a16b",
+                  "label": "Tool Skills",
+                  "blocks": [
+                    {
+                      "id": "b66edaa5-9df1-460c-9376-5e03258a702e",
+                      "label": "Tool name",
+                      "type": "Text",
+                      "value": "Calligraphy Supplies",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "76659822-9755-4933-bd9d-281b6a4777f5",
+                      "label": "Adept",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "200a6d3f-4556-466d-bab1-63d7101cc8f8",
+                      "label": "Tool name",
+                      "type": "Text",
+                      "value": "",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "87d08ae5-15bd-4438-80bc-a261b11c7e24",
+                      "label": "Adept",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "sections": [
+                {
+                  "id": "3c0da25e-1ef6-43d1-a9ef-b06f69eaa8b8",
+                  "label": "",
+                  "blocks": [
+                    {
+                      "id": "6aa94cab-bccc-4c78-b6d3-859fae6becba",
+                      "label": "Bow",
+                      "type": "Text",
+                      "value": "Range: 30m Qualities: Ranged, Simple",
+                      "meta": {}
+                    },
+                    {
+                      "id": "7ddcd861-e89a-47ad-85ed-44e6dfdb19f7",
+                      "label": "Accuracy",
+                      "type": "Skill",
+                      "value": "0",
+                      "meta": {
+                        "commands": [
+                          "1d10"
+                        ],
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "20e4094b-ac73-4cf5-b5a2-5a72e68df165",
+                      "label": "Damage",
+                      "type": "Skill",
+                      "value": "0",
+                      "meta": {
+                        "commands": [
+                          "1d6",
+                          "1d6"
+                        ],
+                        "width": 0.5
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "b9d55429-c3ba-4296-81c3-e37b1ac755d0",
+                  "label": "",
+                  "blocks": [
+                    {
+                      "id": "2174feb3-765c-4636-8af5-327c00c82b39",
+                      "label": "Tool name",
+                      "type": "Text",
+                      "value": "Tattoo Kit",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "6fe40efe-df7a-4f77-b731-c733b22b5557",
+                      "label": "Adept",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "b82e4417-749d-403b-a4ba-2a149b15908a",
+                      "label": "Tool name",
+                      "type": "Text",
+                      "value": "",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "2c1eb921-d74f-4642-9eee-979c8dd200b0",
+                      "label": "Adept",
+                      "type": "Numeric",
+                      "value": "0",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e8639ae1-31fa-44b6-b627-fe458b63b02f",
+      "label": "Trade Features & Foci",
+      "rows": [
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "c66dacfc-c2cc-45dc-8a2e-9caac8b0b30a",
+                  "label": "Trade Features",
+                  "blocks": [
+                    {
+                      "id": "850dbe2f-d29b-4cb6-a353-4f5775926bb5",
+                      "label": "Tasteful Magic",
+                      "type": "Text",
+                      "value": "Artists have access to spells from the artistry list and learn 2 spells at level 1. They can change one of these learnt spells when levelling up. Artists use the charm trait for their casting related rolls.",
+                      "meta": {
+                        "helperText": ""
+                      }
+                    },
+                    {
+                      "id": "c56ec0cc-e21f-4bfb-905d-e69c668f349d",
+                      "label": "Misdirection",
+                      "type": "Text",
+                      "value": "Your natural ability to pull focus and make yourself the centre of attention allows you to be a wonderful distraction. As an action, you may dance, sing or otherwise perform to draw the attention of a combatant away from one of your allies. Make a d20 + 3 roll against the combatant's will + instinct. On a success, that combatant is distracted by your performance and all allies roll against that combatant upsized until the start of your next turn.",
+                      "meta": {}
+                    },
+                    {
+                      "id": "47b49722-3632-47f7-a943-d7f2cc4ed2b1",
+                      "label": "Beautiful Form",
+                      "type": "Text",
+                      "value": "There is an air of artistry about yourself, down to your very movements. Whenever you make a roll that calls for panache, grace or guile, you may roll a d12 instead of the dice you would usually roll.",
+                      "meta": {}
+                    }
+                  ]
+                },
+                {
+                  "id": "458fafef-117a-4cab-bf12-6357c87cca07",
+                  "label": "Foci",
+                  "blocks": [
+                    {
+                      "id": "236f9c19-be6c-4cf0-b220-0cbe2960d244",
+                      "label": "Defence",
+                      "type": "Text",
+                      "value": "You are positioned to defend yourself from any incoming attacks. You upsize your dice for any guard or dive roll made until your next turn\n",
+                      "meta": {}
+                    },
+                    {
+                      "id": "4c348790-0d94-4b64-a89d-b77d625c9750",
+                      "label": "Offence",
+                      "type": "Text",
+                      "value": "You are keenly aware of any opportunity to catch a foe unprepared. If a combatant attacks a combatant other than yourself while within your currently wielded melee weapons range or leaves your weapons range you may make a single weapon attack against that combatant.\n\r\n",
+                      "meta": {}
+                    },
+                    {
+                      "id": "bcffca4f-db75-420c-850a-707c0d738ad2",
+                      "label": "Details",
+                      "type": "Text",
+                      "value": "Your well trained eye can spot swells of magic moments before they coalesce as spells. You gain the focus option \"details\". When you declare details as your focus for a turn, anytime a combatant casts a spell you can shout or otherwise communicate a warning, if able to communicate in some way, to that spell's target. Any target's of the spell warned by you, including yourself, can upsize any roll made to resist the effects of the spell, or upsize their dive or guard roll against the spell.",
+                      "meta": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "98c7904d-9260-48a8-b39e-e82553b91eaf",
+      "label": "Species & Background",
+      "rows": [
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "7e9a683b-7087-4a7a-ab62-194c90e853b1",
+                  "label": "Species",
+                  "blocks": [
+                    {
+                      "id": "8e38cd8f-34a7-42fb-a660-979302022f57",
+                      "label": "Description",
+                      "type": "Text",
+                      "value": "Elves are typically between 1.5 and 2.5 metres tall, weighing between 50 and 150kg. Like humans, they have two hands with opposable thumbs making them good tool and weapon users as well as being excellent climbers. Their lives are long leading some to hoard knowledge and value secrecy, while others cannot remain in the present moment thinking about far off futures.",
+                      "meta": {}
+                    },
+                    {
+                      "id": "18a13dfa-cecf-468c-8afe-d966d7a840d8",
+                      "label": "Habitat",
+                      "type": "Text",
+                      "value": "Terrestrial",
+                      "meta": {}
+                    },
+                    {
+                      "id": "8b01f13b-686a-4578-9253-1ff8dc94a9b1",
+                      "label": "Attributes",
+                      "type": "Text",
+                      "value": "Treetop Natives (1 point)\nYour species has built homes among the canopies of large trees and live comfortably among the foliage.\n- You can climb trees and other natural surfaces such as stone at your normal land pace\n- You upsize your dice on any finesse check made to maintain balance on a high surface, leap between two surfaces, or stop yourself midfall\n\nEnduring (1 point)\nYour species has a vastly extended lifespan and looks into the far future to consider the implications of their actions well down the line.\n- You add your forethought twice to any forethought roll aside from damage rolls.\n\nToolworker (2 points)\nYour species developed complex tools to supplement their abilities.\n- You are adept with two tools from the tool list or expert with one;\n- Additionally you upsize your dice for any tool check, you upsize an additional time if you are an expert with that tool\n\nGifted (1 points)\nYour species is in tune with the arcane waves.\n- You know a spell of your choice with mana cost of exactly 1. This spell is in addition to those granted by your trade.\n- Add 1d4 to your recovery pool\n\nAttractive (1 point)\nYour species has beguiling quality that others respect, revere, and/or admire.\n- When you make a charm + panache roll, you upsize your dice and may treat your looks as a tool with which you are an expert.",
+                      "meta": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fab8e62d-8ab0-4af3-aa91-46346083495b",
+      "label": "Inventory & Goals",
+      "rows": [
+        {
+          "columns": [
+            {
+              "sections": [
+                {
+                  "id": "72e70f6e-e0a1-4efd-a86b-917c202f978d",
+                  "label": "Inventory",
+                  "blocks": [
+                    {
+                      "id": "0f4c17ae-47df-44b7-9865-0ab4f8f6ab8d",
+                      "label": "Info Text",
+                      "type": "InfoText",
+                      "value": "Leather armour<br>Staff<br>Bow<br>Tattoo ink infused with arc (3)<br>Calligraphy supplies<br>Tattoo gun + ink<br><br><br><br>",
+                      "meta": {}
+                    }
+                  ]
+                },
+                {
+                  "id": "8c9f1180-9da4-4a8d-8e84-39276f41a986",
+                  "label": "Money",
+                  "blocks": [
+                    {
+                      "id": "64d17a40-16cd-41ae-b274-b6ab0b866251",
+                      "label": "Silver",
+                      "type": "Numeric",
+                      "value": "",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "3d093acc-f2f7-4f6e-b946-0f0e7f61a8ab",
+                      "label": "Gold",
+                      "type": "Numeric",
+                      "value": "",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "a4602ff7-b8e3-405e-811a-b1d8ebf8a833",
+                      "label": "Platinum",
+                      "type": "Numeric",
+                      "value": "",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    },
+                    {
+                      "id": "4b9b46d4-288a-4abc-b1a2-32845ea87844",
+                      "label": "Arc Dust",
+                      "type": "Numeric",
+                      "value": "",
+                      "meta": {
+                        "width": 0.5
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "d98fc880-327a-4654-a851-0008fcfb0458",
+                  "label": "Goals",
+                  "blocks": [
+                    {
+                      "id": "a2f74530-1929-4331-8736-abffede29300",
+                      "label": "Personal",
+                      "type": "Text",
+                      "value": "Complete a great work of art.\nInspire an ally.",
+                      "meta": {}
+                    },
+                    {
+                      "id": "f5231680-bc44-4acb-bde1-34d0031df8b8",
+                      "label": "Group",
+                      "type": "Text",
+                      "value": "Strike a blow to one of the syndicates levers of power.\nStop syndicate plans to expand their levers of power.\nUncover all the syndicates levers of power.\nMake a positive meaningful impact to the community.",
+                      "meta": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "template": "Blank",
+  "version": 6,
+  "wide": true,
+  "group": "Steelspire Resistance",
+  "fariType": "character"
+}
