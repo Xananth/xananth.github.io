@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XANANTH // SEA SPIRIT 520 FISHING MATRIX</title>
+  <!-- Google Fonts for Retro Display & Developer Monospace -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Shared Net-Deck Master Stylesheet -->
+  <link rel="stylesheet" href="master.css" />
+</head>
+<body class="crt-enabled text-compact">
+
+  <!-- =========================================================================
+       STICKY TOP SYSTEM BAR
+       ========================================================================= -->
+  <header class="top-bar">
+    <div class="brand-cluster">
+      <div class="brand-logo-wrap framed" title="Sea Spirit 520 // Tactical Angler Matrix">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-lime)" stroke-width="2" stroke-linecap="square">
+          <path d="M2 18L5 12H19L22 18H2Z" />
+          <path d="M7 12L10 6H15L17 12" />
+          <line x1="12" y1="2" x2="12" y2="6" />
+        </svg>
+      </div>
+      <div class="brand-titles">
+        <div class="online-pill">
+          <span class="online-dot"></span>
+          <span id="systemStatusText">NAV-DECK // ONLINE</span>
+        </div>
+        <h1 id="brandHeading" class="brand-heading lime-glow">SEA SPIRIT 520 // FISHING MATRIX</h1>
+        <p id="brandSub" class="brand-sub">Buddina Canal Base &bull; Mooloolaba Harbour &bull; Sunshine Coast Offshore (0–15 NM)</p>
+      </div>
+    </div>
+
+    <div class="system-controls">
+      <div id="crtToggle" class="crt-toggle-wrap" role="switch" aria-checked="true" tabindex="0" title="Toggle CRT Scanline & Phosphor FX">
+        <span id="crtLabel">[CRT FX: ON]</span>
+        <div class="crt-switch">
+          <div class="crt-switch-thumb"></div>
+        </div>
+      </div>
+
+      <button id="themeToggle" type="button" aria-label="Toggle light/dark mode" class="retro-btn">
+        <span id="themeIcon">☀️</span>
+        <span id="themeLabel">Light</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN WORKSPACE
+       ========================================================================= -->
+  <main class="main-shell matrix-shell">
+
+    <!-- FILTER & LEGEND CONSOLE WINDOW -->
+    <section class="os-window" id="win-controls">
+      <div class="win-titlebar">
+        <span class="win-title-text">system://matrix_query_parameters</span>
+        <span id="speciesCountBadge" class="win-title-text" style="color: var(--brand-lime);">[LOADING SPECIES...]</span>
+      </div>
+      <div class="win-body deck-controls-body">
+        <div class="filter-group">
+          <div class="control-field">
+            <label for="monthSelect" class="control-label">Month:</label>
+            <select id="monthSelect" class="control-select">
+              <option value="0">JAN</option><option value="1">FEB</option><option value="2">MAR</option>
+              <option value="3">APR</option><option value="4">MAY</option><option value="5">JUN</option>
+              <option value="6">JUL</option><option value="7">AUG</option><option value="8">SEP</option>
+              <option value="9">OCT</option><option value="10">NOV</option><option value="11">DEC</option>
+            </select>
+          </div>
+
+          <div class="control-field">
+            <label for="zoneFilter" class="control-label">Zone:</label>
+            <select id="zoneFilter" class="control-select">
+              <option value="all">All Grounds</option>
+              <option value="Canal & Estuary">Canal &amp; Estuary</option>
+              <option value="Inshore & Harbour">Inshore &amp; Harbour</option>
+              <option value="Offshore Reef">Offshore Reef (5-15 NM)</option>
+              <option value="Pelagic & Game">Offshore Pelagics</option>
+            </select>
+          </div>
+
+          <div class="control-field">
+            <label for="sortBy" class="control-label">Sort:</label>
+            <select id="sortBy" class="control-select">
+              <option value="season">Seasonal Availability First (A-Z tie-break)</option>
+              <option value="eating">Eating Quality First (A-Z tie-break)</option>
+              <option value="alpha">Species Name (A to Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="legendCluster" class="legend-cluster">
+          <span style="font-weight:700; color:var(--text-primary);">LEGEND:</span>
+          <span class="legend-item"><span class="season-badge peak" style="width:18px;height:18px;font-size:10px;">✓</span> Peak Season</span>
+          <span class="legend-item"><span class="season-badge avail" style="width:18px;height:18px;font-size:10px;">•</span> Available</span>
+          <span class="legend-item"><span class="season-badge off" style="width:18px;height:18px;font-size:10px;">-</span> Off Season</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN 12-MONTH SPECIES MATRIX WINDOW -->
+    <section class="os-window" id="win-matrix">
+      <div class="win-titlebar">
+        <span class="win-title-text">module://01_sunshine_coast_seasonal_matrix</span>
+        <span class="win-title-text">[CLICK ROW FOR TACKLE &amp; GPS MARKS]</span>
+      </div>
+      <div class="win-body">
+        <div class="matrix-scroll-container">
+          <table class="matrix-table">
+            <thead>
+              <tr id="matrixHeadRow">
+                <th scope="col" class="sticky-col">Species &amp; Classification</th>
+                <th scope="col">Jan</th>
+                <th scope="col">Feb</th>
+                <th scope="col">Mar</th>
+                <th scope="col">Apr</th>
+                <th scope="col">May</th>
+                <th scope="col">Jun</th>
+                <th scope="col">Jul</th>
+                <th scope="col">Aug</th>
+                <th scope="col">Sep</th>
+                <th scope="col">Oct</th>
+                <th scope="col">Nov</th>
+                <th scope="col">Dec</th>
+                <th scope="col">Eating / Regs</th>
+              </tr>
+            </thead>
+            <tbody id="matrixBody">
+              <tr>
+                <td colspan="14" style="padding: 18px 14px; color: var(--brand-lime);">
+                  // LOADING SPECIES MATRIX FROM fish.json...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="matrix-footer-hint">
+          <span id="footerVesselMeta">VESSEL PROFILE: SEA SPIRIT 520 // RANGE: 0–15 NM</span>
+          <span>ESC TO CLOSE DOSSIER MODAL &nbsp;|&nbsp; CLICK ANY SPECIES ROW FOR FULL BRIEFING</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       SPECIES DETAIL MODAL (OS WINDOW OVERLAY)
+       ========================================================================= -->
+  <div id="speciesModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="os-window modal-window">
+      <div class="win-titlebar">
+        <span class="win-title-text">dossier://species_tactical_briefing</span>
+        <button id="modalCloseBtn" class="win-close-btn" aria-label="Close modal" title="Close Window (ESC)">x</button>
+      </div>
+
+      <div class="modal-body-scroll">
+        <!-- Dossier Header -->
+        <div class="dossier-header">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span id="modalZoneBadge" class="zone-pill">Zone</span>
+              <span id="modalEatingStars" class="stars-readout">★★★★★</span>
+            </div>
+            <h2 id="modalCommonName" class="dossier-title lime-glow">Species Name</h2>
+            <p id="modalSciName" class="sci-name">Scientific name</p>
+          </div>
+        </div>
+
+        <!-- QLD Legal Limits & Closures -->
+        <div class="dossier-grid-2">
+          <div class="data-panel">
+            <span class="stat-label">QLD Legal Size</span>
+            <span id="modalSizeLimit" class="stat-value" style="color: var(--brand-lime);">Min: 35 cm</span>
+          </div>
+          <div class="data-panel">
+            <span class="stat-label">Possession Limit</span>
+            <span id="modalBagLimit" class="stat-value">5 in total</span>
+          </div>
+          <div id="modalClosureNote" class="closure-alert hidden">
+            ⚠️ <span>Closure note</span>
+          </div>
+        </div>
+
+        <!-- Sea Spirit 520 Tackle Strategy -->
+        <div class="data-panel">
+          <h3 class="panel-heading"><span>[TACKLE]</span> Sea Spirit 520 Tackle Strategy</h3>
+          <div class="tackle-grid">
+            <div>
+              <span class="stat-label">Rod &amp; Reel Combo:</span>
+              <span id="modalRodReel" style="font-weight:700;">2500 Spin, 7'0" 2-5kg</span>
+            </div>
+            <div>
+              <span class="stat-label">Mainline &amp; Leader:</span>
+              <span id="modalLineLeader" style="font-weight:700;">10 lb Braid + 12 lb Fluorocarbon</span>
+            </div>
+            <div class="tackle-span-2">
+              <span class="stat-label">Preferred Rig / Hooks:</span>
+              <span id="modalRig">Running sinker rig to 1/0 circle hook or 1/8oz jighead</span>
+            </div>
+            <div class="tackle-span-2">
+              <span class="stat-label">Top Baits / Lures:</span>
+              <span id="modalBaits">Live poddy mullet, fresh canal prawn, 2.5" Grub soft plastic</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Local Sunshine Coast Hotspots -->
+        <div class="data-panel">
+          <h3 class="panel-heading"><span>[WAYPOINTS]</span> Sunshine Coast Spots (Suited for 5.2m Vessel)</h3>
+          <div id="modalSpots" class="spots-copy">
+            <!-- Spots inserted here -->
+          </div>
+        </div>
+
+        <!-- Boat Skipper's Note -->
+        <div class="skipper-box">
+          <strong>// SKIPPER'S LOG:</strong>
+          <span id="modalSkipperTip">Guidance on drift control, livewell aeration, and navigation safety for a 5.2m vessel.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       APPLICATION LOGIC & EXTERNAL JSON LOADER
+       ========================================================================= -->
+  <script>
+    let SPECIES_DB = [];
+    let SEASON_LEGEND = {
+      "2": { key: "peak", label: "Peak Season", symbol: "✓" },
+      "1": { key: "avail", label: "Available", symbol: "•" },
+      "0": { key: "off", label: "Off Season", symbol: "-" }
+    };
+
+    // DOM Elements
+    const matrixBody = document.getElementById('matrixBody');
+    const matrixHeadRow = document.getElementById('matrixHeadRow');
+    const monthSelect = document.getElementById('monthSelect');
+    const zoneFilter = document.getElementById('zoneFilter');
+    const sortBy = document.getElementById('sortBy');
+    const speciesCountBadge = document.getElementById('speciesCountBadge');
+    const legendCluster = document.getElementById('legendCluster');
+
+    const systemStatusText = document.getElementById('systemStatusText');
+    const brandHeading = document.getElementById('brandHeading');
+    const brandSub = document.getElementById('brandSub');
+    const footerVesselMeta = document.getElementById('footerVesselMeta');
+
+    const crtToggle = document.getElementById('crtToggle');
+    const crtLabel = document.getElementById('crtLabel');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    const modal = document.getElementById('speciesModal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalCommonName = document.getElementById('modalCommonName');
+    const modalSciName = document.getElementById('modalSciName');
+    const modalZoneBadge = document.getElementById('modalZoneBadge');
+    const modalEatingStars = document.getElementById('modalEatingStars');
+    const modalSizeLimit = document.getElementById('modalSizeLimit');
+    const modalBagLimit = document.getElementById('modalBagLimit');
+    const modalClosureNote = document.getElementById('modalClosureNote');
+    const modalRodReel = document.getElementById('modalRodReel');
+    const modalLineLeader = document.getElementById('modalLineLeader');
+    const modalRig = document.getElementById('modalRig');
+    const modalBaits = document.getElementById('modalBaits');
+    const modalSpots = document.getElementById('modalSpots');
+    const modalSkipperTip = document.getElementById('modalSkipperTip');
+
+    // CRT FX Toggle
+    function toggleCrt() {
+      const enabled = document.body.classList.toggle('crt-enabled');
+      crtToggle.setAttribute('aria-checked', String(enabled));
+      crtLabel.textContent = enabled ? '[CRT FX: ON]' : '[CRT FX: OFF]';
+    }
+
+    crtToggle.addEventListener('click', toggleCrt);
+    crtToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCrt();
+      }
+    });
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const isDark = savedTheme ? savedTheme === 'dark' : true;
+      applyTheme(isDark);
+    }
+
+    function applyTheme(isDark) {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        themeIcon.textContent = '☀️';
+        themeLabel.textContent = 'Light';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        themeIcon.textContent = '🌙';
+        themeLabel.textContent = 'Dark';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isCurrentlyDark = document.documentElement.classList.contains('dark');
+      applyTheme(!isCurrentlyDark);
+    });
+
+    // Default to current calendar month
+    const currentRealMonth = new Date().getMonth();
+    monthSelect.value = currentRealMonth;
+
+    function hydrateConfigFromJson(data) {
+      if (data.meta) {
+        if (data.meta.pageTitle) document.title = data.meta.pageTitle;
+        if (data.meta.systemStatus) systemStatusText.textContent = data.meta.systemStatus;
+        if (data.meta.heading) brandHeading.textContent = data.meta.heading;
+        if (data.meta.subtitle) brandSub.textContent = data.meta.subtitle;
+        if (data.meta.vesselProfile && data.meta.range) {
+          footerVesselMeta.textContent = `VESSEL PROFILE: ${data.meta.vesselProfile} // RANGE: ${data.meta.range}`;
+        }
+      }
+
+      if (Array.isArray(data.months) && data.months.length === 12) {
+        const preservedMonth = monthSelect.value;
+        monthSelect.innerHTML = data.months
+          .map(m => `<option value="${m.index}">${m.short}</option>`)
+          .join('');
+        monthSelect.value = preservedMonth;
+
+        matrixHeadRow.innerHTML = `
+          <th scope="col" class="sticky-col">Species &amp; Classification</th>
+          ${data.months.map(m => `<th scope="col">${m.label}</th>`).join('')}
+          <th scope="col">Eating / Regs</th>
+        `;
+      }
+
+      if (data.seasonLegend) {
+        SEASON_LEGEND = data.seasonLegend;
+        const orderedKeys = ['2', '1', '0'].filter(k => SEASON_LEGEND[k]);
+        legendCluster.innerHTML = `
+          <span style="font-weight:700; color:var(--text-primary);">LEGEND:</span>
+          ${orderedKeys.map(k => {
+            const item = SEASON_LEGEND[k];
+            return `<span class="legend-item"><span class="season-badge ${item.key}" style="width:18px;height:18px;font-size:10px;">${item.symbol}</span> ${item.label}</span>`;
+          }).join('')}
+        `;
+      }
+
+      if (Array.isArray(data.zones) && data.zones.length > 0) {
+        zoneFilter.innerHTML = data.zones
+          .map(z => {
+            const label = z.value === 'all' ? `${z.label} (${SPECIES_DB.length} Species)` : z.label;
+            return `<option value="${z.value}">${label}</option>`;
+          })
+          .join('');
+      } else {
+        const allOpt = zoneFilter.querySelector('option[value="all"]');
+        if (allOpt) allOpt.textContent = `All Grounds (${SPECIES_DB.length} Species)`;
+      }
+
+      speciesCountBadge.textContent = `[${SPECIES_DB.length} SPECIES INDEXED]`;
+    }
+
+    async function loadFishData() {
+      try {
+        const response = await fetch('fish.json');
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} (${response.statusText})`);
+        }
+        const data = await response.json();
+        SPECIES_DB = Array.isArray(data) ? data : (data.species || []);
+        hydrateConfigFromJson(Array.isArray(data) ? {} : data);
+        renderMatrix();
+      } catch (err) {
+        console.error('Failed to load fish.json:', err);
+        speciesCountBadge.textContent = '[DB ERROR]';
+        matrixBody.innerHTML = `
+          <tr>
+            <td colspan="14" style="padding: 18px 14px; color: var(--warn-amber);">
+              ⚠️ ERROR LOADING <strong>fish.json</strong>: ${err.message}. Ensure <code>fish.json</code> is in the same directory and served over HTTP/HTTPS.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderMatrix() {
+      const selectedMonth = parseInt(monthSelect.value, 10);
+      const selectedZone = zoneFilter.value;
+      const sortPreference = sortBy.value;
+
+      // Filter by Zone
+      let filtered = SPECIES_DB.filter(sp => {
+        if (selectedZone === 'all') return true;
+        return sp.zone === selectedZone;
+      });
+
+      // Sorting Algorithm
+      filtered.sort((a, b) => {
+        if (sortPreference === 'season') {
+          const seasonDiff = b.seasons[selectedMonth] - a.seasons[selectedMonth];
+          if (seasonDiff !== 0) return seasonDiff;
+          const eatDiff = b.eating - a.eating;
+          if (eatDiff !== 0) return eatDiff;
+          return a.name.localeCompare(b.name);
+        } else if (sortPreference === 'eating') {
+          const eatDiff = b.eating - a.eating;
+          if (eatDiff !== 0) return eatDiff;
+          const seasonDiff = b.seasons[selectedMonth] - a.seasons[selectedMonth];
+          if (seasonDiff !== 0) return seasonDiff;
+          return a.name.localeCompare(b.name);
+        } else {
+          const nameDiff = a.name.localeCompare(b.name);
+          if (nameDiff !== 0) return nameDiff;
+          return b.seasons[selectedMonth] - a.seasons[selectedMonth];
+        }
+      });
+
+      // Generate HTML
+      matrixBody.innerHTML = '';
+      filtered.forEach(species => {
+        const row = document.createElement('tr');
+        row.className = 'matrix-row';
+        row.onclick = () => openSpeciesModal(species);
+
+        let html = `
+          <td class="sticky-col">
+            <div class="species-name">${species.name}</div>
+            <div class="species-meta">
+              <span class="zone-pill">${species.zone}</span>
+              <span class="sci-name">${species.sci}</span>
+            </div>
+          </td>
+        `;
+
+        // 12 Monthly Matrix Indicators
+        species.seasons.forEach((val, idx) => {
+          const isSelectedMonth = (idx === selectedMonth);
+          const ringClass = isSelectedMonth ? 'ring-active' : '';
+          const meta = SEASON_LEGEND[String(val)] || { key: 'off', symbol: '-' };
+          const pill = `<span class="season-badge ${meta.key} ${ringClass}">${meta.symbol}</span>`;
+
+          html += `<td class="season-cell ${isSelectedMonth ? 'active-month-col' : ''}">${pill}</td>`;
+        });
+
+        // Eating Quality & Size limit cell
+        const stars = '★'.repeat(species.eating) + '☆'.repeat(5 - species.eating);
+        html += `
+          <td class="regs-cell">
+            <span class="stars-readout">${stars}</span>
+            <span class="size-readout">${species.sizeLimit.replace('Min:', '')}</span>
+          </td>
+        `;
+
+        row.innerHTML = html;
+        matrixBody.appendChild(row);
+      });
+    }
+
+    function openSpeciesModal(species) {
+      modalCommonName.textContent = species.name;
+      modalSciName.textContent = species.sci;
+      modalZoneBadge.textContent = species.zone;
+      modalEatingStars.textContent = '★'.repeat(species.eating) + '☆'.repeat(5 - species.eating);
+
+      modalSizeLimit.textContent = species.sizeLimit;
+      modalBagLimit.textContent = species.bagLimit;
+
+      if (species.closure) {
+        modalClosureNote.classList.remove('hidden');
+        modalClosureNote.innerHTML = species.closure;
+      } else {
+        modalClosureNote.classList.add('hidden');
+      }
+
+      modalRodReel.textContent = species.rodReel;
+      modalLineLeader.textContent = species.lineLeader;
+      modalRig.textContent = species.rig;
+      modalBaits.textContent = species.baits;
+      modalSpots.innerHTML = species.spots;
+      modalSkipperTip.textContent = species.tip;
+
+      modal.classList.remove('hidden');
+    }
+
+    modalCloseBtn.onclick = () => modal.classList.add('hidden');
+    window.onclick = (e) => { if (e.target === modal) modal.classList.add('hidden'); };
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+      }
+    });
+
+    monthSelect.addEventListener('change', renderMatrix);
+    zoneFilter.addEventListener('change', renderMatrix);
+    sortBy.addEventListener('change', renderMatrix);
+
+    // Initializations
+    initTheme();
+    loadFishData();
+  </script>
+</body>
+</html>
