@@ -8,780 +8,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --brand-lime: #8de500;
-      --brand-lime-tint: rgba(141, 229, 0, 0.14);
-      --brand-lime-glow: rgba(141, 229, 0, 0.38);
-      --win-surface: rgba(10, 18, 13, 0.88);
-      --win-surface-solid: #0a120d;
-      --win-surface-alt: #0e1a12;
-      --win-header-start: #192e20;
-      --win-header-end: #2f5239;
-      --border-main: #3d6147;
-      --border-bevel: #5a8a66;
-      --border-dark: #070d09;
-      --text-primary: #e8f3ec;
-      --text-secondary: #8fb89d;
-      --text-muted: #567a63;
-      --status-live: #8de500;
-      --warn-amber: #f5b700;
-      --warn-bg: rgba(245, 183, 0, 0.1);
-      --bg-gradient: radial-gradient(circle at 50% 20%, #0e1c13 0%, #060b08 85%);
-      --topbar-bg: rgba(8, 14, 10, 0.92);
-      --row-hover: rgba(141, 229, 0, 0.08);
-      --col-highlight: rgba(141, 229, 0, 0.07);
-      --font-display: 'Chakra Petch', sans-serif;
-      --font-pixel: 'Silkscreen', monospace;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
-    /* High-Contrast Daylight Helm Mode (Light Theme) */
-    html:not(.dark) {
-      --brand-lime: #2b6e00;
-      --brand-lime-tint: rgba(43, 110, 0, 0.12);
-      --brand-lime-glow: rgba(43, 110, 0, 0.2);
-      --win-surface: rgba(232, 240, 234, 0.95);
-      --win-surface-solid: #e3ece5;
-      --win-surface-alt: #d5e2d8;
-      --win-header-start: #23422d;
-      --win-header-end: #386646;
-      --border-main: #6a8f74;
-      --border-bevel: #ffffff;
-      --border-dark: #3b5943;
-      --text-primary: #0b170f;
-      --text-secondary: #2e4d38;
-      --text-muted: #5c7d66;
-      --status-live: #2b6e00;
-      --warn-amber: #9e6300;
-      --warn-bg: rgba(158, 99, 0, 0.12);
-      --bg-gradient: radial-gradient(circle at 50% 20%, #dce8df 0%, #c2d4c7 85%);
-      --topbar-bg: rgba(220, 232, 223, 0.95);
-      --row-hover: rgba(43, 110, 0, 0.1);
-      --col-highlight: rgba(43, 110, 0, 0.08);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      min-height: 100vh;
-      background: var(--bg-gradient);
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      line-height: 1.45;
-      overflow-x: hidden;
-    }
-
-    ::selection {
-      background: var(--brand-lime);
-      color: #050a06;
-    }
-
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      height: 8px;
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--win-surface-solid);
-      border-left: 1px solid var(--border-dark);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-main);
-      border: 1px solid var(--border-bevel);
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--brand-lime);
-    }
-
-    /* =========================================================================
-       CRT SCANLINE & PHOSPHOR FX LAYER
-       ========================================================================= */
-    body.crt-enabled::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0) 0px,
-        rgba(0, 0, 0, 0) 2px,
-        rgba(0, 0, 0, 0.2) 3px,
-        rgba(0, 0, 0, 0.2) 4px
-      );
-    }
-
-    body.crt-enabled .lime-glow {
-      text-shadow: 0 0 8px var(--brand-lime-glow);
-    }
-
-    /* =========================================================================
-       STICKY TOP SYSTEM BAR
-       ========================================================================= */
-    .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 14px;
-      padding: 10px 24px;
-      background: var(--topbar-bg);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border-main);
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
-    }
-
-    .brand-cluster {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      user-select: none;
-    }
-
-    .brand-logo-wrap {
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--win-surface-solid);
-      border: 1px solid var(--border-main);
-      box-shadow: inset 1px 1px 0 var(--border-bevel);
-      filter: drop-shadow(0 0 5px var(--brand-lime-glow));
-    }
-
-    .brand-logo-wrap svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    .brand-titles {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .online-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 9px;
-      font-family: var(--font-pixel);
-      color: var(--brand-lime);
-      letter-spacing: 0.08em;
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-
-    .online-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--brand-lime);
-      box-shadow: 0 0 6px var(--brand-lime);
-      animation: pulse-dot 2s infinite ease-in-out;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.85); }
-    }
-
-    .brand-heading {
-      font-family: var(--font-display);
-      font-size: 19px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      color: var(--brand-lime);
-      line-height: 1.05;
-      text-transform: uppercase;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-    }
-
-    /* Right System Controls */
-    .system-controls {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .crt-toggle-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      user-select: none;
-      font-size: 11.5px;
-      color: var(--text-secondary);
-    }
-
-    .crt-switch {
-      width: 34px;
-      height: 18px;
-      background: var(--win-surface-solid);
-      border: 1px solid var(--border-main);
-      border-radius: 10px;
-      position: relative;
-      transition: border-color 0.2s;
-    }
-
-    .crt-switch-thumb {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--text-secondary);
-      position: absolute;
-      top: 2px;
-      left: 3px;
-      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    }
-
-    body.crt-enabled .crt-switch {
-      border-color: var(--brand-lime);
-    }
-
-    body.crt-enabled .crt-switch-thumb {
-      transform: translateX(14px);
-      background: var(--brand-lime);
-      box-shadow: 0 0 6px var(--brand-lime);
-    }
-
-    .retro-btn {
-      background: var(--win-surface-solid);
-      color: var(--text-primary);
-      border: 1px solid var(--border-main);
-      box-shadow:
-        inset 1px 1px 0 var(--border-bevel),
-        inset -1px -1px 0 var(--border-dark);
-      padding: 4px 10px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
-    }
-
-    .retro-btn:hover {
-      border-color: var(--brand-lime);
-      color: var(--brand-lime);
-      background: var(--brand-lime-tint);
-    }
-
-    /* =========================================================================
-       OS WINDOW CHROME
-       ========================================================================= */
-    .os-window {
-      background: var(--win-surface);
-      backdrop-filter: blur(6px);
-      border: 1px solid var(--border-main);
-      box-shadow:
-        inset 1px 1px 0 var(--border-bevel),
-        inset -1px -1px 0 var(--border-dark),
-        0 10px 24px rgba(0, 0, 0, 0.45);
-      position: relative;
-    }
-
-    .win-titlebar {
-      height: 26px;
-      background: linear-gradient(90deg, var(--win-header-start) 0%, var(--win-header-end) 100%);
-      border-bottom: 1px solid var(--border-main);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 8px 0 10px;
-      user-select: none;
-    }
-
-    .win-title-text {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: #e8f3ec;
-      letter-spacing: 0.03em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .win-close-btn {
-      width: 16px;
-      height: 16px;
-      background: #486b53;
-      border-top: 1px solid #84ab90;
-      border-left: 1px solid #84ab90;
-      border-right: 1px solid #16241a;
-      border-bottom: 1px solid #16241a;
-      color: #09120b;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 13px;
-      text-align: center;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .win-close-btn:hover {
-      background: #8de500;
-      color: #050a06;
-    }
-
-    /* =========================================================================
-       WORKSPACE & CONTROL DECK
-       ========================================================================= */
-    .main-shell {
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 18px 20px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .deck-controls-body {
-      padding: 12px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .control-field {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--win-surface-solid);
-      border: 1px solid var(--border-main);
-      padding: 4px 8px;
-      box-shadow: inset 1px 1px 0 var(--border-dark);
-    }
-
-    .control-label {
-      font-size: 11px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 700;
-    }
-
-    .control-select {
-      background: var(--win-surface-alt);
-      color: var(--brand-lime);
-      border: 1px solid var(--border-main);
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 8px;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .control-select:focus {
-      border-color: var(--brand-lime);
-      box-shadow: 0 0 6px var(--brand-lime-glow);
-    }
-
-    .legend-cluster {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-      font-size: 11.5px;
-      color: var(--text-secondary);
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* =========================================================================
-       SPECIES SEASONAL MATRIX TABLE
-       ========================================================================= */
-    .matrix-scroll-container {
-      overflow-x: auto;
-      width: 100%;
-    }
-
-    .matrix-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 920px;
-      text-align: left;
-    }
-
-    .matrix-table thead tr {
-      background: var(--win-surface-alt);
-      border-bottom: 2px solid var(--border-main);
-    }
-
-    .matrix-table th {
-      padding: 10px 6px;
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--brand-lime);
-      text-align: center;
-      user-select: none;
-    }
-
-    .matrix-table th.sticky-col {
-      text-align: left;
-      padding-left: 14px;
-      min-width: 250px;
-      background: var(--win-surface-alt);
-      border-right: 1px solid var(--border-main);
-    }
-
-    .sticky-col {
-      position: sticky;
-      left: 0;
-      z-index: 20;
-    }
-
-    .matrix-row {
-      border-bottom: 1px solid rgba(61, 97, 71, 0.35);
-      cursor: pointer;
-      transition: background 0.12s;
-    }
-
-    .matrix-row:hover {
-      background: var(--row-hover);
-    }
-
-    .matrix-row td.sticky-col {
-      background: var(--win-surface-solid);
-      border-right: 1px solid var(--border-main);
-      padding: 8px 14px;
-      transition: background 0.12s;
-    }
-
-    .matrix-row:hover td.sticky-col {
-      background: var(--win-surface-alt);
-    }
-
-    .species-name {
-      font-weight: 700;
-      font-size: 13.5px;
-      color: var(--text-primary);
-      letter-spacing: 0.01em;
-    }
-
-    .matrix-row:hover .species-name {
-      color: var(--brand-lime);
-    }
-
-    .species-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 3px;
-      font-size: 10.5px;
-    }
-
-    .zone-pill {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      font-weight: 700;
-      padding: 1px 6px;
-      background: var(--brand-lime-tint);
-      color: var(--brand-lime);
-      border: 1px solid var(--border-main);
-      text-transform: uppercase;
-    }
-
-    .sci-name {
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-
-    /* Season Indicator Pills */
-    .season-cell {
-      padding: 6px 4px;
-      text-align: center;
-    }
-
-    .season-cell.active-month-col {
-      background: var(--col-highlight);
-    }
-
-    .season-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      border-radius: 2px;
-    }
-
-    .season-badge.peak {
-      background: var(--brand-lime);
-      color: #050a06;
-      box-shadow: 0 0 8px var(--brand-lime-glow);
-    }
-
-    .season-badge.avail {
-      background: var(--brand-lime-tint);
-      color: var(--brand-lime);
-      border: 1px solid var(--border-main);
-    }
-
-    .season-badge.off {
-      background: rgba(0, 0, 0, 0.2);
-      color: var(--text-muted);
-      border: 1px dashed rgba(90, 138, 102, 0.25);
-    }
-
-    .season-badge.ring-active {
-      outline: 2px solid var(--brand-lime);
-      outline-offset: 1px;
-    }
-
-    .regs-cell {
-      padding: 6px 10px;
-      text-align: center;
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    .stars-readout {
-      color: var(--brand-lime);
-      letter-spacing: 1px;
-      font-size: 11px;
-      display: block;
-    }
-
-    .size-readout {
-      color: var(--text-secondary);
-      font-size: 10px;
-      display: block;
-      margin-top: 2px;
-    }
-
-    .matrix-footer-hint {
-      padding: 8px 14px;
-      background: var(--win-surface-solid);
-      border-top: 1px solid var(--border-main);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    /* =========================================================================
-       SPECIES DOSSIER MODAL (OS WINDOW OVERLAY)
-       ========================================================================= */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: rgba(4, 9, 6, 0.82);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .modal-backdrop.hidden {
-      display: none;
-    }
-
-    .modal-window {
-      width: 100%;
-      max-width: 720px;
-      max-height: 92vh;
-      display: flex;
-      flex-direction: column;
-      border-color: var(--brand-lime);
-      box-shadow:
-        0 0 0 1px var(--brand-lime),
-        0 16px 40px rgba(0, 0, 0, 0.85);
-    }
-
-    .modal-body-scroll {
-      padding: 18px 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .dossier-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px dashed var(--border-main);
-    }
-
-    .dossier-title {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--brand-lime);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      line-height: 1.1;
-      margin-top: 6px;
-    }
-
-    .dossier-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .data-panel {
-      background: var(--win-surface-solid);
-      border: 1px solid var(--border-main);
-      box-shadow: inset 1px 1px 0 var(--border-dark);
-      padding: 12px 14px;
-    }
-
-    .panel-heading {
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--brand-lime);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .stat-label {
-      font-size: 10.5px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .stat-value {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .closure-alert {
-      grid-column: span 2;
-      margin-top: 6px;
-      padding: 8px 10px;
-      background: var(--warn-bg);
-      border: 1px solid var(--warn-amber);
-      color: var(--warn-amber);
-      font-size: 11.5px;
-      font-weight: 700;
-    }
-
-    .closure-alert.hidden {
-      display: none;
-    }
-
-    .tackle-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .tackle-span-2 {
-      grid-column: span 2;
-    }
-
-    .spots-copy {
-      font-size: 12.5px;
-      line-height: 1.55;
-      color: var(--text-primary);
-    }
-
-    .spots-copy strong {
-      color: var(--brand-lime);
-    }
-
-    .skipper-box {
-      background: var(--brand-lime-tint);
-      border: 1px solid var(--brand-lime);
-      padding: 12px 14px;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .skipper-box strong {
-      color: var(--brand-lime);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    @media (max-width: 768px) {
-      .top-bar {
-        padding: 10px 14px;
-      }
-      .main-shell {
-        padding: 12px;
-      }
-      .dossier-grid-2,
-      .tackle-grid {
-        grid-template-columns: 1fr;
-      }
-      .closure-alert,
-      .tackle-span-2 {
-        grid-column: span 1;
-      }
-    }
-  </style>
+  <!-- Shared Net-Deck Master Stylesheet -->
+  <link rel="stylesheet" href="master.css" />
 </head>
-<body class="crt-enabled">
+<body class="crt-enabled text-compact">
 
   <!-- =========================================================================
        STICKY TOP SYSTEM BAR
        ========================================================================= -->
   <header class="top-bar">
     <div class="brand-cluster">
-      <div class="brand-logo-wrap" title="Sea Spirit 520 // Tactical Angler Matrix">
+      <div class="brand-logo-wrap framed" title="Sea Spirit 520 // Tactical Angler Matrix">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-lime)" stroke-width="2" stroke-linecap="square">
           <path d="M2 18L5 12H19L22 18H2Z" />
           <path d="M7 12L10 6H15L17 12" />
@@ -791,10 +28,10 @@
       <div class="brand-titles">
         <div class="online-pill">
           <span class="online-dot"></span>
-          <span>NAV-DECK // ONLINE</span>
+          <span id="systemStatusText">NAV-DECK // ONLINE</span>
         </div>
-        <h1 class="brand-heading lime-glow">SEA SPIRIT 520 // FISHING MATRIX</h1>
-        <p class="brand-sub">Buddina Canal Base &bull; Mooloolaba Harbour &bull; Sunshine Coast Offshore (0–15 NM)</p>
+        <h1 id="brandHeading" class="brand-heading lime-glow">SEA SPIRIT 520 // FISHING MATRIX</h1>
+        <p id="brandSub" class="brand-sub">Buddina Canal Base &bull; Mooloolaba Harbour &bull; Sunshine Coast Offshore (0–15 NM)</p>
       </div>
     </div>
 
@@ -816,13 +53,13 @@
   <!-- =========================================================================
        MAIN WORKSPACE
        ========================================================================= -->
-  <main class="main-shell">
+  <main class="main-shell matrix-shell">
 
     <!-- FILTER & LEGEND CONSOLE WINDOW -->
     <section class="os-window" id="win-controls">
       <div class="win-titlebar">
         <span class="win-title-text">system://matrix_query_parameters</span>
-        <span class="win-title-text" style="color: var(--brand-lime);">[45 SPECIES INDEXED]</span>
+        <span id="speciesCountBadge" class="win-title-text" style="color: var(--brand-lime);">[LOADING SPECIES...]</span>
       </div>
       <div class="win-body deck-controls-body">
         <div class="filter-group">
@@ -839,9 +76,9 @@
           <div class="control-field">
             <label for="zoneFilter" class="control-label">Zone:</label>
             <select id="zoneFilter" class="control-select">
-              <option value="all">All Grounds (45 Species)</option>
-              <option value="Canal & Estuary">Canal & Estuary</option>
-              <option value="Inshore & Harbour">Inshore & Harbour</option>
+              <option value="all">All Grounds</option>
+              <option value="Canal & Estuary">Canal &amp; Estuary</option>
+              <option value="Inshore & Harbour">Inshore &amp; Harbour</option>
               <option value="Offshore Reef">Offshore Reef (5-15 NM)</option>
               <option value="Pelagic & Game">Offshore Pelagics</option>
             </select>
@@ -857,7 +94,7 @@
           </div>
         </div>
 
-        <div class="legend-cluster">
+        <div id="legendCluster" class="legend-cluster">
           <span style="font-weight:700; color:var(--text-primary);">LEGEND:</span>
           <span class="legend-item"><span class="season-badge peak" style="width:18px;height:18px;font-size:10px;">✓</span> Peak Season</span>
           <span class="legend-item"><span class="season-badge avail" style="width:18px;height:18px;font-size:10px;">•</span> Available</span>
@@ -876,7 +113,7 @@
         <div class="matrix-scroll-container">
           <table class="matrix-table">
             <thead>
-              <tr>
+              <tr id="matrixHeadRow">
                 <th scope="col" class="sticky-col">Species &amp; Classification</th>
                 <th scope="col">Jan</th>
                 <th scope="col">Feb</th>
@@ -894,12 +131,16 @@
               </tr>
             </thead>
             <tbody id="matrixBody">
-              <!-- Populated dynamically via JS -->
+              <tr>
+                <td colspan="14" style="padding: 18px 14px; color: var(--brand-lime);">
+                  // LOADING SPECIES MATRIX FROM fish.json...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
         <div class="matrix-footer-hint">
-          <span>VESSEL PROFILE: SEA SPIRIT 520 // RANGE: 0–15 NM</span>
+          <span id="footerVesselMeta">VESSEL PROFILE: SEA SPIRIT 520 // RANGE: 0–15 NM</span>
           <span>ESC TO CLOSE DOSSIER MODAL &nbsp;|&nbsp; CLICK ANY SPECIES ROW FOR FULL BRIEFING</span>
         </div>
       </div>
@@ -986,791 +227,29 @@
   </div>
 
   <!-- =========================================================================
-       SPECIES DATABASE & APPLICATION LOGIC
+       APPLICATION LOGIC & EXTERNAL JSON LOADER
        ========================================================================= -->
   <script>
-    // 45 Targeted Eating/Sport Species Database for Sea Spirit 520 (Baitfish removed)
-    // Seasons: 2 = Peak, 1 = Available, 0 = Off Season (Jan=0 ... Dec=11)
-    const SPECIES_DB = [
-      // --- CANAL & ESTUARY ---
-      {
-        id: "mangrove-jack",
-        name: "Mangrove Jack",
-        sci: "Lutjanus argentimaculatus",
-        zone: "Canal & Estuary",
-        eating: 5,
-        seasons: [2, 2, 2, 1, 0, 0, 0, 0, 1, 1, 2, 2],
-        sizeLimit: "Min: 35 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "3000-4000 Spin or Baitcaster, 6-10kg heavy fast-action rod",
-        lineLeader: "20-30 lb Braid + 30-40 lb Tough Fluorocarbon",
-        rig: "Snag-rigged weedless swimbait or unweighted live poddy mullet pinned through nose",
-        baits: "Live poddy mullet, live canal herring, 3\"-4\" paddle-tail soft plastics, deep diving hardbodies",
-        spots: "<strong>Buddina/Minyama Pontoon Pylons:</strong> Skip cast deep into shadow lines of private pontoons during run-out tide. <strong>Kawana Waters Weir:</strong> Cast downstream turbulence on dusk/night tides.",
-        tip: "A 5.2m boat creates hull slap against canal revetment walls. Keep the electric motor at low speed and cast tight into shadow lines."
-      },
-      {
-        id: "dusky-flathead",
-        name: "Dusky Flathead",
-        sci: "Platycephalus fuscus",
-        zone: "Canal & Estuary",
-        eating: 4,
-        seasons: [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1],
-        sizeLimit: "Min: 40 cm, Max: 75 cm (Slot limit)",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "2500 Spin, 7'0\" 2-4kg graphite rod",
-        lineLeader: "8-10 lb Braid + 12-14 lb Fluorocarbon (abrasion resistant for sharp jaw plates)",
-        rig: "1/4 oz to 3/8 oz jighead with 3/0 hook, or rolling unweighted strip bait across sandbars",
-        baits: "3\"-4\" paddle tails in motor oil or bloodworm colors, whitebait, peeled local prawns",
-        spots: "<strong>Mooloolah River Sandbars & Drop-offs:</strong> Work edges near river mouth and La Balsa Park during run-out tide. <strong>Buddina Canal Junctions:</strong> Tributary drains emptying over flats.",
-        tip: "Anchor the Sea Spirit 520 upwind of the sand spit drop-off and fan-cast across current seams with soft plastics."
-      },
-      {
-        id: "yellowfin-bream",
-        name: "Yellowfin Bream",
-        sci: "Acanthopagrus australis",
-        zone: "Canal & Estuary",
-        eating: 3,
-        seasons: [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0],
-        sizeLimit: "Min: 25 cm",
-        bagLimit: "10 fish per person",
-        closure: "",
-        rodReel: "2000-2500 Ultra-light Spin, 6'8\"-7'2\" 1-3kg rod",
-        lineLeader: "4-6 lb Braid + 4-6 lb Fluorocarbon leader",
-        rig: "Unweighted or lightly weighted #1 hook, or 1/16 oz hidden weight jighead",
-        baits: "Live glass shrimp, fresh yabbies pumped at La Balsa flats, small crab pieces, 2.5\" grub plastics",
-        spots: "<strong>Minyama Island & Buddina Mooring Piles:</strong> Barnacle encrusted pylons. <strong>Mooloolaba Boat Ramp Rock Walls:</strong> Fished along current wash.",
-        tip: "Use minimal weight. Let your bait drift down naturally through pontoon shadow lines on the first 2 hours of the run-in tide."
-      },
-      {
-        id: "sand-whiting",
-        name: "Sand Whiting",
-        sci: "Sillago ciliata",
-        zone: "Canal & Estuary",
-        eating: 4,
-        seasons: [2, 2, 1, 1, 0, 0, 0, 1, 2, 2, 2, 2],
-        sizeLimit: "Min: 25 cm",
-        bagLimit: "30 in total across whiting species",
-        closure: "",
-        rodReel: "2500 Spin, soft tip 7'0\"-7'6\" 2-4kg rod",
-        lineLeader: "6 lb Braid + 6 lb Fluorocarbon with red attractor bead",
-        rig: "Running sinker rig with #6 longshank hook and 60cm fluorocarbon trace",
-        baits: "Live bloodworms, live beach worms, freshly pumped live yabbies",
-        spots: "<strong>La Balsa Park Sand Flats:</strong> Shallows near the river mouth. <strong>Currimundi Lake & Kawana Canals:</strong> Clean sandy flats with good tidal flow.",
-        tip: "Keep the boat in deeper canal channels and cast onto shallow sand edges as the tide rises over the sand banks."
-      },
-      {
-        id: "giant-trevally",
-        name: "Giant Trevally (GT)",
-        sci: "Caranx ignobilis",
-        zone: "Canal & Estuary",
-        eating: 2,
-        seasons: [2, 2, 2, 1, 0, 0, 0, 0, 1, 2, 2, 2],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "4000-5000 Spin, 6-10kg or 8-15kg heavy spin stick",
-        lineLeader: "20-30 lb Braid + 30-50 lb Tough Leader",
-        rig: "Surface poppers, walk-the-dog stickbaits, or live canal mullet on a sturdy circle hook",
-        baits: "Surface poppers (60-90mm), metal slugs, live poddy mullet or garfish",
-        spots: "<strong>Kawana Waters Lock / Weir:</strong> Aggressive canal runs at dawn. <strong>Mooloolah River Main Channel:</strong> Current junctions and pontoon points.",
-        tip: "Lock your drag down; canal GTs will run straight around mooring ropes and pontoons within seconds."
-      },
-      {
-        id: "golden-trevally",
-        name: "Golden Trevally",
-        sci: "Gnathanodon speciosus",
-        zone: "Canal & Estuary",
-        eating: 3,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 1, 1, 2, 2],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "3000-4000 Spin combo, 4-7kg rod",
-        lineLeader: "12-16 lb Braid + 16-20 lb Fluorocarbon",
-        rig: "1/4 oz jighead with 3\" shrimp soft plastic or running sinker rig with live prawn",
-        baits: "Live prawns, live yabbies, small crabs, Berkley Gulp shrimp plastics",
-        spots: "<strong>Mooloolah River Lower Channel:</strong> Sand/mud flats near La Balsa. <strong>Kawana Canal Bridges:</strong> Deep bridge pylon eddies.",
-        tip: "Look for feeding rings where they root their rubbery lips into the canal mud hunting for crabs and mantis shrimp."
-      },
-      {
-        id: "bigeye-trevally",
-        name: "Bigeye Trevally",
-        sci: "Caranx sexfasciatus",
-        zone: "Canal & Estuary",
-        eating: 2,
-        seasons: [2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "2500-3000 Spin, 3-6kg rod",
-        lineLeader: "10-15 lb Braid + 15-20 lb Fluorocarbon",
-        rig: "Small poppers, sinking twitchbaits, or 2.5\" paddle-tail soft plastics",
-        baits: "Live canal herring, micro metal slices, surface minnows",
-        spots: "<strong>Minyama Artificial Lights:</strong> Pontoons with underwater green or amber lights at night. <strong>Kawana Bridge Pylons:</strong> Tidal eddy seams.",
-        tip: "Highly nocturnal canal hunters. Fish the illuminated canal pontoons around midnight on a running tide."
-      },
-      {
-        id: "estuary-cod",
-        name: "Goldspotted Rockcod (Estuary Cod)",
-        sci: "Epinephelus coioides",
-        zone: "Canal & Estuary",
-        eating: 4,
-        seasons: [2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2],
-        sizeLimit: "Min: 35 cm, Max: 120 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "4000-5000 Spin or heavy baitcaster, 8-15kg rod",
-        lineLeader: "30-40 lb Braid + 40-60 lb Tough Fluorocarbon",
-        rig: "Heavy running sinker rig or weedless weighted swimbait",
-        baits: "Live poddy mullet, live yellowtail pike, fresh squid, large soft plastics",
-        spots: "<strong>Deep Canal Caverns:</strong> Deepest dredged holes (6m+) in Minyama and Buddina. <strong>Mooloolaba Harbour Rock Walls:</strong> Deep boulder base.",
-        tip: "Cod grab bait and head straight back into the rock cavity or pontoon pipes. Strike hard and horse them away immediately."
-      },
-      {
-        id: "tarwhine",
-        name: "Tarwhine",
-        sci: "Rhabdosargus sarba",
-        zone: "Canal & Estuary",
-        eating: 3,
-        seasons: [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0],
-        sizeLimit: "Min: 20 cm",
-        bagLimit: "Combined limit of 30 fin fish",
-        closure: "",
-        rodReel: "2000-2500 Light Spin, 1-3kg rod",
-        lineLeader: "4-6 lb Braid + 6-8 lb Fluorocarbon",
-        rig: "Running pea sinker to size #2 hook or light unweighted bait",
-        baits: "Peeled prawns, yabbies, bread dough, small clam pieces",
-        spots: "<strong>Mooloolaba Breakwall Wash:</strong> Sand pockets between rocks. <strong>La Balsa Park Channel.</strong>",
-        tip: "Often school alongside yellowfin bream in the cooler winter months; they fight harder pound-for-pound than bream."
-      },
-      {
-        id: "mud-crab",
-        name: "Mud Crab",
-        sci: "Scylla serrata",
-        zone: "Canal & Estuary",
-        eating: 5,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 1, 1, 2, 2],
-        sizeLimit: "Min: 15 cm carapace width. MALES ONLY (Females strictly protected)",
-        bagLimit: "7 crabs per person / 14 per boat",
-        closure: "",
-        rodReel: "Heavy crab pots with legal tags (Name, address, phone number)",
-        lineLeader: "Heavy lead-core rope + approved regulation floats",
-        rig: "Heavy gauge square or round mesh pot with secure bait pouches",
-        baits: "Fresh mullet carcasses, chicken frames, fish heads",
-        spots: "<strong>Buddina Back Canals & Drains:</strong> Deep mud recesses and mangrove junctions. <strong>Upper Mooloolah River:</strong> Mud banks past Mountain Creek bridge.",
-        tip: "Set pots ahead of the high tide in deep holes, checking them on the early outgoing tide. Keep pots clear of navigation channels."
-      },
-      {
-        id: "blue-swimmer-crab",
-        name: "Blue Swimmer Crab (Sand Crab)",
-        sci: "Portunus armatus",
-        zone: "Canal & Estuary",
-        eating: 4,
-        seasons: [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 11.5 cm carapace width. MALES ONLY",
-        bagLimit: "Combined limit of 20 crabs per person",
-        closure: "",
-        rodReel: "Witches hats or crab dillies / crab pots",
-        lineLeader: "Lead-core rope with compliant marked floats",
-        rig: "Collapsible crab pots with bait bag secured in center",
-        baits: "Fresh fish frames, pilchards, mullet pieces",
-        spots: "<strong>Mooloolaba Harbour Entrance & Bay:</strong> Clean sand grounds inside Point Cartwright. <strong>Lower Mooloolah River mouth channels.</strong>",
-        tip: "Unlike mud crabs, sand crabs prefer clean sandy substrate with clear tidal water. Check dillies every 30-45 minutes."
-      },
-      {
-        id: "diamond-scale-mullet",
-        name: "Diamondscale Mullet",
-        sci: "Liza vaigiensis",
-        zone: "Canal & Estuary",
-        eating: 3,
-        seasons: [2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2],
-        sizeLimit: "Min: 30 cm",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "2000 Light Spin with sensitive float, 1-3kg rod",
-        lineLeader: "4 lb Mono + 4 lb Fluorocarbon",
-        rig: "Waggler float rig with #10-12 fine wire nymph hook",
-        baits: "White bread dough, bread paste, soaked bread flake",
-        spots: "<strong>Buddina Canal dead-ends:</strong> Warm surface waters during calm afternoons. <strong>Kawana Waters weir edges.</strong>",
-        tip: "Ground-bait with bread crumbs first to bring them to the surface, then suspend a bread dough pellet 30cm under a float."
-      },
-
-      // --- INSHORE & HARBOUR ---
-      {
-        id: "mulloway",
-        name: "Mulloway (Jewfish)",
-        sci: "Argyrosomus japonicus",
-        zone: "Inshore & Harbour",
-        eating: 4,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1],
-        sizeLimit: "Min: 75 cm",
-        bagLimit: "2 fish per person",
-        closure: "",
-        rodReel: "4000-5000 Spin or medium Overhead, 8-15kg rod",
-        lineLeader: "30 lb Braid + 40-50 lb Fluorocarbon",
-        rig: "Running sinker rig to 6/0-8/0 circle hook or 1oz 7\" paddle-tail soft plastic",
-        baits: "Live slimy mackerel, fresh squid strips, live mullet, 6\" paddle-tail swimbaits",
-        spots: "<strong>Mooloolaba Harbour River Entrance:</strong> Deep scour hole by harbour rock groynes. <strong>Minyama Deep Channel Holes:</strong> Turn of high tide at night.",
-        tip: "Slack tide on new and full moon nights is prime. Drift your live bait right near the bottom."
-      },
-      {
-        id: "tailor",
-        name: "Tailor",
-        sci: "Pomatomus saltatrix",
-        zone: "Inshore & Harbour",
-        eating: 3,
-        seasons: [0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 0],
-        sizeLimit: "Min: 35 cm",
-        bagLimit: "20 fish per person",
-        closure: "",
-        rodReel: "3000-4000 Spin, 7'0\" 4-7kg rod",
-        lineLeader: "15-20 lb Braid + 30-40 lb Monofilament trace (or wire trace if bite-offs occur)",
-        rig: "Gang hook rig (3x 4/0 gangs) unweighted or with small pea sinker",
-        baits: "Whole WA pilchard, metal casting spoons (20g-40g), surface poppers",
-        spots: "<strong>Point Cartwright Headland:</strong> Casting into the wash around headland. <strong>Mooloolaba Harbour Breakwalls:</strong> Dawn and dusk feeding schools.",
-        tip: "Keep an eye out for bird diving action outside Point Cartwright during winter dawns."
-      },
-      {
-        id: "calamari-squid",
-        name: "Tiger Squid & Calamari",
-        sci: "Sepioteuthis lessoniana",
-        zone: "Inshore & Harbour",
-        eating: 5,
-        seasons: [0, 0, 1, 1, 2, 2, 2, 2, 2, 1, 0, 0],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 50 in total (molluscs)",
-        closure: "",
-        rodReel: "2500 EGI Spin rod (soft, whippy tip for parabolic flex)",
-        lineLeader: "8-10 lb Braid + 8-10 lb Fluorocarbon",
-        rig: "Egi Squid Jig sizes 2.5 to 3.5 (Pink, Orange, Rainbow base, UV glow)",
-        baits: "Yamashita or Yo-Zuri squid jigs in natural prawn or bright orange/pink foils",
-        spots: "<strong>Point Cartwright Kelp Grounds:</strong> Drift clean weed beds inside the point. <strong>Mooloolaba River Training Walls:</strong> High tide crystal clear water.",
-        tip: "Clean, clear water is essential. If recent heavy rain dirtied the canal, head out towards Point Cartwright kelp lines."
-      },
-      {
-        id: "arrow-squid",
-        name: "Arrow Squid",
-        sci: "Nototodarus gouldi",
-        zone: "Inshore & Harbour",
-        eating: 3,
-        seasons: [1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 50 molluscs",
-        closure: "",
-        rodReel: "3000 Spin or light boat rod",
-        lineLeader: "12-16 lb Braid + 16 lb Leader",
-        rig: "Heavy luminous squid jig (size 3.5 to 4.0) or weighted squid spike with whole pilchard",
-        baits: "Luminous glowing jigs, whole pilchard pinned on wire squid spear",
-        spots: "<strong>Mooloolaba Bay Shallows:</strong> 10-18m water off Point Cartwright at night. <strong>Inner Gneerings fringe.</strong>",
-        tip: "Turn on the Sea Spirit's transom flood lights or underwater LEDs at night to aggregate bait schools and arrow squid."
-      },
-      {
-        id: "school-mackerel",
-        name: "School Mackerel (Doggie)",
-        sci: "Scomberomorus queenslandicus",
-        zone: "Inshore & Harbour",
-        eating: 3,
-        seasons: [2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2],
-        sizeLimit: "Min: 50 cm",
-        bagLimit: "10 fish per person",
-        closure: "",
-        rodReel: "3000-4000 Spin combo",
-        lineLeader: "15-20 lb Braid + 30 lb Fluorocarbon with small wire bite trace",
-        rig: "Floating pilchard on triple 3/0 ganged hooks, or high-speed spinning metals",
-        baits: "Whole WA pilchard, metal slugs, live herring",
-        spots: "<strong>Mooloolaba Harbour Entrance:</strong> Just past river mouth bar. <strong>Bray Rock & Currimundi:</strong> 10m-15m inshore lines.",
-        tip: "Anchor the Sea Spirit 520 near harbour mouth beacons and run a steady berley trail with chopped pilchards."
-      },
-      {
-        id: "queenfish",
-        name: "Talang Queenfish",
-        sci: "Scomberoides commersonnianus",
-        zone: "Inshore & Harbour",
-        eating: 3,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 1, 1, 2, 2],
-        sizeLimit: "Min: 50 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "4000 Fast Spin, 6-10kg rod",
-        lineLeader: "20 lb Braid + 30-40 lb Monofilament leader",
-        rig: "Surface poppers skipped fast across waves, or live herring under a float",
-        baits: "Rooster poppers, chrome slices, live herring, live poddy mullet",
-        spots: "<strong>Point Cartwright Wave Wash:</strong> Where oceanic swell hits the river mouth training wall. <strong>Mooloolaba Harbour Entrance.</strong>",
-        tip: "High speed retrieve is non-negotiable. If they track your lure without striking, double your crank speed."
-      },
-      {
-        id: "australian-bonito",
-        name: "Australian Bonito",
-        sci: "Sarda australis",
-        zone: "Inshore & Harbour",
-        eating: 3,
-        seasons: [1, 1, 2, 2, 2, 2, 2, 1, 1, 0, 0, 1],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "3000-4000 Spin, 4-8kg rod",
-        lineLeader: "12-15 lb Braid + 20 lb Leader",
-        rig: "Small chrome spoon (15g-30g) or shallow running hardbody minnow",
-        baits: "Small metal slices, whitebait flies, trolled shallow diving lures",
-        spots: "<strong>Mudjimba Island (Old Woman):</strong> Inshore wash. <strong>Point Cartwright Lighthouse Cliff Wash:</strong> 10-15m depth.",
-        tip: "Bleed immediately if intended for the table, or ice down whole as unbeatable offshore strip bait for Snapper and Pearl Perch."
-      },
-      {
-        id: "silver-trevally",
-        name: "Silver Trevally (Skippy)",
-        sci: "Pseudocaranx georgianus",
-        zone: "Inshore & Harbour",
-        eating: 3,
-        seasons: [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "2500 Light Spin, 2-5kg rod",
-        lineLeader: "8-10 lb Braid + 10-12 lb Fluorocarbon",
-        rig: "Light running sinker or 1/8 oz jighead with 2.5\" curl tail grub",
-        baits: "Peeled prawn pieces, squid strips, whitebait, soft plastic grubs",
-        spots: "<strong>Mooloolaba Breakwall Base:</strong> Wash zones on clean winter tides. <strong>Inner Bray Rock reefs.</strong>",
-        tip: "They have soft mouths; back your drag off a notch during the fight to prevent hook pullouts."
-      },
-
-      // --- OFFSHORE REEF (5-15 NM) ---
-      {
-        id: "snapper",
-        name: "Snapper (Squire)",
-        sci: "Chrysophrys auratus",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0],
-        sizeLimit: "Min: 35 cm (Only 1 fish over 70cm permitted)",
-        bagLimit: "4 fish per person",
-        closure: "⚠️ QLD Snapper/Pearl Perch Closure: 15 July to 15 August annually",
-        rodReel: "4000-5000 Spin (Snapper Sniping) or 30lb Overhead, 7'0\" 5-8kg rod",
-        lineLeader: "20-30 lb Braid + 20-30 lb Fluorocarbon",
-        rig: "Lightly weighted strayline rig, or 1/4 to 1/2 oz jighead with 5\"-7\" jerkshads",
-        baits: "Whole fresh WA pilchard floated down a berley trail, fresh squid, 5\"-7\" ZMan jerkshads",
-        spots: "<strong>Murphy's Reef:</strong> Gravel patches and ledges. <strong>Inner & Outer Gneerings:</strong> High relief bommies at first light. <strong>Caloundra 12 Mile:</strong> Southern deep grounds.",
-        tip: "In a 5.2m boat, pick mornings with under 10 knot winds and under 1.2m swell. Drift the drop-offs with minimal lead."
-      },
-      {
-        id: "pearl-perch",
-        name: "Pearl Perch",
-        sci: "Glaucosoma scapulare",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1],
-        sizeLimit: "Min: 38 cm",
-        bagLimit: "5 fish per person",
-        closure: "⚠️ QLD Snapper/Pearl Perch Closure: 15 July to 15 August annually",
-        rodReel: "30-50 lb Overhead or Slow Jigging Combo",
-        lineLeader: "30-50 lb Braid + 40-50 lb Monofilament leader",
-        rig: "Double dropper paternoster rig with heavy sinker or 100g-150g slow pitch jig",
-        baits: "Fresh squid tentacles, live yakkas, strip of bonito or slimy mackerel",
-        spots: "<strong>Caloundra 12 Mile:</strong> 40m-60m depth wire weed and reef ledges. <strong>Outer Gneerings Deep Rubble:</strong> 35m-50m contour line.",
-        tip: "Watch the sounder for tight mid-water schools sitting 2-5m above deep reef pinnacles. Avoid lifting too aggressively."
-      },
-      {
-        id: "coral-trout",
-        name: "Coral Trout",
-        sci: "Plectropomus leopardus",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [2, 2, 1, 1, 0, 0, 0, 1, 2, 2, 2, 2],
-        sizeLimit: "Min: 38 cm",
-        bagLimit: "7 fish per person (Part of Coral Reef Fin Fish quota of 20)",
-        closure: "⚠️ Coral Reef Fin Fish Closures apply around October & November new moon tides",
-        rodReel: "50 lb Heavy Overhead or 6000 Heavy Spin with fast lock-up drag",
-        lineLeader: "50-65 lb Braid + 60-80 lb Tough Fluorocarbon",
-        rig: "Heavy bottom-bouncing paternoster or running ball sinker right down to 7/0 circle hook",
-        baits: "Live yellowtail scad, whole fresh squid, lively slimy mackerel",
-        spots: "<strong>Outer Gneerings:</strong> Big bommies and caves. <strong>Murphy's Reef:</strong> Broken rubble reef structure.",
-        tip: "You must turn their head immediately in the first 3 seconds of hookup, or they will reef you into coral caves."
-      },
-      {
-        id: "venus-tuskfish",
-        name: "Venus Tuskfish (Parrot)",
-        sci: "Choerodon venustus",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 30 cm",
-        bagLimit: "6 tuskfish per person",
-        closure: "",
-        rodReel: "30-50 lb Spin or Overhead boat rod",
-        lineLeader: "30-50 lb Braid + 40-50 lb Fluorocarbon",
-        rig: "Paternoster rig with two strong 4/0 2X hooks",
-        baits: "Crab halves, live saltwater yabbies, fresh rock oysters, octopus tentacle",
-        spots: "<strong>Murphy's Reef:</strong> Gravel beds and coral edges. <strong>Caloundra Wide:</strong> Hard bottom gravel bars.",
-        tip: "Their strong parrot-like teeth crush soft hooks. Use forged heavy gauge hooks and crab bait."
-      },
-      {
-        id: "blackbanded-tuskfish",
-        name: "Blackbanded Tuskfish",
-        sci: "Choerodon fasciatus",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 30 cm",
-        bagLimit: "6 tuskfish per person",
-        closure: "",
-        rodReel: "30-50 lb Overhead combo",
-        lineLeader: "30-40 lb Braid + 40-50 lb Fluorocarbon",
-        rig: "Two-hook paternoster rig with 4/0 forged beak hooks",
-        baits: "Fresh crab pieces, mantis shrimp, peeled prawn, squid",
-        spots: "<strong>Outer Gneerings bommies:</strong> 25-35m depth. <strong>Murphy's Reef gravel patches.</strong>",
-        tip: "Stiff rod helps detect their rapid pecking bites before they strip crab bait clean."
-      },
-      {
-        id: "grass-sweetlip",
-        name: "Grass Sweetlip",
-        sci: "Lethrinus laticaudis",
-        zone: "Offshore Reef",
-        eating: 4,
-        seasons: [2, 2, 2, 1, 0, 0, 0, 1, 2, 2, 2, 2],
-        sizeLimit: "Min: 30 cm",
-        bagLimit: "Combined limit of 5 per person",
-        closure: "",
-        rodReel: "3000-4000 Spin, 4-8kg rod",
-        lineLeader: "15-20 lb Braid + 20-30 lb Leader",
-        rig: "Running ball sinker directly on top of 3/0-4/0 hook",
-        baits: "Fresh squid strips, pilchard fillets, peeled banana prawns",
-        spots: "<strong>Inner Gneerings:</strong> Shallows and reef patches in 12m-20m depth. <strong>Bray Rock & Currimundi Reefs:</strong> Broken bottom.",
-        tip: "Sweetlip love low light. Fish early dusk or night tides on close inshore reef edges."
-      },
-      {
-        id: "spangled-emperor",
-        name: "Spangled Emperor",
-        sci: "Lethrinus nebulosus",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 1, 1, 2, 2],
-        sizeLimit: "Min: 45 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "4000-5000 Spin or 30lb Overhead, 8-15kg rod",
-        lineLeader: "30-40 lb Braid + 40-50 lb Fluorocarbon",
-        rig: "Strayline rig with 5/0 circle hook or 1oz sinking swimbait",
-        baits: "Whole squid, cuttlefish strips, live yellowtail scad, pilchards",
-        spots: "<strong>Outer Gneerings sand/coral edges:</strong> 22-38m depths. <strong>Murphy's Reef gravel gutters.</strong>",
-        tip: "Spangleds patrol sandy gutters running between reef bommies. Anchor up-current and float baits into gutters."
-      },
-      {
-        id: "red-emperor",
-        name: "Red Emperor",
-        sci: "Lutjanus sebae",
-        zone: "Offshore Reef",
-        eating: 5,
-        seasons: [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1],
-        sizeLimit: "Min: 55 cm",
-        bagLimit: "5 fish per person",
-        closure: "⚠️ Coral Reef Fin Fish Closures apply in Oct/Nov new moon windows",
-        rodReel: "50-80 lb Heavy Boat Combo or overhead winch rod",
-        lineLeader: "50-65 lb Braid + 60-80 lb Tough Monofilament",
-        rig: "Heavy two-hook paternoster rig with 7/0-8/0 circle hooks or snelled suicide hooks",
-        baits: "Large fresh squid mantle, whole slimy mackerel, mullet fillets with skin on",
-        spots: "<strong>Caloundra 12 Mile Outer Fringe:</strong> 55-65m deep wire weed and low profile rubble bars. <strong>Barwon Banks Western Edge.</strong>",
-        tip: "Pick glass-out winter/autumn days in the 520. Look for isolated low-profile rubble bumps rather than steep bommies."
-      },
-      {
-        id: "moses-perch",
-        name: "Moses Perch",
-        sci: "Lutjanus russellii",
-        zone: "Offshore Reef",
-        eating: 4,
-        seasons: [2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2],
-        sizeLimit: "Min: 25 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "2500-3000 Light Spin combo",
-        lineLeader: "10-15 lb Braid + 15-20 lb Fluorocarbon",
-        rig: "Paternoster rig or light running sinker rig with 1/0-2/0 hook",
-        baits: "Squid strips, peeled prawns, small whitebait, pilchard cubes",
-        spots: "<strong>Inner Gneerings:</strong> 12m-22m reef flats. <strong>Mooloolaba Harbour Entrance walls & Currimundi Reefs.</strong>",
-        tip: "Aggressive bottom feeders; frequent catch when drifting over inshore reefs targeting squire."
-      },
-      {
-        id: "teraglin",
-        name: "Teraglin (Geelbeck)",
-        sci: "Atractoscion aequidens",
-        zone: "Offshore Reef",
-        eating: 4,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 38 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "30-50 lb Boat rod or overhead reel",
-        lineLeader: "30 lb Braid + 30-40 lb Fluorocarbon",
-        rig: "Paternoster rig with two 4/0-5/0 circle hooks kept 1-2m off bottom",
-        baits: "Fresh squid strips, live yakkas, slimy mackerel fillets",
-        spots: "<strong>Caloundra 12 Mile:</strong> 45-60m deep reef patches. <strong>Murphy's Reef outer drops.</strong>",
-        tip: "Teraglin bite best after sunset or during cloudy overcast days. Look for mid-water schools suspended above bottom."
-      },
-      {
-        id: "cobia",
-        name: "Cobia (Black Kingfish)",
-        sci: "Rachycentron canadum",
-        zone: "Offshore Reef",
-        eating: 4,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1],
-        sizeLimit: "Min: 75 cm",
-        bagLimit: "2 fish per person",
-        closure: "",
-        rodReel: "5000-8000 Spin, 10-20kg heavy rod",
-        lineLeader: "40-50 lb Braid + 60-80 lb Shock Leader",
-        rig: "Live bait bridle rig under balloon or slow drifted mid-water, 2oz bucktail jigs",
-        baits: "Live yellowtail scad, whole fresh squid, 2oz white/chartreuse bucktail jig",
-        spots: "<strong>Caloundra 12 Mile:</strong> High pinnacles. <strong>Outer Gneerings:</strong> High relief structures and navigational buoys.",
-        tip: "They frequently swim right up to the Sea Spirit transom out of curiosity. Have a bucktail jig rigged ready to pitch."
-      },
-      {
-        id: "yellowtail-kingfish",
-        name: "Yellowtail Kingfish",
-        sci: "Seriola lalandi",
-        zone: "Offshore Reef",
-        eating: 4,
-        seasons: [0, 0, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0],
-        sizeLimit: "Min: 60 cm",
-        bagLimit: "2 fish per person",
-        closure: "",
-        rodReel: "5000-6000 High-Speed Spin or 30-50lb Jigging combo",
-        lineLeader: "40-50 lb Braid + 60-80 lb Tough Fluorocarbon",
-        rig: "Live yakka under balloon, downrigger clip, or 150-250g mechanical knife jig",
-        baits: "Live yellowtail scad, live slimy mackerel, whole live calamari squid",
-        spots: "<strong>Caloundra 12 Mile:</strong> Steep drop-offs and high relief pinnacles. <strong>Outer Gneerings:</strong> Deep pressure faces.",
-        tip: "Speed jigging or slow trolling live yakkas around deep pinnacles during winter mornings is prime."
-      },
-      {
-        id: "amberjack",
-        name: "Amberjack",
-        sci: "Seriola dumerili",
-        zone: "Offshore Reef",
-        eating: 3,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 50 cm",
-        bagLimit: "Combined Seriola limit: 2 fish per person",
-        closure: "",
-        rodReel: "50-80 lb Heavy Jigging setup, PE 4-6 rod",
-        lineLeader: "50-65 lb Braid + 80-100 lb Shock Leader",
-        rig: "200-300g Knife jig worked fast, or live yakka weighted to the bottom",
-        baits: "Live slimy mackerel, live yakka, whole squid, speed knife jigs",
-        spots: "<strong>Caloundra 12 Mile:</strong> 50-65m reef peaks. <strong>Outer pinnacles off Mooloolaba.</strong>",
-        tip: "Brutal fighting power. Set your drag high and pump hard off the bottom to keep them out of structure."
-      },
-      {
-        id: "samson-fish",
-        name: "Samson Fish",
-        sci: "Seriola hippos",
-        zone: "Offshore Reef",
-        eating: 3,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 50 cm",
-        bagLimit: "Combined Seriola limit: 2 fish per person",
-        closure: "",
-        rodReel: "50 lb Jigging combo or heavy boat rod",
-        lineLeader: "50 lb Braid + 80 lb Fluorocarbon",
-        rig: "Heavy live bait rig or 150-250g vertical jig",
-        baits: "Live yakkas, live slimy mackerel, knife jigs",
-        spots: "<strong>Deep Reef Pinnacles:</strong> Caloundra 12 Mile deep ledges (50m+).",
-        tip: "Often school alongside amberjack; prepare for sustained vertical slugfests beneath the boat."
-      },
-      {
-        id: "maori-cod",
-        name: "Maori Cod",
-        sci: "Epinephelus undulatostriatus",
-        zone: "Offshore Reef",
-        eating: 4,
-        seasons: [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
-        sizeLimit: "Min: 38 cm",
-        bagLimit: "Part of Coral Reef Fin Fish quota of 20",
-        closure: "",
-        rodReel: "30-50 lb Overhead boat rod",
-        lineLeader: "30-50 lb Braid + 50-60 lb Leader",
-        rig: "Paternoster rig with 6/0 hooks or bottom bounce jig",
-        baits: "Squid, pilchard fillets, live yakkas",
-        spots: "<strong>Murphy's Reef:</strong> Deep broken rubble. <strong>Caloundra 12 Mile:</strong> Deep reef caves.",
-        tip: "Bottom huggers that rarely venture far from their cave; drop your sinker right to the seafloor."
-      },
-      {
-        id: "hussar",
-        name: "Pink Hussar",
-        sci: "Lutjanus adetii",
-        zone: "Offshore Reef",
-        eating: 3,
-        seasons: [2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2],
-        sizeLimit: "Min: 25 cm",
-        bagLimit: "Part of Coral Reef Fin Fish quota of 20",
-        closure: "",
-        rodReel: "20-30 lb Spin or boat rod",
-        lineLeader: "20 lb Braid + 25-30 lb Leader",
-        rig: "Standard two-hook paternoster with 3/0 hooks",
-        baits: "Squid strips, pilchard cubes",
-        spots: "<strong>Outer Gneerings & Murphy's Reef:</strong> 25-45m bottom structure.",
-        tip: "Great table fish despite smaller size; also makes hardy live bait for Spanish mackerel."
-      },
-
-      // --- PELAGIC & GAME ---
-      {
-        id: "spanish-mackerel",
-        name: "Spanish Mackerel",
-        sci: "Scomberomorus commerson",
-        zone: "Pelagic & Game",
-        eating: 4,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 1, 1, 2, 2],
-        sizeLimit: "Min: 75 cm",
-        bagLimit: "1 fish per person / 2 per boat (Max boat limit of 2)",
-        closure: "⚠️ Northern & Southern Mackerel closures apply periodically in QLD waters",
-        rodReel: "Overhead Trolling Combo or 6000-8000 Fast Spin, 15-24kg rod",
-        lineLeader: "30-50 lb Braid + 50 lb Mono + 12-18\" of 38-44 lb Single Strand Wire",
-        rig: "Trolled chin-weighted garfish rig or deep-diving bibbed minnow (e.g. Rapala X-Rap Mag 20/30)",
-        baits: "Rigged garfish, live slimy mackerel, whole bonito, diving hardbodies",
-        spots: "<strong>Inner & Outer Gneerings:</strong> Current lines pushing over reef drop-offs. <strong>Fairway Beacon:</strong> Trolling around entrance shipping marker.",
-        tip: "Troll at 4-6 knots along the pressure wave where oceanic current pushes up against Gneerings reef face."
-      },
-      {
-        id: "spotted-mackerel",
-        name: "Spotted Mackerel",
-        sci: "Scomberomorus munroi",
-        zone: "Pelagic & Game",
-        eating: 4,
-        seasons: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2],
-        sizeLimit: "Min: 60 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "3000-4000 High-Speed Spin (6.2:1+ ratio), 7'0\" 5-8kg casting rod",
-        lineLeader: "15-20 lb Braid + 30-40 lb Monofilament leader",
-        rig: "Direct tied small chrome slug (20g-40g) or unweighted pillie on gangs",
-        baits: "20g-35g Halco Twisty or Gillies chrome lures, small live whitebait, drifted pilchard",
-        spots: "<strong>Point Cartwright to Currimundi:</strong> Chopping schools in 12m-25m depths. <strong>Old Woman Island (Mudjimba):</strong> Inshore wash zones.",
-        tip: "Look for diving terns. Cut your motor 80 meters upwind and drift silently into casting range so you don't spook the school."
-      },
-      {
-        id: "longtail-tuna",
-        name: "Longtail Tuna (Northern Bluefin)",
-        sci: "Thunnus tonggol",
-        zone: "Pelagic & Game",
-        eating: 4,
-        seasons: [2, 2, 2, 2, 2, 1, 0, 0, 0, 1, 2, 2],
-        sizeLimit: "Min: 70 cm (Only 2 over 90cm)",
-        bagLimit: "Combined tuna limit: 2 fish per person",
-        closure: "",
-        rodReel: "4000-5000 Fast Spin, 10-15kg rod with strong backbone",
-        lineLeader: "30 lb Braid + 40-50 lb Clear Fluorocarbon (long 3-4m stealth leader)",
-        rig: "Small heavy metal casting slices or unweighted soft plastic jerkshads skipped across surface",
-        baits: "25g-40g Maria Mucho Lucir, 5\" jerkshads in white or glow, small live herring",
-        spots: "<strong>Mooloolaba Bay & Point Cartwright:</strong> Bust-ups in 10-25m water. <strong>Old Woman Island:</strong> Chasing microbait.",
-        tip: "Tuna have keen eyesight. Match the hatch exactly to the size of the tiny whitebait they are busting on."
-      },
-      {
-        id: "mackerel-tuna",
-        name: "Mackerel Tuna (Little Tunny)",
-        sci: "Euthynnus affinis",
-        zone: "Pelagic & Game",
-        eating: 2,
-        seasons: [2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined tuna limit: 2 fish per person",
-        closure: "",
-        rodReel: "3000-4000 Spin combo",
-        lineLeader: "15-20 lb Braid + 25-30 lb Leader",
-        rig: "15g-30g chrome casting slug or small soft plastic skipped fast",
-        baits: "Small metal slices, soft plastics, trolled feathers",
-        spots: "<strong>Mooloolaba Bay Shallows:</strong> Inside Point Cartwright out to 25m line. <strong>Bray Rock.</strong>",
-        tip: "High sporting value and makes prime fresh bait strip/berley for Snapper at Murphy's Reef."
-      },
-      {
-        id: "yellowfin-tuna",
-        name: "Yellowfin Tuna",
-        sci: "Thunnus albacares",
-        zone: "Pelagic & Game",
-        eating: 5,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 0, 1, 1, 2],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "Combined tuna limit: 2 fish per person",
-        closure: "",
-        rodReel: "5000-8000 Spin or 15-24kg Overhead setup",
-        lineLeader: "40-50 lb Braid + 60-80 lb Fluorocarbon",
-        rig: "Stickbait casting, trolling skirts, or drifted live slime under balloon",
-        baits: "Live slimy mackerel, trolled skirted lures (6\"-8\"), diving plugs",
-        spots: "<strong>Caloundra Wide Drop-offs:</strong> 50m-80m blue water shelf. <strong>Offshore FADs (8-15 NM).</strong>",
-        tip: "Watch the water temperature gauge on the Sea Spirit 520; look for warm blue current pushes above 24°C."
-      },
-      {
-        id: "mahi-mahi",
-        name: "Mahi Mahi (Dolphinfish)",
-        sci: "Coryphaena hippurus",
-        zone: "Pelagic & Game",
-        eating: 5,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 2],
-        sizeLimit: "Min: 50 cm",
-        bagLimit: "5 fish per person",
-        closure: "",
-        rodReel: "4000-5000 Spin or 15kg Overhead",
-        lineLeader: "20-30 lb Braid + 40 lb Leader",
-        rig: "Unweighted whole pilchard floated on a 5/0 hook, or 5\" skipping stickbait",
-        baits: "Live yakkas, whole fresh pilchards, surface poppers, skirts",
-        spots: "<strong>Offshore FADs:</strong> Government FADs located 8-15 NM off Mooloolaba. <strong>Floating flotsam / trap floats.</strong>",
-        tip: "Check modern FAD GPS coordinates published by QLD Fisheries. Approach up-current and cast tight to float structure."
-      },
-      {
-        id: "wahoo",
-        name: "Wahoo",
-        sci: "Acanthocybium solandri",
-        zone: "Pelagic & Game",
-        eating: 5,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 1],
-        sizeLimit: "Min: 75 cm",
-        bagLimit: "2 fish per person",
-        closure: "",
-        rodReel: "24kg Heavy Overhead Trolling Setup",
-        lineLeader: "50 lb Braid + 80 lb Mono Wind-on + #7 Single Strand Wire",
-        rig: "High speed trolling skirts or deep bibless minnows (e.g. Nomad DTX Minnow)",
-        baits: "Trolled Hexhead skirts, rigged garfish or bonito, high speed lures at 8-12 knots",
-        spots: "<strong>Caloundra Wide Drop-off:</strong> 50m-80m shelf edge. <strong>Outer trench edges.</strong>",
-        tip: "Pick calm blue-water days for your 520. Wahoo love speed; troll between 7 and 10 knots along temperature breaks."
-      },
-      {
-        id: "sailfish",
-        name: "Sailfish",
-        sci: "Istiophorus platypterus",
-        zone: "Pelagic & Game",
-        eating: 2,
-        seasons: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2],
-        sizeLimit: "No minimum legal size",
-        bagLimit: "1 billfish per person",
-        closure: "",
-        rodReel: "10-15kg Overhead or 6000-8000 Spin combo",
-        lineLeader: "30-50 lb Braid + 80-100 lb Monofilament wind-on leader",
-        rig: "Skip-baited rigged garfish with circle hook or small skirted trolling lure",
-        baits: "Trolled garfish, live slimy mackerel drifted under balloon, 6\" skirts",
-        spots: "<strong>Caloundra Wide & Barwon Banks fringe:</strong> Warm summer current lines (35-65m depth). <strong>Offshore FAD outer grounds.</strong>",
-        tip: "Summer warm current pushes bring sailfish into 40-50m depth off Mooloolaba. Look for surface bait showering."
-      },
-      {
-        id: "rainbow-runner",
-        name: "Rainbow Runner",
-        sci: "Elagatis bipinnulata",
-        zone: "Pelagic & Game",
-        eating: 4,
-        seasons: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 2],
-        sizeLimit: "No legal size",
-        bagLimit: "Combined limit of 20 fin fish",
-        closure: "",
-        rodReel: "3000-4000 Fast Spin combo",
-        lineLeader: "15-20 lb Braid + 20-30 lb Fluorocarbon",
-        rig: "Small surface poppers, casting slices, or live bait drifted near floats",
-        baits: "Small metal lures, pilchard strips, live baitfish",
-        spots: "<strong>Sunshine Coast FADs:</strong> Milling below Mahi Mahi around marker buoys in summer.",
-        tip: "Super fast runners that strike small shiny lures worked right beside FAD floats."
-      }
-    ];
+    let SPECIES_DB = [];
+    let SEASON_LEGEND = {
+      "2": { key: "peak", label: "Peak Season", symbol: "✓" },
+      "1": { key: "avail", label: "Available", symbol: "•" },
+      "0": { key: "off", label: "Off Season", symbol: "-" }
+    };
 
     // DOM Elements
     const matrixBody = document.getElementById('matrixBody');
+    const matrixHeadRow = document.getElementById('matrixHeadRow');
     const monthSelect = document.getElementById('monthSelect');
     const zoneFilter = document.getElementById('zoneFilter');
     const sortBy = document.getElementById('sortBy');
+    const speciesCountBadge = document.getElementById('speciesCountBadge');
+    const legendCluster = document.getElementById('legendCluster');
+
+    const systemStatusText = document.getElementById('systemStatusText');
+    const brandHeading = document.getElementById('brandHeading');
+    const brandSub = document.getElementById('brandSub');
+    const footerVesselMeta = document.getElementById('footerVesselMeta');
 
     const crtToggle = document.getElementById('crtToggle');
     const crtLabel = document.getElementById('crtLabel');
@@ -1819,11 +298,13 @@
     function applyTheme(isDark) {
       if (isDark) {
         document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
         themeIcon.textContent = '☀️';
         themeLabel.textContent = 'Light';
         localStorage.setItem('theme', 'dark');
       } else {
         document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
         themeIcon.textContent = '🌙';
         themeLabel.textContent = 'Dark';
         localStorage.setItem('theme', 'light');
@@ -1839,8 +320,83 @@
     const currentRealMonth = new Date().getMonth();
     monthSelect.value = currentRealMonth;
 
+    function hydrateConfigFromJson(data) {
+      if (data.meta) {
+        if (data.meta.pageTitle) document.title = data.meta.pageTitle;
+        if (data.meta.systemStatus) systemStatusText.textContent = data.meta.systemStatus;
+        if (data.meta.heading) brandHeading.textContent = data.meta.heading;
+        if (data.meta.subtitle) brandSub.textContent = data.meta.subtitle;
+        if (data.meta.vesselProfile && data.meta.range) {
+          footerVesselMeta.textContent = `VESSEL PROFILE: ${data.meta.vesselProfile} // RANGE: ${data.meta.range}`;
+        }
+      }
+
+      if (Array.isArray(data.months) && data.months.length === 12) {
+        const preservedMonth = monthSelect.value;
+        monthSelect.innerHTML = data.months
+          .map(m => `<option value="${m.index}">${m.short}</option>`)
+          .join('');
+        monthSelect.value = preservedMonth;
+
+        matrixHeadRow.innerHTML = `
+          <th scope="col" class="sticky-col">Species &amp; Classification</th>
+          ${data.months.map(m => `<th scope="col">${m.label}</th>`).join('')}
+          <th scope="col">Eating / Regs</th>
+        `;
+      }
+
+      if (data.seasonLegend) {
+        SEASON_LEGEND = data.seasonLegend;
+        const orderedKeys = ['2', '1', '0'].filter(k => SEASON_LEGEND[k]);
+        legendCluster.innerHTML = `
+          <span style="font-weight:700; color:var(--text-primary);">LEGEND:</span>
+          ${orderedKeys.map(k => {
+            const item = SEASON_LEGEND[k];
+            return `<span class="legend-item"><span class="season-badge ${item.key}" style="width:18px;height:18px;font-size:10px;">${item.symbol}</span> ${item.label}</span>`;
+          }).join('')}
+        `;
+      }
+
+      if (Array.isArray(data.zones) && data.zones.length > 0) {
+        zoneFilter.innerHTML = data.zones
+          .map(z => {
+            const label = z.value === 'all' ? `${z.label} (${SPECIES_DB.length} Species)` : z.label;
+            return `<option value="${z.value}">${label}</option>`;
+          })
+          .join('');
+      } else {
+        const allOpt = zoneFilter.querySelector('option[value="all"]');
+        if (allOpt) allOpt.textContent = `All Grounds (${SPECIES_DB.length} Species)`;
+      }
+
+      speciesCountBadge.textContent = `[${SPECIES_DB.length} SPECIES INDEXED]`;
+    }
+
+    async function loadFishData() {
+      try {
+        const response = await fetch('fish.json');
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} (${response.statusText})`);
+        }
+        const data = await response.json();
+        SPECIES_DB = Array.isArray(data) ? data : (data.species || []);
+        hydrateConfigFromJson(Array.isArray(data) ? {} : data);
+        renderMatrix();
+      } catch (err) {
+        console.error('Failed to load fish.json:', err);
+        speciesCountBadge.textContent = '[DB ERROR]';
+        matrixBody.innerHTML = `
+          <tr>
+            <td colspan="14" style="padding: 18px 14px; color: var(--warn-amber);">
+              ⚠️ ERROR LOADING <strong>fish.json</strong>: ${err.message}. Ensure <code>fish.json</code> is in the same directory and served over HTTP/HTTPS.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
     function renderMatrix() {
-      const selectedMonth = parseInt(monthSelect.value);
+      const selectedMonth = parseInt(monthSelect.value, 10);
       const selectedZone = zoneFilter.value;
       const sortPreference = sortBy.value;
 
@@ -1875,7 +431,7 @@
       matrixBody.innerHTML = '';
       filtered.forEach(species => {
         const row = document.createElement('tr');
-        row.className = "matrix-row";
+        row.className = 'matrix-row';
         row.onclick = () => openSpeciesModal(species);
 
         let html = `
@@ -1891,16 +447,9 @@
         // 12 Monthly Matrix Indicators
         species.seasons.forEach((val, idx) => {
           const isSelectedMonth = (idx === selectedMonth);
-          const ringClass = isSelectedMonth ? "ring-active" : "";
-
-          let pill = '';
-          if (val === 2) {
-            pill = `<span class="season-badge peak ${ringClass}">✓</span>`;
-          } else if (val === 1) {
-            pill = `<span class="season-badge avail ${ringClass}">•</span>`;
-          } else {
-            pill = `<span class="season-badge off ${ringClass}">-</span>`;
-          }
+          const ringClass = isSelectedMonth ? 'ring-active' : '';
+          const meta = SEASON_LEGEND[String(val)] || { key: 'off', symbol: '-' };
+          const pill = `<span class="season-badge ${meta.key} ${ringClass}">${meta.symbol}</span>`;
 
           html += `<td class="season-cell ${isSelectedMonth ? 'active-month-col' : ''}">${pill}</td>`;
         });
@@ -1959,7 +508,7 @@
 
     // Initializations
     initTheme();
-    renderMatrix();
+    loadFishData();
   </script>
 </body>
 </html>
