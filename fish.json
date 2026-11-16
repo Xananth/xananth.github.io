@@ -3,9 +3,9 @@
     "pageTitle": "XANANTH // FISHING CALENDAR",
     "systemStatus": "NAV-DECK // ONLINE",
     "heading": " SUNSHINE COAST FISHING CALENDAR",
-    "subtitle": "Buddina Canal Base • Mooloolaba Harbour • Sunshine Coast Offshore (0–15 NM)",
+    "subtitle": "Buddina Canal Base • Mooloolaba Harbour • Sunshine Coast Offshore & Barwon Banks (0–28 NM)",
     "vesselProfile": "SEA SPIRIT 520",
-    "range": "0–15 NM"
+    "range": "0–28 NM"
   },
   "months": [
     { "index": 0, "short": "JAN", "label": "Jan" },
@@ -30,7 +30,7 @@
     { "value": "all", "label": "All Grounds" },
     { "value": "Canal & Estuary", "label": "Canal & Estuary" },
     { "value": "Inshore & Harbour", "label": "Inshore & Harbour" },
-    { "value": "Offshore Reef", "label": "Offshore Reef (5-15 NM)" },
+    { "value": "Offshore Reef", "label": "Offshore Reef (5-28 NM)" },
     { "value": "Pelagic & Game", "label": "Offshore Pelagics" }
   ],
   "species": [
@@ -177,7 +177,7 @@
       "zone": "Canal & Estuary",
       "eating": 3,
       "seasons": [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0],
-      "sizeLimit": "Min: 20 cm",
+      "sizeLimit": "Min: 25 cm",
       "bagLimit": "Combined limit of 30 fin fish",
       "closure": "",
       "rodReel": "2000-2500 Light Spin, 1-3kg rod",
@@ -558,7 +558,7 @@
       "lineLeader": "20-30 lb Braid + 20-30 lb Fluorocarbon",
       "rig": "Lightly weighted strayline rig, or 1/4 to 1/2 oz jighead with 5\"-7\" jerkshads",
       "baits": "Whole fresh WA pilchard floated down a berley trail, fresh squid, 5\"-7\" ZMan jerkshads",
-      "spots": "<strong>Murphy's Reef:</strong> Gravel patches and ledges. <strong>Inner & Outer Gneerings:</strong> High relief bommies at first light. <strong>Caloundra 12 Mile:</strong> Southern deep grounds.",
+      "spots": "<strong>Murphy's Reef & Inner/Outer Gneerings:</strong> High-relief bommies at first light. <strong>Caloundra 12 Mile & Barwon Banks:</strong> Deep gravel ledges and pinnacles (40-65m).",
       "tip": "In a 5.2m boat, pick mornings with under 10 knot winds and under 1.2m swell. Drift the drop-offs with minimal lead."
     },
     {
@@ -575,7 +575,7 @@
       "lineLeader": "30-50 lb Braid + 40-50 lb Monofilament leader",
       "rig": "Double dropper paternoster rig with heavy sinker or 100g-150g slow pitch jig",
       "baits": "Fresh squid tentacles, live yakkas, strip of bonito or slimy mackerel",
-      "spots": "<strong>Caloundra 12 Mile:</strong> 40m-60m depth wire weed and reef ledges. <strong>Outer Gneerings Deep Rubble:</strong> 35m-50m contour line.",
+      "spots": "<strong>Caloundra 12 Mile:</strong> 40m-60m depth wire weed and reef ledges. <strong>Barwon Banks Middle & Southern Ledges:</strong> 45-70m reef drops.",
       "tip": "Watch the sounder for tight mid-water schools sitting 2-5m above deep reef pinnacles. Avoid lifting too aggressively."
     },
     {
@@ -592,7 +592,7 @@
       "lineLeader": "50-65 lb Braid + 60-80 lb Tough Fluorocarbon",
       "rig": "Heavy bottom-bouncing paternoster or running ball sinker right down to 7/0 circle hook",
       "baits": "Live yellowtail scad, whole fresh squid, lively slimy mackerel",
-      "spots": "<strong>Outer Gneerings:</strong> Big bommies and caves. <strong>Murphy's Reef:</strong> Broken rubble reef structure.",
+      "spots": "<strong>Outer Gneerings & Murphy's Reef:</strong> Big bommies and broken rubble. <strong>Barwon Banks High-Relief Bommies:</strong> 35-50m coral ledges.",
       "tip": "Turn their head immediately in the first 3 seconds of hookup before they reef you. (Note: QLD seasonal closures only apply north of 24°50'S)."
     },
     {
@@ -609,7 +609,7 @@
       "lineLeader": "30-50 lb Braid + 40-50 lb Fluorocarbon",
       "rig": "Paternoster rig with two strong 4/0 2X hooks",
       "baits": "Crab halves, live saltwater yabbies, fresh rock oysters, octopus tentacle",
-      "spots": "<strong>Murphy's Reef:</strong> Gravel beds and coral edges. <strong>Caloundra Wide:</strong> Hard bottom gravel bars.",
+      "spots": "<strong>Murphy's Reef & Caloundra Wide:</strong> Gravel beds and hard bottom. <strong>Barwon Banks Gravel & Coral Ledges:</strong> 35-55m depth.",
       "tip": "Their strong parrot-like teeth crush soft hooks. Use forged heavy gauge hooks and crab bait."
     },
     {
@@ -626,7 +626,7 @@
       "lineLeader": "30-40 lb Braid + 40-50 lb Fluorocarbon",
       "rig": "Two-hook paternoster rig with 4/0 forged beak hooks",
       "baits": "Fresh crab pieces, mantis shrimp, peeled prawn, squid",
-      "spots": "<strong>Outer Gneerings bommies:</strong> 25-35m depth. <strong>Murphy's Reef gravel patches.</strong>",
+      "spots": "<strong>Outer Gneerings & Murphy's Reef:</strong> 25-35m bommies. <strong>Barwon Banks Reef Ledges:</strong> 35-55m coral rubble.",
       "tip": "Stiff rod helps detect their rapid pecking bites before they strip crab bait clean."
     },
     {
@@ -677,7 +677,7 @@
       "lineLeader": "30-40 lb Braid + 40-50 lb Fluorocarbon",
       "rig": "Strayline rig with 5/0 circle hook or 1oz sinking swimbait",
       "baits": "Whole squid, cuttlefish strips, live yellowtail scad, pilchards",
-      "spots": "<strong>Outer Gneerings sand/coral edges:</strong> 22-38m depths. <strong>Murphy's Reef gravel gutters.</strong>",
+      "spots": "<strong>Outer Gneerings & Murphy's Reef:</strong> 22-38m sand/coral gutters. <strong>Barwon Banks Reef Edges:</strong> 35-55m gravel channels.",
       "tip": "Spangleds patrol sandy gutters running between reef bommies. Anchor up-current and float baits into gutters."
     },
     {
@@ -694,7 +694,7 @@
       "lineLeader": "30-40 lb Braid + 40-50 lb Fluorocarbon",
       "rig": "Paternoster or lightly weighted running sinker rig with 5/0-6/0 circle hook",
       "baits": "Fresh squid strips, whole pilchards, bonito strips, live yakkas",
-      "spots": "<strong>Murphy's Reef:</strong> Coral ledges and pressure edges. <strong>Outer Gneerings & Caloundra 12 Mile:</strong> 30-50m reef.",
+      "spots": "<strong>Murphy's Reef & Caloundra 12 Mile:</strong> 30-50m pressure edges. <strong>Barwon Banks Reef Ledges:</strong> 40-65m drop-offs.",
       "tip": "Often suspend 1-3m above reef structure; work baits just off the bottom when marking arches on the sounder."
     },
     {
@@ -722,13 +722,13 @@
       "eating": 5,
       "seasons": [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
       "sizeLimit": "Min: 40 cm",
-      "bagLimit": "5 fish per person (Part of Coral Reef Fin Fish quota of 20)",
+      "bagLimit": "Combined limit of 9 across scarlet & crimson seaperch (Part of Coral Reef Fin Fish quota of 20)",
       "closure": "",
       "rodReel": "30-50 lb Overhead or Slow Jigging Combo",
       "lineLeader": "30-50 lb Braid + 40-60 lb Fluorocarbon",
       "rig": "Two-hook paternoster rig with 6/0 circle hooks or 100-150g slow pitch jig",
       "baits": "Whole fresh squid, slimy mackerel fillets, bonito strips, live yakkas",
-      "spots": "<strong>Caloundra 12 Mile Deep Rubble & Wrecks:</strong> 45-60m depth. <strong>Outer Gneerings Deep Fringe:</strong> Isolated gravel bumps.",
+      "spots": "<strong>Caloundra 12 Mile Deep Rubble & Wrecks:</strong> 45-60m depth. <strong>Barwon Banks Deep Rubble:</strong> 50-70m isolated gravel bumps.",
       "tip": "They school up off the bottom at dusk and night; if you hook one, drop straight back down onto the exact GPS mark."
     },
     {
@@ -739,13 +739,13 @@
       "eating": 5,
       "seasons": [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
       "sizeLimit": "Min: 40 cm",
-      "bagLimit": "5 fish per person (Part of Coral Reef Fin Fish quota of 20)",
+      "bagLimit": "Combined limit of 9 across scarlet & crimson seaperch (Part of Coral Reef Fin Fish quota of 20)",
       "closure": "",
       "rodReel": "30-50 lb Overhead or Slow Jigging Combo",
       "lineLeader": "30-40 lb Braid + 40-50 lb Fluorocarbon",
       "rig": "Paternoster rig with 5/0-6/0 circle hooks or 80-130g slow fall jig",
       "baits": "Squid strips, pilchard fillets, strip baits, slow-pitch jigs",
-      "spots": "<strong>Caloundra 12 Mile Gravel & Wire Weed:</strong> 45-60m flats. <strong>Murphy's Reef Outer Ledges:</strong> Low rubble patches.",
+      "spots": "<strong>Caloundra 12 Mile Gravel & Wire Weed:</strong> 45-60m flats. <strong>Barwon Banks Deep Rubble:</strong> 50-70m low rubble patches.",
       "tip": "Use a release weight for undersized fish pulled from 45m+ to prevent barotrauma."
     },
     {
@@ -796,7 +796,7 @@
       "lineLeader": "30-40 lb Braid + 40-60 lb Fluorocarbon",
       "rig": "Lightly weighted strayline bait, 80-120g jig, or 5\"-7\" jerkshad",
       "baits": "Live yakkas, whole pilchards, fresh squid, fast-worked jigs and soft plastics",
-      "spots": "<strong>Murphy's Reef Mid-Water Pinnacles:</strong> Pressure faces. <strong>Outer Gneerings:</strong> 25-40m bommies in warm current.",
+      "spots": "<strong>Murphy's Reef & Outer Gneerings:</strong> 25-40m bommies in warm current. <strong>Barwon Banks Pinnacles:</strong> Mid-water pressure faces.",
       "tip": "Aggressive mid-water hunters that readily chase jigs and soft plastics cranked briskly up off the reef."
     },
     {
@@ -807,14 +807,48 @@
       "eating": 5,
       "seasons": [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
       "sizeLimit": "Min: 38 cm",
-      "bagLimit": "5 fish per person (Part of Coral Reef Fin Fish quota of 20)",
+      "bagLimit": "Combined limit of 8 with lavender jobfish (Part of Coral Reef Fin Fish quota of 20)",
       "closure": "",
       "rodReel": "30-50 lb Overhead or Slow Jigging Combo",
       "lineLeader": "30-40 lb Braid + 40-50 lb Fluorocarbon",
       "rig": "Two-hook paternoster rig with 5/0 circle hooks or 100-150g slow pitch jig",
       "baits": "Fresh squid strips, bonito fillets, slimy mackerel strips, slow-pitch jigs",
-      "spots": "<strong>Caloundra 12 Mile Deep Drop-offs:</strong> 50-65m deep ledges. <strong>Caloundra Wide Shelf Edge:</strong> Deep current lines.",
+      "spots": "<strong>Caloundra 12 Mile Deep Drop-offs:</strong> 50-65m deep ledges. <strong>Barwon Banks Eastern Drop-off:</strong> 55-85m shelf ledges.",
       "tip": "Superior white table flesh; look for schools suspended 5-10m off deep outer ledges."
+    },
+    {
+      "id": "goldband-jobfish",
+      "name": "Goldband Jobfish",
+      "sci": "Pristipomoides multidens",
+      "zone": "Offshore Reef",
+      "eating": 5,
+      "seasons": [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
+      "sizeLimit": "Min: 38 cm",
+      "bagLimit": "Combined limit of 5 with sharptooth jobfish (Part of Coral Reef Fin Fish quota of 20)",
+      "closure": "",
+      "rodReel": "30-50 lb Overhead or Slow Jigging Combo",
+      "lineLeader": "30-50 lb Braid + 40-60 lb Fluorocarbon",
+      "rig": "Two-hook paternoster rig with 6/0 circle hooks or 120-180g slow pitch jig",
+      "baits": "Fresh squid strips, bonito fillets, slimy mackerel strips, slow-pitch jigs",
+      "spots": "<strong>Barwon Banks Deep Ledges & Northern Hards Edge:</strong> 55-85m reef drop-offs. <strong>Caloundra Wide Shelf:</strong> Deep gravel rubble.",
+      "tip": "Premium eating deep-water jobfish; use a release weight on undersized catches from 60m+ to prevent barotrauma."
+    },
+    {
+      "id": "iodine-bream",
+      "name": "Iodine Bream (Robinson's Seabream)",
+      "sci": "Gymnocranius grandoculis",
+      "zone": "Offshore Reef",
+      "eating": 4,
+      "seasons": [1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1],
+      "sizeLimit": "No minimum legal size",
+      "bagLimit": "Combined limit of 20 fin fish",
+      "closure": "",
+      "rodReel": "30-40 lb Spin or Overhead boat rod",
+      "lineLeader": "30 lb Braid + 30-40 lb Fluorocarbon",
+      "rig": "Two-hook paternoster rig with 4/0-5/0 circle hooks",
+      "baits": "Squid strips, pilchard pieces, peeled prawns, bonito cubes",
+      "spots": "<strong>Barwon Banks Middle Reefs & Rubble Flats:</strong> 38-60m bottom structure. <strong>Caloundra 12 Mile Outer Edges.</strong>",
+      "tip": "Named for the faint iodine smell around their gut cavity—bleed and gut immediately on capture for clean, sweet white fillets."
     },
     {
       "id": "teraglin",
@@ -847,7 +881,7 @@
       "lineLeader": "40-50 lb Braid + 60-80 lb Shock Leader",
       "rig": "Live bait bridle rig under balloon or slow drifted mid-water, 2oz bucktail jigs",
       "baits": "Live yellowtail scad, whole fresh squid, 2oz white/chartreuse bucktail jig",
-      "spots": "<strong>Caloundra 12 Mile:</strong> High pinnacles. <strong>Outer Gneerings:</strong> High relief structures and navigational buoys.",
+      "spots": "<strong>Caloundra 12 Mile & Outer Gneerings:</strong> High-relief structures. <strong>Barwon Banks Pinnacles:</strong> 45-70m reef peaks.",
       "tip": "They frequently swim right up to the Sea Spirit transom out of curiosity. Have a bucktail jig rigged ready to pitch."
     },
     {
@@ -864,7 +898,7 @@
       "lineLeader": "40-50 lb Braid + 60-80 lb Tough Fluorocarbon",
       "rig": "Live yakka under balloon, downrigger clip, or 150-250g mechanical knife jig",
       "baits": "Live yellowtail scad, live slimy mackerel, whole live calamari squid",
-      "spots": "<strong>Caloundra 12 Mile:</strong> Steep drop-offs and high relief pinnacles. <strong>Outer Gneerings:</strong> Deep pressure faces.",
+      "spots": "<strong>Caloundra 12 Mile & Outer Gneerings:</strong> Steep drop-offs. <strong>Barwon Banks Pinnacles & Northern Hards Edge:</strong> 45-80m high-relief peaks.",
       "tip": "Speed jigging or slow trolling live yakkas around deep pinnacles during winter mornings is prime."
     },
     {
@@ -881,7 +915,7 @@
       "lineLeader": "50-65 lb Braid + 80-100 lb Shock Leader",
       "rig": "200-300g Knife jig worked fast, or live yakka weighted to the bottom",
       "baits": "Live slimy mackerel, live yakka, whole squid, speed knife jigs",
-      "spots": "<strong>Caloundra 12 Mile:</strong> 50-65m reef peaks. <strong>Outer pinnacles off Mooloolaba.</strong>",
+      "spots": "<strong>Caloundra 12 Mile:</strong> 50-65m reef peaks. <strong>Barwon Banks Pinnacles & Eastern Drop-offs:</strong> 55-85m high-relief structure.",
       "tip": "Brutal fighting power. Set your drag high and pump hard off the bottom to keep them out of structure."
     },
     {
@@ -898,7 +932,7 @@
       "lineLeader": "50 lb Braid + 80 lb Fluorocarbon",
       "rig": "Heavy live bait rig or 150-250g vertical jig",
       "baits": "Live yakkas, live slimy mackerel, knife jigs",
-      "spots": "<strong>Deep Reef Pinnacles:</strong> Caloundra 12 Mile deep ledges (50m+).",
+      "spots": "<strong>Caloundra 12 Mile Deep Ledges:</strong> 50m+ pinnacles. <strong>Barwon Banks Deep Pinnacles:</strong> 55-80m reef peaks.",
       "tip": "Often school alongside amberjack; prepare for sustained vertical slugfests beneath the boat."
     },
     {
@@ -919,6 +953,74 @@
       "tip": "Bottom huggers that rarely venture far from their cave; drop your sinker right to the seafloor."
     },
     {
+      "id": "yellowspotted-rockcod",
+      "name": "Yellowspotted Rockcod",
+      "sci": "Epinephelus areolatus",
+      "zone": "Offshore Reef",
+      "eating": 4,
+      "seasons": [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
+      "sizeLimit": "Min: 38 cm, Max: 120 cm",
+      "bagLimit": "Combined limit of 5 across cods/groupers (Part of Coral Reef Fin Fish quota of 20)",
+      "closure": "",
+      "rodReel": "30-50 lb Overhead or heavy boat rod",
+      "lineLeader": "30-50 lb Braid + 50 lb Fluorocarbon",
+      "rig": "Two-hook paternoster rig with 5/0-6/0 circle hooks",
+      "baits": "Squid strips, pilchard fillets, strip baits, small live yakkas",
+      "spots": "<strong>Barwon Banks Reef Ledges & Rubble Patches:</strong> 35-65m depth. <strong>Caloundra 12 Mile Deep Reef.</strong>",
+      "tip": "Frequently caught alongside pearl perch and tuskfish on the Banks; keep baits right on the bottom rubble."
+    },
+    {
+      "id": "blacktip-rockcod",
+      "name": "Blacktip Rockcod",
+      "sci": "Epinephelus fasciatus",
+      "zone": "Offshore Reef",
+      "eating": 4,
+      "seasons": [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
+      "sizeLimit": "Min: 38 cm, Max: 120 cm",
+      "bagLimit": "Combined limit of 5 across cods/groupers (Part of Coral Reef Fin Fish quota of 20)",
+      "closure": "",
+      "rodReel": "30-50 lb Overhead or heavy spin combo",
+      "lineLeader": "30-50 lb Braid + 50-60 lb Fluorocarbon",
+      "rig": "Paternoster rig with 6/0 circle hooks or bottom-worked octo-jig",
+      "baits": "Whole squid, pilchards, bonito strips, live yellowtail scad",
+      "spots": "<strong>Barwon Banks High-Relief Bommies:</strong> 35-55m coral ledges. <strong>Outer Gneerings Deep Structure.</strong>",
+      "tip": "Aggressive reef-dweller that darts straight back into coral caves; lock down drag and wind hard on the bite."
+    },
+    {
+      "id": "bar-cod",
+      "name": "Bar Cod (Eightbar Grouper)",
+      "sci": "Hyporthodus octofasciatus",
+      "zone": "Offshore Reef",
+      "eating": 5,
+      "seasons": [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
+      "sizeLimit": "Min: 38 cm, Max: 120 cm",
+      "bagLimit": "Combined limit of 5 across cods/groupers (Part of Coral Reef Fin Fish quota of 20)",
+      "closure": "",
+      "rodReel": "50-80 lb Heavy Jigging or Electric/Heavy Overhead setup",
+      "lineLeader": "50-80 lb Braid + 80-100 lb Tough Fluorocarbon",
+      "rig": "Heavy deep-drop paternoster with 8/0-10/0 circle hooks or 250-400g slow pitch jig",
+      "baits": "Large squid mantles, whole slimy mackerel, bonito fillets, heavy slow-pitch jigs",
+      "spots": "<strong>Barwon Banks Eastern Drop-off:</strong> 80-120m+ deep rocky ledges and canyon edges.",
+      "tip": "Target on slack tide or light current days in the Sea Spirit 520 so 300-400g jigs or leads hold vertical in 90m+."
+    },
+    {
+      "id": "flame-snapper",
+      "name": "Flame Snapper",
+      "sci": "Etelis coruscans",
+      "zone": "Offshore Reef",
+      "eating": 5,
+      "seasons": [1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1],
+      "sizeLimit": "Min: 38 cm",
+      "bagLimit": "5 fish per person (Part of Coral Reef Fin Fish quota of 20)",
+      "closure": "",
+      "rodReel": "50-80 lb Deep-Drop Overhead or Heavy Slow Jigging setup",
+      "lineLeader": "50-65 lb Braid + 80 lb Fluorocarbon",
+      "rig": "Multi-hook deep-drop paternoster with luminescent sleeves and 7/0-8/0 circle hooks",
+      "baits": "Strips of bonito, slimy mackerel, fresh squid, glowing deep-water jigs",
+      "spots": "<strong>Barwon Banks Outer Shelf Trench:</strong> 110-150m+ steep eastern drop-offs.",
+      "tip": "Look for tight schools suspended 5-15m above deep shelf ledges; keep glow beads or an underwater strobe above the rig."
+    },
+    {
       "id": "hussar",
       "name": "Pink Hussar",
       "sci": "Lutjanus adetii",
@@ -934,6 +1036,23 @@
       "baits": "Squid strips, pilchard cubes",
       "spots": "<strong>Outer Gneerings & Murphy's Reef:</strong> 25-45m bottom structure.",
       "tip": "Great table fish despite smaller size; also makes hardy live bait for Spanish mackerel."
+    },
+    {
+      "id": "spanner-crab",
+      "name": "Spanner Crab",
+      "sci": "Ranina ranina",
+      "zone": "Offshore Reef",
+      "eating": 5,
+      "seasons": [2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 0, 1],
+      "sizeLimit": "Min: 10 cm carapace length (rostrum to posterior edge)",
+      "bagLimit": "20 crabs per person",
+      "closure": "⚠️ SEQ Closed Season: 1 November to 15 December annually (strictly no take)",
+      "rodReel": "Flat-frame spanner crab dillies (tangle nets) with compliant ID tags",
+      "lineLeader": "Heavy sinking rope with large high-visibility surface floats",
+      "rig": "Regulation flat mesh spanner dilly with wired bait holder in center",
+      "baits": "Fresh mullet frames, pilchards, bonito heads, tuna frames",
+      "spots": "<strong>Clean Sand Flats En Route to Barwon Banks:</strong> 25-50m sandy corridors between inner reefs and the Banks.",
+      "tip": "Drop dillies on clean sandy bottom on your way out to the Banks and haul them on the run home after a 60-90 minute soak."
     },
     {
       "id": "spanish-mackerel",
@@ -968,6 +1087,23 @@
       "baits": "20g-35g Halco Twisty or Gillies chrome lures, small live whitebait, drifted pilchard",
       "spots": "<strong>Point Cartwright to Currimundi:</strong> Chopping schools in 12m-25m depths. <strong>Old Woman Island (Mudjimba):</strong> Inshore wash zones.",
       "tip": "Look for diving terns. Cut your motor 80 meters upwind and drift silently into casting range so you don't spook the school."
+    },
+    {
+      "id": "bludger-trevally",
+      "name": "Bludger Trevally",
+      "sci": "Carangoides gymnostethus",
+      "zone": "Pelagic & Game",
+      "eating": 3,
+      "seasons": [2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2],
+      "sizeLimit": "No minimum legal size",
+      "bagLimit": "Combined limit of 20 fin fish",
+      "closure": "",
+      "rodReel": "4000-5000 Spin or 30-50 lb Jigging combo",
+      "lineLeader": "30-40 lb Braid + 40-50 lb Fluorocarbon",
+      "rig": "100-180g metal speed/slow jig, 5\"-7\" jerkshad, or live yakka rig",
+      "baits": "Live yellowtail scad, slimy mackerel, metal jigs, large soft plastics",
+      "spots": "<strong>Barwon Banks Pinnacles & Mid-Water Bait Schools:</strong> 35-65m reef peaks. <strong>Outer Gneerings.</strong>",
+      "tip": "Heavy-shouldered reef trevally that patrol mid-water bait balls on the Banks and pull hard all the way to the boat."
     },
     {
       "id": "longtail-tuna",
@@ -1034,8 +1170,25 @@
       "lineLeader": "40-50 lb Braid + 60-80 lb Fluorocarbon",
       "rig": "Stickbait casting, trolling skirts, or drifted live slime under balloon",
       "baits": "Live slimy mackerel, trolled skirted lures (6\"-8\"), diving plugs",
-      "spots": "<strong>Caloundra Wide Drop-offs:</strong> 50m-80m blue water shelf. <strong>Offshore FADs (8-15 NM).</strong>",
+      "spots": "<strong>Caloundra Wide & Barwon Banks Eastern Shelf:</strong> 50m-100m blue water drop-offs. <strong>Offshore FADs (8-15 NM).</strong>",
       "tip": "Watch the water temperature gauge on the Sea Spirit 520; look for warm blue current pushes above 24°C."
+    },
+    {
+      "id": "dogtooth-tuna",
+      "name": "Dogtooth Tuna",
+      "sci": "Gymnosarda unicolor",
+      "zone": "Pelagic & Game",
+      "eating": 3,
+      "seasons": [2, 2, 2, 2, 1, 0, 0, 0, 1, 1, 2, 2],
+      "sizeLimit": "No minimum legal size",
+      "bagLimit": "Combined tuna limit: 2 fish per person",
+      "closure": "",
+      "rodReel": "8000-14000 Heavy Spin or PE 5-8 Jigging combo",
+      "lineLeader": "65-80 lb Braid + 100-130 lb Heavy Fluorocarbon shock leader",
+      "rig": "200-300g heavy knife jig, large stickbait, or live rainbow runner/yakka",
+      "baits": "Live rainbow runner, live slimy mackerel, heavy speed jigs, large diving minnows",
+      "spots": "<strong>Barwon Banks Northern Pinnacles & The Hards Edge:</strong> 45-80m high-relief coral peaks.",
+      "tip": "Notorious reef-runners with razor teeth—apply heavy drag immediately on hookup before they bury you in the coral."
     },
     {
       "id": "mahi-mahi",
@@ -1051,7 +1204,7 @@
       "lineLeader": "20-30 lb Braid + 40 lb Leader",
       "rig": "Unweighted whole pilchard floated on a 5/0 hook, or 5\" skipping stickbait",
       "baits": "Live yakkas, whole fresh pilchards, surface poppers, skirts",
-      "spots": "<strong>Offshore FADs:</strong> Government FADs located 8-15 NM off Mooloolaba. <strong>Floating flotsam / trap floats.</strong>",
+      "spots": "<strong>Offshore FADs:</strong> Government FADs located 8-15 NM off Mooloolaba. <strong>Barwon Banks Current Lines & Floating Flotsam.</strong>",
       "tip": "Check modern FAD GPS coordinates published by QLD Fisheries. Approach up-current and cast tight to float structure."
     },
     {
@@ -1068,7 +1221,7 @@
       "lineLeader": "50 lb Braid + 80 lb Mono Wind-on + #7 Single Strand Wire",
       "rig": "High speed trolling skirts or deep bibless minnows (e.g. Nomad DTX Minnow)",
       "baits": "Trolled Hexhead skirts, rigged garfish or bonito, high speed lures at 8-12 knots",
-      "spots": "<strong>Caloundra Wide Drop-off:</strong> 50m-80m shelf edge. <strong>Outer trench edges.</strong>",
+      "spots": "<strong>Caloundra Wide & Barwon Banks Eastern Edge:</strong> 50m-90m shelf drop-offs and temperature breaks.",
       "tip": "Pick calm blue-water days for your 520. Wahoo love speed; troll between 7 and 10 knots along temperature breaks."
     },
     {
@@ -1085,8 +1238,42 @@
       "lineLeader": "30-50 lb Braid + 80-100 lb Fluorocarbon/Mono wind-on leader",
       "rig": "Skip-baited rigged garfish/slimy mackerel on 7/0-8/0 inline circle hook, or 6\"-7\" pushers",
       "baits": "Live slimy mackerel, live yellowtail scad, skip-baited garfish, small trolling skirts",
-      "spots": "<strong>Outer Gneerings & Murphy's Reef:</strong> Bait balls in 25-45m water. <strong>Caloundra 12 Mile & Sunshine Coast FADs:</strong> Warm summer current edges.",
+      "spots": "<strong>Outer Gneerings & Murphy's Reef:</strong> Bait balls in 25-45m water. <strong>Caloundra 12 Mile & Barwon Banks Fringe:</strong> Warm summer current edges.",
       "tip": "Juvenile blacks (15-40kg) patrol inshore reefs all summer; keep them boatside for photos and release without lifting aboard."
+    },
+    {
+      "id": "striped-marlin",
+      "name": "Striped Marlin",
+      "sci": "Kajikia audax",
+      "zone": "Pelagic & Game",
+      "eating": 1,
+      "seasons": [1, 1, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2],
+      "sizeLimit": "No minimum legal size (Tag & release standard)",
+      "bagLimit": "1 billfish per person",
+      "closure": "",
+      "rodReel": "15-24kg Lever-Drag Overhead trolling combo",
+      "lineLeader": "50 lb Braid/Mono + 150-200 lb Mono wind-on leader",
+      "rig": "7\"-9\" skirted trolling lures (pushers/angled heads) or skip-baited garfish/slimy mackerel",
+      "baits": "Trolled skirted lures, rigged garfish, live slimy mackerel slow-trolled",
+      "spots": "<strong>Barwon Banks Eastern Edge & Shelf Break:</strong> 60-120m blue-water current lines (Sept-Dec).",
+      "tip": "Prime spring/early-summer pelagic along the eastern edge of the Banks where cool green inshore water meets warm blue currents."
+    },
+    {
+      "id": "blue-marlin",
+      "name": "Blue Marlin",
+      "sci": "Makaira nigricans",
+      "zone": "Pelagic & Game",
+      "eating": 1,
+      "seasons": [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 2],
+      "sizeLimit": "No minimum legal size (Tag & release standard)",
+      "bagLimit": "1 billfish per person",
+      "closure": "",
+      "rodReel": "24-37kg Heavy Lever-Drag Overhead trolling combo",
+      "lineLeader": "60-80 lb Braid/Mono + 200-300 lb Mono wind-on leader",
+      "rig": "9\"-12\" heavy skirted trolling lures (slant/chugger heads) with twin or single 9/0-11/0 hooks",
+      "baits": "Large skirted trolling lures, live striped tuna or mahi mahi",
+      "spots": "<strong>Barwon Banks Outer Shelf & Deep Trench:</strong> 80-150m+ warm summer East Australian Current (EAC) edges.",
+      "tip": "Only target in the Sea Spirit 520 on settled, low-swell summer forecasts; use circle hooks or single-hook rigs for clean boatside releases."
     },
     {
       "id": "sailfish",
@@ -1102,8 +1289,8 @@
       "lineLeader": "30-50 lb Braid + 80-100 lb Monofilament wind-on leader",
       "rig": "Skip-baited rigged garfish with circle hook or small skirted trolling lure",
       "baits": "Trolled garfish, live slimy mackerel drifted under balloon, 6\" skirts",
-      "spots": "<strong>Caloundra Wide & Barwon Banks fringe:</strong> Warm summer current lines (35-65m depth). <strong>Offshore FAD outer grounds.</strong>",
-      "tip": "Summer warm current pushes bring sailfish into 40-50m depth off Mooloolaba. Look for surface bait showering."
+      "spots": "<strong>Caloundra Wide & Barwon Banks Eastern Edge:</strong> Warm summer current lines (35-75m depth). <strong>Offshore FAD outer grounds.</strong>",
+      "tip": "Summer warm current pushes bring sailfish into 40-70m depth off Mooloolaba and the Banks. Look for surface bait showering."
     },
     {
       "id": "rainbow-runner",
