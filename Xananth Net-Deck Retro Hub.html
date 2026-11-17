@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XANANTH // NET-DECK</title>
+  <!-- Google Fonts for Retro Display & Developer Monospace -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- =========================================================================
+       STYLESHEET BLOCK (Ready to extract directly to master.css)
+       ========================================================================= -->
+  <style>
+    /* =========================================================================
+       DESIGN TOKENS: DEEP VOID PURPLE + BRAND LIME (#8de500) + HORIZON EMERALD
+       Inspired by wallhaven-oggvw9 (dark slatted interior & warm LEDs)
+       and wallhaven-3lpymv (emerald/lime sunrise over dark silhouettes)
+       ========================================================================= */
+    :root {
+      --bg-void: #06040b;
+      --bg-deep-purple: #0d0917;
+      --bg-window: rgba(13, 9, 23, 0.9);
+      --bg-surface: #140e24;
+      --bg-drawer: rgba(8, 5, 15, 0.96);
+
+      --border-purple: #23183b;
+      --border-purple-mid: #37255c;
+      --border-lime-subtle: rgba(141, 229, 0, 0.32);
+
+      --brand-lime: #8de500;
+      --brand-lime-bright: #a7ff1f;
+      --brand-lime-dim: rgba(141, 229, 0, 0.14);
+      --brand-lime-glow: rgba(141, 229, 0, 0.35);
+
+      --horizon-emerald: #19543e;
+      --horizon-jade: #2ea872;
+      --led-warm: #ff4f2b;
+      --led-amber: #ff7733;
+
+      --text-primary: #f0ecf8;
+      --text-secondary: #b7abcf;
+      --text-muted: #7c6e99;
+
+      --font-display: 'Chakra Petch', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-pixel: 'Silkscreen', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      color-scheme: dark;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-void);
+      /* Ambient horizon synthesis: deep void purple top + emerald/lime horizon glow bottom */
+      background-image:
+        radial-gradient(ellipse 90% 55% at 50% 105%, rgba(141, 229, 0, 0.09) 0%, rgba(25, 84, 62, 0.18) 40%, transparent 75%),
+        radial-gradient(ellipse 75% 50% at 50% -5%, rgba(55, 37, 92, 0.42) 0%, transparent 70%),
+        linear-gradient(180deg, #06040b 0%, #0d0917 60%, #081312 88%, #050609 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.55;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Subtle retro architectural grid texture in the background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(141, 229, 0, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(55, 37, 92, 0.16) 1px, transparent 1px);
+      background-size: 100% 8px, 36px 100%;
+    }
+
+    /* =========================================================================
+       TACTILE CRT SCANLINE, VIGNETTE & PHOSPHOR BLOOM (.crt-enabled)
+       Noticeably dialed up with scanlines, corner vignette & rolling scanbar
+       ========================================================================= */
+    body.crt-enabled::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background:
+        /* Rolling faint phosphor refresh bar */
+        linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(141, 229, 0, 0.035) 48%,
+          rgba(141, 229, 0, 0.08) 50%,
+          transparent 52%,
+          transparent 100%
+        ),
+        /* Distinct horizontal CRT scanlines every 3px */
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.015) 0px,
+          rgba(255, 255, 255, 0.015) 1px,
+          rgba(0, 0, 0, 0.42) 1px,
+          rgba(0, 0, 0, 0.42) 3px
+        ),
+        /* Subtle RGB subpixel vertical aperture grille */
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 0, 70, 0.025) 0px,
+          rgba(0, 255, 100, 0.025) 1px,
+          rgba(80, 80, 255, 0.025) 2px,
+          transparent 3px
+        ),
+        /* CRT monitor corner vignette */
+        radial-gradient(
+          circle at 50% 50%,
+          transparent 62%,
+          rgba(3, 2, 7, 0.52) 100%
+        );
+      background-size: 100% 200%, 100% 3px, 3px 100%, 100% 100%;
+      animation: crtScanbar 9s linear infinite;
+    }
+
+    @keyframes crtScanbar {
+      0% { background-position: 0 -100%, 0 0, 0 0, 0 0; }
+      100% { background-position: 0 100%, 0 0, 0 0, 0 0; }
+    }
+
+    /* Enhanced phosphor bloom when CRT mode is active */
+    body.crt-enabled .lime-glow {
+      text-shadow:
+        0 0 8px rgba(141, 229, 0, 0.45),
+        0 0 18px rgba(141, 229, 0, 0.22);
+    }
+
+    body.crt-enabled .spa-title {
+      text-shadow: 0 0 10px rgba(141, 229, 0, 0.18);
+    }
+
+    body.crt-enabled .status-pill.live,
+    body.crt-enabled .online-pill {
+      text-shadow: 0 0 6px rgba(141, 229, 0, 0.55);
+    }
+
+    /* =========================================================================
+       STICKY TOP SYSTEM BAR
+       ========================================================================= */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(8, 5, 15, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-purple);
+      box-shadow:
+        0 1px 0 rgba(141, 229, 0, 0.2),
+        0 8px 24px rgba(0, 0, 0, 0.55);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      min-width: 0;
+    }
+
+    .brand-logo-wrap {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #050308;
+      border: 1px solid var(--border-purple-mid);
+      border-top-color: var(--brand-lime);
+      border-radius: 4px;
+      padding: 4px;
+      box-shadow: inset 0 0 10px rgba(141, 229, 0, 0.1);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .brand-logo-wrap:hover {
+      border-color: var(--brand-lime);
+      box-shadow: 0 0 12px var(--brand-lime-glow);
+    }
+
+    .brand-logo-wrap img,
+    .brand-logo-wrap svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      min-width: 0;
+    }
+
+    .online-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      width: fit-content;
+      font-family: var(--font-pixel);
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+      color: var(--brand-lime);
+      line-height: 1;
+    }
+
+    .online-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--brand-lime);
+      box-shadow: 0 0 6px var(--brand-lime);
+      animation: pulseDot 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .brand-heading {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lime-glow {
+      text-shadow: 0 0 10px rgba(141, 229, 0, 0.22);
+    }
+
+    .system-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .clock-readout {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: rgba(20, 14, 36, 0.8);
+      border: 1px solid var(--border-purple);
+      border-radius: 3px;
+      padding: 0.35rem 0.65rem;
+      letter-spacing: 0.04em;
+    }
+
+    .crt-toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.32rem 0.6rem;
+      background: rgba(20, 14, 36, 0.9);
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 3px;
+      cursor: pointer;
+      user-select: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      transition: border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .crt-toggle-wrap:hover,
+    .crt-toggle-wrap:focus-visible {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      outline: none;
+    }
+
+    .crt-switch {
+      width: 24px;
+      height: 12px;
+      background: #120c21;
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 2px;
+      position: relative;
+      transition: border-color 0.18s ease;
+    }
+
+    .crt-switch-thumb {
+      width: 8px;
+      height: 8px;
+      background: var(--text-muted);
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    body.crt-enabled .crt-switch {
+      border-color: rgba(141, 229, 0, 0.65);
+    }
+
+    body.crt-enabled .crt-switch-thumb {
+      transform: translateX(10px);
+      background: var(--brand-lime);
+      box-shadow: 0 0 6px var(--brand-lime);
+    }
+
+    /* =========================================================================
+       MAIN SHELL & MODULE GRID (CLEAN FULL-WIDTH LAUNCHER)
+       ========================================================================= */
+    .main-shell {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      width: 100%;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 2.25rem 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2.5rem;
+    }
+
+    .spa-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* =========================================================================
+       RETRO OS WINDOW ARCHITECTURE
+       Translates oggvw9's dark bulkhead, slatted blind lines & warm LED dots
+       ========================================================================= */
+    .os-window {
+      background: var(--bg-window);
+      border: 1px solid var(--border-purple-mid);
+      /* Crisp lime top specular highlight like light catching the sill in oggvw9 */
+      border-top: 1px solid rgba(141, 229, 0, 0.55);
+      border-radius: 4px;
+      box-shadow:
+        0 14px 32px -8px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(141, 229, 0, 0.1);
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Slatted blind texture inside window titlebars (inspired by oggvw9 window slats) */
+    .win-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.5rem 0.85rem;
+      background-color: #110b1f;
+      background-image: repeating-linear-gradient(
+        180deg,
+        rgba(141, 229, 0, 0.04) 0px,
+        rgba(141, 229, 0, 0.04) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      border-bottom: 1px solid var(--border-purple);
+      user-select: none;
+    }
+
+    .win-title-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Warm indicator LED inspired by the small red/amber bulkhead lights on the left of oggvw9 */
+    .win-title-text::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 1px;
+      background: var(--led-warm);
+      box-shadow: 0 0 6px var(--led-warm);
+      flex-shrink: 0;
+    }
+
+    .win-close-btn {
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(29, 20, 48, 0.85);
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 2px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .win-close-btn:hover {
+      background: rgba(141, 229, 0, 0.15);
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+    }
+
+    .os-window.minimized .win-body,
+    .os-window.minimized .spa-card-art {
+      display: none;
+    }
+
+    .os-window.minimized {
+      border-style: dashed;
+      opacity: 0.78;
+    }
+
+    /* =========================================================================
+       SPA MODULE CARDS & RETRO SVG VIEWPORT BANNERS
+       ========================================================================= */
+    .spa-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spa-card:hover {
+      border-color: var(--brand-lime);
+      box-shadow:
+        0 16px 36px -10px rgba(0, 0, 0, 0.88),
+        0 0 20px rgba(141, 229, 0, 0.14);
+      transform: translateY(-2px);
+    }
+
+    /* SVG Cartridge Art Banner inside each card */
+    .spa-card-art {
+      position: relative;
+      height: 142px;
+      width: 100%;
+      background: #07050d;
+      border-bottom: 1px solid var(--border-purple-mid);
+      overflow: hidden;
+    }
+
+    .spa-card-art svg,
+    .spa-card-art img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .spa-card:hover .spa-card-art svg,
+    .spa-card:hover .spa-card-art img {
+      transform: scale(1.025);
+    }
+
+    /* Subtle Venetian blind slat overlay across the top of the art banner (oggvw9 reference) */
+    .spa-card-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(6, 4, 11, 0.34) 0px,
+          rgba(6, 4, 11, 0.34) 1px,
+          transparent 1px,
+          transparent 5px
+        ),
+        linear-gradient(180deg, rgba(6, 4, 11, 0.25) 0%, transparent 40%, rgba(13, 9, 23, 0.75) 100%);
+    }
+
+    .art-telemetry-tag {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.65rem;
+      z-index: 2;
+      padding: 0.12rem 0.45rem;
+      background: rgba(6, 4, 11, 0.82);
+      border: 1px solid rgba(141, 229, 0, 0.35);
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--brand-lime);
+      letter-spacing: 0.06em;
+      pointer-events: none;
+    }
+
+    .win-body {
+      padding: 1.2rem 1.25rem 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .spa-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .spa-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .status-pill {
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      padding: 0.2rem 0.48rem;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .status-pill.live {
+      background: var(--brand-lime-dim);
+      color: var(--brand-lime);
+      border: 1px solid rgba(141, 229, 0, 0.48);
+    }
+
+    .status-pill.wip,
+    .status-pill.beta {
+      background: rgba(255, 119, 51, 0.14);
+      color: var(--led-amber);
+      border: 1px solid rgba(255, 119, 51, 0.45);
+    }
+
+    .spa-tag-row {
+      font-size: 0.73rem;
+      color: var(--horizon-jade);
+      margin-bottom: 0.65rem;
+      font-weight: 500;
+    }
+
+    .spa-desc {
+      font-size: 0.83rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .spa-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(55, 37, 92, 0.6);
+    }
+
+    .btn-launch {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.05rem;
+      background: var(--brand-lime);
+      color: #06040b;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 3px;
+      border: 1px solid var(--brand-lime-bright);
+      box-shadow: 0 2px 12px rgba(141, 229, 0, 0.22);
+      transition: all 0.15s ease;
+    }
+
+    .btn-launch:hover,
+    .btn-launch:focus-visible {
+      background: var(--brand-lime-bright);
+      box-shadow: 0 0 18px rgba(141, 229, 0, 0.5);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .btn-info {
+      padding: 0.48rem 0.75rem;
+      background: rgba(20, 14, 36, 0.9);
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 3px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-info:hover,
+    .btn-info.active {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      background: rgba(141, 229, 0, 0.09);
+    }
+
+    .spa-shortcut-hint {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0.15rem 0.42rem;
+      border: 1px solid rgba(55, 37, 92, 0.65);
+      border-radius: 2px;
+      background: rgba(10, 7, 18, 0.7);
+    }
+
+    .spa-info-drawer {
+      display: none;
+      margin-top: 0.75rem;
+      padding: 0.75rem 0.85rem;
+      background: var(--bg-drawer);
+      border: 1px solid var(--border-purple-mid);
+      border-left: 2px solid var(--brand-lime);
+      border-radius: 3px;
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .spa-info-drawer strong {
+      color: var(--brand-lime);
+      font-weight: 600;
+    }
+
+    .spa-info-drawer.open {
+      display: block;
+    }
+
+    /* =========================================================================
+       FOOTER DOCK
+       ========================================================================= */
+    .footer-dock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(55, 37, 92, 0.55);
+    }
+
+    .badge-wall {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .retro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.32rem 0.72rem;
+      background: rgba(18, 12, 31, 0.92);
+      border: 1px solid var(--border-purple-mid);
+      border-left: 2px solid var(--brand-lime);
+      border-radius: 2px;
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .retro-badge:hover {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      background: rgba(141, 229, 0, 0.09);
+      transform: translateY(-1px);
+    }
+
+    .kb-legend {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* =========================================================================
+       RESPONSIVE BREAKPOINTS (MOBILE & TABLET)
+       ========================================================================= */
+    @media (max-width: 780px) {
+      .main-shell {
+        padding: 1.35rem 1rem 1.5rem;
+      }
+
+      .spa-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .top-bar {
+        padding: 0.65rem 1rem;
+      }
+
+      .brand-heading {
+        font-size: 0.98rem;
+      }
+
+      .clock-readout {
+        display: none;
+      }
+
+      .spa-shortcut-hint,
+      .kb-legend {
+        display: none;
+      }
+
+      .footer-dock {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body class="crt-enabled">
+
+  <!-- =========================================================================
+       STICKY TOP SYSTEM BAR
+       ========================================================================= -->
+  <header class="top-bar">
+    <!-- Left: Brand Logo & Status -->
+    <div class="brand-cluster">
+      <div class="brand-logo-wrap" title="Xananth // Net-Deck">
+        <img src="Xananth Logo Fold 3 Inner~2.png" alt="Xananth Logo" onerror="this.style.display='none'; document.getElementById('xananth-svg-logo').style.display='block';" />
+        <svg id="xananth-svg-logo" style="display:none;" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#8de500">
+            <polygon points="74,12 126,12 142,42 63,118 47,62" />
+            <polygon points="36,80 51,131 24,157 8,130" />
+            <polygon points="56,149 62,172 34,172" />
+            <polygon points="150,58 192,130 168,172 75,172 68,139" />
+          </g>
+          <text x="77" y="164" fill="#06040b" font-family="cursive, sans-serif" font-weight="900" font-style="italic" font-size="25" letter-spacing="0.5">ananth</text>
+        </svg>
+      </div>
+      <div class="brand-titles">
+        <div class="online-pill">
+          <span class="online-dot"></span>
+          <span>ONLINE</span>
+        </div>
+        <h1 class="brand-heading lime-glow">XANANTH // NET-DECK</h1>
+      </div>
+    </div>
+
+    <!-- Right: Clock & CRT FX Toggle -->
+    <div class="system-controls">
+      <span id="clockReadout" class="clock-readout">AEST --:--</span>
+
+      <div id="crtToggle" class="crt-toggle-wrap" role="switch" aria-checked="true" tabindex="0" title="Toggle CRT Scanline & Phosphor FX">
+        <span id="crtLabel">[CRT FX: ON]</span>
+        <div class="crt-switch">
+          <div class="crt-switch-thumb"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN WORKSPACE (CLEAN SPA LAUNCHER GRID)
+       ========================================================================= -->
+  <main class="main-shell">
+    <section aria-label="Application Modules">
+      <div id="spaGrid" class="spa-grid">
+        <!-- Populated dynamically from modules.json / #modules-data -->
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         FOOTER DOCK
+         ========================================================================= -->
+    <footer class="footer-dock">
+      <div class="badge-wall">
+        <a href="https://youtube.com/day9tv" target="_blank" rel="noopener noreferrer" class="retro-badge">Inspiration</a>
+        <a href="https://webfpv.org" target="_blank" rel="noopener noreferrer" class="retro-badge">Motivation</a>
+      </div>
+
+      <div id="kbLegend" class="kb-legend">
+        ESC to reset &nbsp;|&nbsp; Enter or 1–2 to launch
+      </div>
+    </footer>
+  </main>
+
+  <!-- =========================================================================
+       JSON MODULE REGISTRY (Ready to extract directly to modules.json)
+       Fields:
+         - id: unique slug used for element IDs and module:// path
+         - title: display heading
+         - status: "LIVE", "BETA", or "WIP"
+         - tag: category subtitle
+         - art: preset SVG key ("fishing", "magepunk", "map", "terminal", "default")
+         - code: top-right telemetry badge inside the SVG banner
+         - description: concise summary
+         - url: relative or external link to launch
+         - info: HTML string shown inside the [INFO] drawer
+       ========================================================================= -->
+  <script id="modules-data" type="application/json">
+  [
+    {
+      "id": "fishing-calendar",
+      "title": "FISHING CALENDAR",
+      "status": "LIVE",
+      "tag": "Tools & Utilities",
+      "art": "fishing",
+      "code": "SONAR // 26.68°S",
+      "description": "Interactive Sunshine Coast seasonal species matrix, tackle specs, and local fishing spots.",
+      "url": "./fishingcal.html",
+      "info": "<strong>Build v1.4:</strong> 12-month seasonal matrix covering canals, estuaries, and offshore reefs—sortable by seasonal availability, eating quality, or species name, with tackle specs, local hotspots, and a light/dark mode toggle."
+    },
+    {
+      "id": "magepunk-character-creator",
+      "title": "MAGEPUNK CHARACTER CREATOR",
+      "status": "LIVE",
+      "tag": "TTRPG & Character Matrix",
+      "art": "magepunk",
+      "code": "FARI_V6 // D4-D20",
+      "description": "6-step TTRPG character builder, interactive play sheet, step-dice roller, and bidirectional Fari v6 JSON matrix.",
+      "url": "./magepunk.html",
+      "info": "<strong>Fari v6 Matrix:</strong> Features a 6-step compilation wizard (identity, step-dice traits, skills, trade features, foci, grimoire, and wealth), an active play sheet with live HP/Mana and Fatigue/Demise trackers, an upsize/downsize step-dice roller (d4–d20) with Web Audio synth FX, 5 archetype presets, and full Fari v6 JSON import/export."
+    }
+  ]
+  </script>
+
+  <!-- =========================================================================
+       APPLICATION LOGIC & SVG ARTWORK RENDERER
+       ========================================================================= -->
+  <script>
+    const spaGrid = document.getElementById('spaGrid');
+    const crtToggle = document.getElementById('crtToggle');
+    const crtLabel = document.getElementById('crtLabel');
+    const kbLegend = document.getElementById('kbLegend');
+
+    let loadedModules = [];
+
+    // =========================================================================
+    // RETRO SVG ARTWORK PRESETS FOR MODULE CARDS
+    // Synthesizes 3lpymv (emerald/lime horizon & silhouettes) + oggvw9 (dark frame)
+    // =========================================================================
+    function getModuleSvgArt(proj) {
+      if (proj.image) {
+        return `<img src="${proj.image}" alt="${proj.title} preview" />`;
+      }
+
+      const artKey = (proj.art || 'default').toLowerCase();
+
+      switch (artKey) {
+        case 'fishing':
+          return `
+            <svg viewBox="0 0 480 142" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="fishSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0b0714"/>
+                  <stop offset="48%" stop-color="#13382c"/>
+                  <stop offset="78%" stop-color="#287a58"/>
+                  <stop offset="100%" stop-color="#071210"/>
+                </linearGradient>
+                <linearGradient id="waterDepth" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0b2922"/>
+                  <stop offset="100%" stop-color="#06040b"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Horizon Sky -->
+              <rect width="480" height="142" fill="url(#fishSky)"/>
+
+              <!-- Low-poly sky facet streaks (3lpymv reference) -->
+              <polygon points="0,18 190,8 340,24 0,32" fill="#1b523e" opacity="0.35"/>
+              <polygon points="160,26 480,10 480,36 240,42" fill="#2ea872" opacity="0.2"/>
+
+              <!-- Rising Sun / Moon on Horizon -->
+              <circle cx="240" cy="76" r="24" fill="#eaffd0" opacity="0.92"/>
+              <circle cx="240" cy="76" r="32" fill="#8de500" opacity="0.18"/>
+
+              <!-- Distant Headland & Mountain Range -->
+              <polygon points="0,78 55,62 115,72 185,54 240,70 305,52 375,66 435,55 480,68 480,82 0,82" fill="#0d261f"/>
+              <polygon points="0,80 85,68 155,75 235,66 325,73 410,63 480,74 480,84 0,84" fill="#081715"/>
+
+              <!-- Foreground Pine Silhouettes Left & Right -->
+              <polygon points="18,34 8,82 28,82" fill="#06040b"/>
+              <polygon points="34,46 24,82 44,82" fill="#06040b"/>
+              <polygon points="452,38 440,82 464,82" fill="#06040b"/>
+
+              <!-- Water & Sonar Bathymetry Section -->
+              <rect x="0" y="80" width="480" height="62" fill="url(#waterDepth)"/>
+              <line x1="0" y1="80" x2="480" y2="80" stroke="#8de500" stroke-width="1" stroke-opacity="0.65"/>
+
+              <!-- Sonar Grid & Bathymetry Contour Waves -->
+              <g stroke="#2ea872" stroke-width="1" opacity="0.3" fill="none">
+                <line x1="80" y1="80" x2="50" y2="142"/>
+                <line x1="160" y1="80" x2="145" y2="142"/>
+                <line x1="240" y1="80" x2="240" y2="142"/>
+                <line x1="320" y1="80" x2="335" y2="142"/>
+                <line x1="400" y1="80" x2="430" y2="142"/>
+                <path d="M 0,98 Q 120,88 240,102 T 480,96" />
+                <path d="M 0,118 Q 140,128 260,112 T 480,122" stroke="#8de500" stroke-opacity="0.55"/>
+              </g>
+
+              <!-- Glowing Reef Target Blips -->
+              <g fill="#8de500">
+                <circle cx="152" cy="108" r="2.5"/>
+                <circle cx="152" cy="108" r="6" fill="none" stroke="#8de500" stroke-width="0.8" opacity="0.6"/>
+                <circle cx="288" cy="116" r="3"/>
+                <circle cx="288" cy="116" r="8" fill="none" stroke="#8de500" stroke-width="0.8" opacity="0.5"/>
+                <circle cx="312" cy="104" r="2"/>
+              </g>
+
+              <!-- Corner HUD Crosshairs -->
+              <path d="M 10,18 L 10,10 L 18,10 M 470,18 L 470,10 L 462,10 M 10,124 L 10,132 L 18,132 M 470,124 L 470,132 L 462,132" stroke="#8de500" stroke-width="1" fill="none" opacity="0.55"/>
+            </svg>
+          `;
+
+        case 'magepunk':
+          return `
+            <svg viewBox="0 0 480 142" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="mageGlow" cx="50%" cy="50%" r="55%">
+                  <stop offset="0%" stop-color="#261742"/>
+                  <stop offset="65%" stop-color="#110a20"/>
+                  <stop offset="100%" stop-color="#06040b"/>
+                </radialGradient>
+              </defs>
+
+              <rect width="480" height="142" fill="url(#mageGlow)"/>
+
+              <!-- Arcane Telemetry Grid -->
+              <g stroke="#37255c" stroke-width="1" opacity="0.45">
+                <line x1="0" y1="35" x2="480" y2="35"/>
+                <line x1="0" y1="71" x2="480" y2="71"/>
+                <line x1="0" y1="107" x2="480" y2="107"/>
+                <line x1="120" y1="0" x2="120" y2="142"/>
+                <line x1="240" y1="0" x2="240" y2="142"/>
+                <line x1="360" y1="0" x2="360" y2="142"/>
+              </g>
+
+              <!-- Left Telemetry Circuit & Step-Dice Bar -->
+              <g transform="translate(26, 28)">
+                <rect x="0" y="0" width="96" height="14" fill="#0d0917" stroke="#2ea872" stroke-width="1"/>
+                <rect x="2" y="2" width="68" height="10" fill="#8de500" opacity="0.85"/>
+                <text x="0" y="28" fill="#b7abcf" font-family="monospace" font-size="9">HP // MANA SYNC</text>
+                <polyline points="0,45 18,45 24,34 32,54 40,40 48,45 92,45" fill="none" stroke="#8de500" stroke-width="1.5"/>
+                <text x="0" y="68" fill="#2ea872" font-family="monospace" font-size="9">d4 d6 d8 d10 d12</text>
+              </g>
+
+              <!-- Center Wireframe Icosahedron (d20) & Arcane Ring -->
+              <g transform="translate(240, 71)">
+                <circle cx="0" cy="0" r="52" fill="none" stroke="#2ea872" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
+                <circle cx="0" cy="0" r="42" fill="#0a0612" stroke="#8de500" stroke-width="1" opacity="0.9"/>
+
+                <!-- Icosahedron Wireframe -->
+                <g stroke="#8de500" stroke-width="1.35" fill="rgba(141, 229, 0, 0.08)" stroke-linejoin="round">
+                  <polygon points="0,-32 28,-16 28,16 0,32 -28,16 -28,-16"/>
+                  <polygon points="0,-18 16,9 -16,9"/>
+                  <line x1="0" y1="-32" x2="0" y2="-18"/>
+                  <line x1="28" y1="-16" x2="0" y2="-18"/>
+                  <line x1="-28" y1="-16" x2="0" y2="-18"/>
+                  <line x1="28" y1="-16" x2="16" y2="9"/>
+                  <line x1="-28" y1="-16" x2="-16" y2="9"/>
+                  <line x1="28" y1="16" x2="16" y2="9"/>
+                  <line x1="-28" y1="16" x2="-16" y2="9"/>
+                  <line x1="0" y1="32" x2="16" y2="9"/>
+                  <line x1="0" y1="32" x2="-16" y2="9"/>
+                </g>
+                <text x="0" y="4" text-anchor="middle" fill="#f0ecf8" font-family="monospace" font-weight="bold" font-size="10">20</text>
+              </g>
+
+              <!-- Right Grimoire / Fari Matrix Nodes -->
+              <g transform="translate(338, 36)" stroke="#8de500" stroke-width="1" fill="none">
+                <path d="M 0,12 L 24,12 L 34,2 L 85,2" opacity="0.7"/>
+                <path d="M 0,36 L 28,36 L 40,48 L 95,48" stroke="#2ea872" opacity="0.7"/>
+                <circle cx="85" cy="2" r="3" fill="#8de500"/>
+                <circle cx="95" cy="48" r="3" fill="#ff4f2b" stroke="#ff4f2b"/>
+                <text x="18" y="68" fill="#7c6e99" font-family="monospace" font-size="9" stroke="none">JSON // MATRIX</text>
+              </g>
+
+              <!-- Corner HUD Crosshairs -->
+              <path d="M 10,18 L 10,10 L 18,10 M 470,18 L 470,10 L 462,10 M 10,124 L 10,132 L 18,132 M 470,124 L 470,132 L 462,132" stroke="#8de500" stroke-width="1" fill="none" opacity="0.55"/>
+            </svg>
+          `;
+
+        default:
+          return `
+            <svg viewBox="0 0 480 142" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+              <rect width="480" height="142" fill="#0a0714"/>
+              <g stroke="#23183b" stroke-width="1">
+                <line x1="0" y1="47" x2="480" y2="47"/>
+                <line x1="0" y1="94" x2="480" y2="94"/>
+                <line x1="160" y1="0" x2="160" y2="142"/>
+                <line x1="320" y1="0" x2="320" y2="142"/>
+              </g>
+              <polygon points="240,26 278,48 278,94 240,116 202,94 202,48" fill="rgba(141,229,0,0.08)" stroke="#8de500" stroke-width="1.5"/>
+              <circle cx="240" cy="71" r="6" fill="#8de500"/>
+              <path d="M 10,18 L 10,10 L 18,10 M 470,18 L 470,10 L 462,10 M 10,124 L 10,132 L 18,132 M 470,124 L 470,132 L 462,132" stroke="#8de500" stroke-width="1" fill="none" opacity="0.55"/>
+            </svg>
+          `;
+      }
+    }
+
+    // =========================================================================
+    // RENDER MODULE CARDS FROM JSON DATA
+    // =========================================================================
+    function renderSpaGrid(modules) {
+      loadedModules = Array.isArray(modules) ? modules : [];
+
+      spaGrid.innerHTML = loadedModules.map((proj, idx) => {
+        const statusClass = (proj.status || 'LIVE').toLowerCase();
+        const modNum = String(idx + 1).padStart(2, '0');
+        const telemetryCode = proj.code || `MOD_${modNum}`;
+
+        return `
+          <article class="os-window spa-card" id="card-${proj.id}">
+            <div class="win-titlebar">
+              <span class="win-title-text">module://${modNum}_${proj.id}</span>
+              <button class="win-close-btn" data-minimize="card-${proj.id}" title="Minimize Window">x</button>
+            </div>
+
+            <div class="spa-card-art">
+              <span class="art-telemetry-tag">${telemetryCode}</span>
+              ${getModuleSvgArt(proj)}
+            </div>
+
+            <div class="win-body">
+              <div>
+                <div class="spa-card-top">
+                  <h2 class="spa-title">${proj.title}</h2>
+                  <span class="status-pill ${statusClass}">${proj.status || 'LIVE'}</span>
+                </div>
+                <div class="spa-tag-row">
+                  Tag: ${proj.tag || 'Web Application'}
+                </div>
+                <p class="spa-desc">${proj.description || ''}</p>
+              </div>
+
+              <div>
+                <div class="spa-actions">
+                  <a href="${proj.url || '#'}" class="btn-launch">
+                    LAUNCH &rarr;
+                  </a>
+                  <button class="btn-info" data-info-id="info-${proj.id}">
+                    [INFO]
+                  </button>
+                  <span class="spa-shortcut-hint">[${idx + 1}]</span>
+                </div>
+                <div id="info-${proj.id}" class="spa-info-drawer">
+                  ${proj.info || 'Standalone single-page web application.'}
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      // Update footer keyboard range dynamically based on JSON module count
+      if (kbLegend && loadedModules.length > 0) {
+        const maxKey = Math.min(loadedModules.length, 9);
+        const rangeText = maxKey > 1 ? `1–${maxKey}` : '1';
+        kbLegend.innerHTML = `ESC to reset &nbsp;|&nbsp; Enter or ${rangeText} to launch`;
+      }
+
+      // Bind [INFO] drawer buttons
+      spaGrid.querySelectorAll('.btn-info').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const drawer = document.getElementById(btn.dataset.infoId);
+          if (!drawer) return;
+          drawer.classList.toggle('open');
+          btn.classList.toggle('active');
+        });
+      });
+
+      // Bind window minimize buttons
+      document.querySelectorAll('[data-minimize]').forEach(btn => {
+        btn.onclick = () => {
+          const target = document.getElementById(btn.dataset.minimize);
+          if (target) target.classList.toggle('minimized');
+        };
+      });
+    }
+
+    // =========================================================================
+    // JSON LOADER: Supports external ./modules.json OR embedded #modules-data
+    // =========================================================================
+    async function loadModules() {
+      // 1. Try external ./modules.json when hosted over HTTP/HTTPS
+      if (window.location.protocol.startsWith('http')) {
+        try {
+          const response = await fetch('./modules.json', { cache: 'no-store' });
+          if (response.ok) {
+            const externalJson = await response.json();
+            if (Array.isArray(externalJson) && externalJson.length > 0) {
+              renderSpaGrid(externalJson);
+              return;
+            }
+          }
+        } catch (_) {
+          // Cleanly fall back to inline #modules-data JSON block
+        }
+      }
+
+      // 2. Fallback to embedded <script id="modules-data" type="application/json">
+      try {
+        const inlineBlock = document.getElementById('modules-data');
+        const inlineJson = JSON.parse(inlineBlock ? inlineBlock.textContent : '[]');
+        renderSpaGrid(inlineJson);
+      } catch (err) {
+        console.error('Failed to parse module registry JSON:', err);
+      }
+    }
+
+    // =========================================================================
+    // CRT FX TOGGLE & LIVE AEST CLOCK
+    // =========================================================================
+    function toggleCrt() {
+      const enabled = document.body.classList.toggle('crt-enabled');
+      crtToggle.setAttribute('aria-checked', String(enabled));
+      crtLabel.textContent = enabled ? '[CRT FX: ON]' : '[CRT FX: OFF]';
+    }
+
+    crtToggle.addEventListener('click', toggleCrt);
+    crtToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCrt();
+      }
+    });
+
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-AU', {
+        timeZone: 'Australia/Brisbane',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      document.getElementById('clockReadout').textContent = `AEST ${timeStr}`;
+    }
+    updateClock();
+    setInterval(updateClock, 15000);
+
+    // =========================================================================
+    // KEYBOARD SHORTCUTS (1-9, Enter, Esc)
+    // =========================================================================
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.os-window.minimized').forEach(w => w.classList.remove('minimized'));
+        document.querySelectorAll('.spa-info-drawer.open').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.btn-info.active').forEach(b => b.classList.remove('active'));
+        return;
+      }
+
+      if (e.key === 'Enter' && document.activeElement === document.body) {
+        e.preventDefault();
+        if (loadedModules[0] && loadedModules[0].url) {
+          window.location.href = loadedModules[0].url;
+        }
+        return;
+      }
+
+      const num = parseInt(e.key, 10);
+      if (!isNaN(num) && num >= 1 && num <= loadedModules.length) {
+        e.preventDefault();
+        window.location.href = loadedModules[num - 1].url;
+      }
+    });
+
+    // Boot launcher
+    loadModules();
+  </script>
+</body>
+</html>
