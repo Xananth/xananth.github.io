@@ -3,28 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>XANANTH // SEA SPIRIT 520 FISHING MATRIX</title>
+  <title>XANANTH // FISHING CALENDAR</title>
   <!-- Google Fonts for Retro Display & Developer Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Optional external shared stylesheet -->
+  <link rel="stylesheet" href="master.css" />
 
-  <!-- =========================================================================
-       XANANTH NET-DECK MASTER + FISHING MATRIX STYLESHEET
-       ========================================================================= -->
   <style>
     /* =========================================================================
        DESIGN TOKENS: DEEP VOID PURPLE + BRAND LIME (#8de500) + HORIZON EMERALD
+       Synchronized with index.html (XANANTH // NET-DECK)
        ========================================================================= */
     :root {
       --bg-void: #06040b;
       --bg-deep-purple: #0d0917;
       --bg-window: rgba(13, 9, 23, 0.92);
       --bg-surface: #140e24;
-      --bg-surface-elevated: #1b1330;
-      --bg-sticky: #100b1d;
-      --bg-sticky-hover: #19122c;
       --bg-drawer: rgba(8, 5, 15, 0.96);
+      --bg-row-hover: rgba(25, 84, 62, 0.16);
 
       --border-purple: #23183b;
       --border-purple-mid: #37255c;
@@ -37,10 +35,8 @@
 
       --horizon-emerald: #19543e;
       --horizon-jade: #2ea872;
-      --horizon-jade-dim: rgba(46, 168, 114, 0.16);
       --led-warm: #ff4f2b;
       --led-amber: #ff7733;
-      --warn-amber: #ff9f43;
 
       --text-primary: #f0ecf8;
       --text-secondary: #b7abcf;
@@ -51,37 +47,35 @@
       --font-pixel: 'Silkscreen', monospace;
     }
 
-    /* High-Contrast Daylight Chartplotter Palette for Helm Use */
-    html.light {
-      color-scheme: light;
-      --bg-void: #e6ebe8;
-      --bg-deep-purple: #dce3df;
+    /* High-contrast Daylight Deck Mode for bright boat-deck visibility */
+    body.light-mode {
+      --bg-void: #e8edea;
+      --bg-deep-purple: #dce4e0;
       --bg-window: rgba(247, 250, 248, 0.96);
-      --bg-surface: #eef3f0;
-      --bg-surface-elevated: #e1eae5;
-      --bg-sticky: #f3f7f5;
-      --bg-sticky-hover: #e5efe9;
-      --bg-drawer: rgba(236, 242, 239, 0.98);
+      --bg-surface: #ffffff;
+      --bg-drawer: #eff4f1;
+      --bg-row-hover: rgba(25, 84, 62, 0.08);
 
-      --border-purple: #c5d1ca;
-      --border-purple-mid: #9eb2a8;
-      --border-lime-subtle: rgba(42, 122, 0, 0.35);
+      --border-purple: #bfd0c8;
+      --border-purple-mid: #94b0a3;
+      --border-lime-subtle: rgba(45, 122, 0, 0.4);
 
-      --brand-lime: #2d8a00;
-      --brand-lime-bright: #38ab00;
-      --brand-lime-dim: rgba(45, 138, 0, 0.12);
-      --brand-lime-glow: rgba(45, 138, 0, 0.25);
+      --brand-lime: #2d7a00;
+      --brand-lime-bright: #3ca100;
+      --brand-lime-dim: rgba(45, 122, 0, 0.12);
+      --brand-lime-glow: rgba(45, 122, 0, 0.2);
 
       --horizon-emerald: #19543e;
-      --horizon-jade: #16754d;
-      --horizon-jade-dim: rgba(22, 117, 77, 0.14);
-      --led-warm: #d9381e;
-      --led-amber: #c85a17;
-      --warn-amber: #b85d00;
+      --horizon-jade: #146346;
+      --led-warm: #d9381a;
+      --led-amber: #c95614;
 
-      --text-primary: #121815;
-      --text-secondary: #33423b;
-      --text-muted: #5e7268;
+      --text-primary: #0f1714;
+      --text-secondary: #2e4039;
+      --text-muted: #586e65;
+
+      background-image:
+        linear-gradient(180deg, #e4ebe7 0%, #d8e2dc 100%);
     }
 
     *, *::before, *::after {
@@ -95,12 +89,15 @@
       -webkit-text-size-adjust: 100%;
     }
 
+    body.light-mode {
+      color-scheme: light;
+    }
+
     body {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       background-color: var(--bg-void);
-      /* Ambient horizon synthesis: deep void purple top + emerald/lime horizon glow bottom */
       background-image:
         radial-gradient(ellipse 90% 55% at 50% 105%, rgba(141, 229, 0, 0.09) 0%, rgba(25, 84, 62, 0.18) 40%, transparent 75%),
         radial-gradient(ellipse 75% 50% at 50% -5%, rgba(55, 37, 92, 0.42) 0%, transparent 70%),
@@ -114,18 +111,7 @@
       position: relative;
     }
 
-    html.light body {
-      background-image:
-        radial-gradient(ellipse 90% 55% at 50% 105%, rgba(45, 138, 0, 0.08) 0%, rgba(25, 84, 62, 0.08) 40%, transparent 75%),
-        linear-gradient(180deg, #e8efec 0%, #dde6e2 100%);
-    }
-
-    body.text-compact {
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    /* Subtle retro architectural grid texture in the background */
+    /* Subtle retro architectural grid texture */
     body::before {
       content: "";
       position: fixed;
@@ -138,12 +124,6 @@
       background-size: 100% 8px, 36px 100%;
     }
 
-    html.light body::before {
-      background-image:
-        linear-gradient(rgba(25, 84, 62, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(25, 84, 62, 0.06) 1px, transparent 1px);
-    }
-
     /* =========================================================================
        TACTILE CRT SCANLINE, VIGNETTE & PHOSPHOR BLOOM (.crt-enabled)
        ========================================================================= */
@@ -154,7 +134,6 @@
       pointer-events: none;
       z-index: 9999;
       background:
-        /* Rolling faint phosphor refresh bar */
         linear-gradient(
           180deg,
           transparent 0%,
@@ -163,7 +142,6 @@
           transparent 52%,
           transparent 100%
         ),
-        /* Distinct horizontal CRT scanlines every 3px */
         repeating-linear-gradient(
           to bottom,
           rgba(255, 255, 255, 0.005) 0px,
@@ -171,7 +149,6 @@
           rgba(0, 0, 0, 0.22) 1px,
           rgba(0, 0, 0, 0.22) 3px
         ),
-        /* Subtle RGB subpixel vertical aperture grille */
         repeating-linear-gradient(
           90deg,
           rgba(255, 0, 70, 0.025) 0px,
@@ -179,956 +156,6 @@
           rgba(80, 80, 255, 0.025) 2px,
           transparent 3px
         ),
-        /* CRT monitor corner vignette */
-        radial-gradient(
-          circle at 50% 50%,
-          transparent 62%,
-          rgba(3, 2, 7, 0.52) 100%
-        );
-      background-size: 100% 200%, 100% 3px, 3px 100%, 100% 100%;
-      animation: crtScanbar 9s linear infinite;
-    }
-
-    html.light body.crt-enabled::after {
-      opacity: 0.35;
-    }
-
-    @keyframes crtScanbar {
-      0% { background-position: 0 -100%, 0 0, 0 0, 0 0; }
-      100% { background-position: 0 100%, 0 0, 0 0, 0 0; }
-    }
-
-    body.crt-enabled .lime-glow {
-      text-shadow:
-        0 0 8px var(--brand-lime-glow),
-        0 0 18px rgba(141, 229, 0, 0.18);
-    }
-
-    body.crt-enabled .online-pill,
-    body.crt-enabled .season-badge.peak {
-      text-shadow: 0 0 6px var(--brand-lime-glow);
-    }
-
-    /* =========================================================================
-       STICKY TOP SYSTEM BAR
-       ========================================================================= */
-    .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--bg-drawer);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-purple);
-      box-shadow:
-        0 1px 0 rgba(141, 229, 0, 0.2),
-        0 8px 24px rgba(0, 0, 0, 0.45);
-    }
-
-    .brand-cluster {
-      display: flex;
-      align-items: center;
-      gap: 0.875rem;
-      min-width: 0;
-    }
-
-    .brand-logo-wrap {
-      width: 44px;
-      height: 44px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-void);
-      border: 1px solid var(--border-purple-mid);
-      border-top: 2px solid var(--brand-lime);
-      border-radius: 4px;
-      padding: 6px;
-      box-shadow: inset 0 0 10px var(--brand-lime-dim);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      text-decoration: none;
-    }
-
-    .brand-logo-wrap:hover {
-      border-color: var(--brand-lime);
-      box-shadow: 0 0 12px var(--brand-lime-glow);
-    }
-
-    .brand-logo-wrap svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .brand-titles {
-      display: flex;
-      flex-direction: column;
-      gap: 0.08rem;
-      min-width: 0;
-    }
-
-    .online-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      width: fit-content;
-      font-family: var(--font-pixel);
-      font-size: 0.625rem;
-      letter-spacing: 0.08em;
-      color: var(--brand-lime);
-      line-height: 1;
-    }
-
-    .online-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--brand-lime);
-      box-shadow: 0 0 6px var(--brand-lime);
-      animation: pulseDot 2.4s ease-in-out infinite;
-    }
-
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.35; }
-    }
-
-    .brand-heading {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.2;
-    }
-
-    .brand-sub {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .lime-glow {
-      text-shadow: 0 0 10px rgba(141, 229, 0, 0.22);
-    }
-
-    .system-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      flex-shrink: 0;
-    }
-
-    .crt-toggle-wrap,
-    .retro-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.36rem 0.68rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple-mid);
-      border-radius: 3px;
-      cursor: pointer;
-      user-select: none;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
-    }
-
-    .crt-toggle-wrap:hover,
-    .crt-toggle-wrap:focus-visible,
-    .retro-btn:hover,
-    .retro-btn:focus-visible {
-      border-color: var(--brand-lime);
-      color: var(--brand-lime);
-      background: var(--brand-lime-dim);
-      outline: none;
-    }
-
-    .crt-switch {
-      width: 24px;
-      height: 12px;
-      background: var(--bg-void);
-      border: 1px solid var(--border-purple-mid);
-      border-radius: 2px;
-      position: relative;
-      transition: border-color 0.18s ease;
-    }
-
-    .crt-switch-thumb {
-      width: 8px;
-      height: 8px;
-      background: var(--text-muted);
-      position: absolute;
-      top: 1px;
-      left: 2px;
-      transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    body.crt-enabled .crt-switch {
-      border-color: var(--brand-lime);
-    }
-
-    body.crt-enabled .crt-switch-thumb {
-      transform: translateX(10px);
-      background: var(--brand-lime);
-      box-shadow: 0 0 6px var(--brand-lime);
-    }
-
-    /* =========================================================================
-       MAIN SHELL & RETRO OS WINDOW ARCHITECTURE
-       ========================================================================= */
-    .main-shell {
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 1.5rem 1.5rem 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .os-window {
-      background: var(--bg-window);
-      border: 1px solid var(--border-purple-mid);
-      border-top: 1px solid var(--brand-lime);
-      border-radius: 4px;
-      box-shadow:
-        0 14px 32px -8px rgba(0, 0, 0, 0.72),
-        inset 0 1px 0 rgba(141, 229, 0, 0.1);
-      overflow: hidden;
-    }
-
-    /* Slatted blind texture inside window titlebars (inspired by oggvw9 window slats) */
-    .win-titlebar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      padding: 0.5rem 0.95rem;
-      background-color: var(--bg-deep-purple);
-      background-image: repeating-linear-gradient(
-        180deg,
-        rgba(141, 229, 0, 0.04) 0px,
-        rgba(141, 229, 0, 0.04) 1px,
-        transparent 1px,
-        transparent 4px
-      );
-      border-bottom: 1px solid var(--border-purple);
-      user-select: none;
-    }
-
-    .win-title-text {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 0.03em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .win-title-text:first-child::before {
-      content: "";
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 1px;
-      background: var(--led-warm);
-      box-shadow: 0 0 6px var(--led-warm);
-      flex-shrink: 0;
-    }
-
-    .win-close-btn {
-      width: 22px;
-      height: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple-mid);
-      border-radius: 2px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      line-height: 1;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .win-close-btn:hover {
-      background: var(--brand-lime-dim);
-      border-color: var(--brand-lime);
-      color: var(--brand-lime);
-    }
-
-    .win-body {
-      padding: 1rem 1.15rem;
-    }
-
-    /* =========================================================================
-       FILTER & LEGEND CONSOLE WINDOW (#win-controls)
-       ========================================================================= */
-    .deck-controls-body {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .filter-group {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.85rem;
-    }
-
-    .control-field {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .control-label {
-      font-family: var(--font-pixel);
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-    }
-
-    .control-select {
-      appearance: none;
-      -webkit-appearance: none;
-      background-color: var(--bg-surface);
-      background-image:
-        linear-gradient(45deg, transparent 50%, var(--brand-lime) 50%),
-        linear-gradient(135deg, var(--brand-lime) 50%, transparent 50%);
-      background-position:
-        calc(100% - 14px) calc(50% - 2px),
-        calc(100% - 9px) calc(50% - 2px);
-      background-size: 5px 5px, 5px 5px;
-      background-repeat: no-repeat;
-      border: 1px solid var(--border-purple-mid);
-      border-left: 2px solid var(--brand-lime);
-      border-radius: 3px;
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
-      font-weight: 500;
-      padding: 0.4rem 1.85rem 0.4rem 0.65rem;
-      cursor: pointer;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .control-select:hover,
-    .control-select:focus {
-      border-color: var(--brand-lime);
-      box-shadow: 0 0 10px var(--brand-lime-dim);
-      outline: none;
-    }
-
-    .control-select option {
-      background-color: var(--bg-deep-purple);
-      color: var(--text-primary);
-    }
-
-    .legend-cluster {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      font-size: 0.74rem;
-      color: var(--text-secondary);
-      padding: 0.35rem 0.7rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple);
-      border-radius: 3px;
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.38rem;
-    }
-
-    /* =========================================================================
-       12-MONTH SPECIES MATRIX TABLE (#win-matrix)
-       ========================================================================= */
-    #win-matrix .win-body {
-      padding: 0;
-    }
-
-    .matrix-scroll-container {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .matrix-scroll-container::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .matrix-scroll-container::-webkit-scrollbar-track {
-      background: var(--bg-void);
-    }
-
-    .matrix-scroll-container::-webkit-scrollbar-thumb {
-      background: var(--border-purple-mid);
-      border-radius: 2px;
-    }
-
-    .matrix-scroll-container::-webkit-scrollbar-thumb:hover {
-      background: var(--brand-lime);
-    }
-
-    .matrix-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      min-width: 860px;
-      font-size: 0.78rem;
-    }
-
-    .matrix-table thead th {
-      background: var(--bg-surface);
-      color: var(--text-secondary);
-      font-family: var(--font-display);
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 0.65rem 0.4rem;
-      border-bottom: 1px solid var(--border-purple-mid);
-      text-align: center;
-      user-select: none;
-    }
-
-    .matrix-table thead th.active-month-head {
-      color: var(--brand-lime);
-      background: var(--brand-lime-dim);
-      border-bottom-color: var(--brand-lime);
-    }
-
-    .matrix-table thead th.sticky-col {
-      text-align: left;
-      padding-left: 1rem;
-      z-index: 4;
-    }
-
-    .sticky-col {
-      position: sticky;
-      left: 0;
-      z-index: 3;
-      background: var(--bg-sticky);
-      border-right: 1px solid var(--border-purple-mid);
-      min-width: 230px;
-      max-width: 270px;
-      padding: 0.6rem 0.85rem 0.6rem 1rem;
-      transition: background-color 0.12s ease;
-    }
-
-    .matrix-row {
-      cursor: pointer;
-      transition: background-color 0.12s ease;
-    }
-
-    .matrix-row td {
-      border-bottom: 1px solid var(--border-purple);
-    }
-
-    .matrix-row:hover td {
-      background-color: var(--brand-lime-dim);
-    }
-
-    .matrix-row:hover td.sticky-col {
-      background-color: var(--bg-sticky-hover);
-      box-shadow: inset 3px 0 0 var(--brand-lime);
-    }
-
-    .species-name {
-      font-family: var(--font-display);
-      font-size: 0.92rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: var(--text-primary);
-      margin-bottom: 0.2rem;
-    }
-
-    .matrix-row:hover .species-name {
-      color: var(--brand-lime);
-    }
-
-    .species-meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .zone-pill {
-      display: inline-block;
-      padding: 0.1rem 0.42rem;
-      background: var(--horizon-jade-dim);
-      border: 1px solid rgba(46, 168, 114, 0.42);
-      border-radius: 2px;
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      font-weight: 500;
-      color: var(--horizon-jade);
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-    }
-
-    .sci-name {
-      font-size: 0.68rem;
-      font-style: italic;
-      color: var(--text-muted);
-    }
-
-    .season-cell {
-      text-align: center;
-      vertical-align: middle;
-      padding: 0.45rem 0.25rem;
-      width: 48px;
-    }
-
-    .season-cell.active-month-col {
-      background: rgba(141, 229, 0, 0.05);
-    }
-
-    /* Seasonal Status Badges */
-    .season-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 3px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      line-height: 1;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .season-badge.peak {
-      background: var(--brand-lime-dim);
-      color: var(--brand-lime);
-      border: 1px solid var(--brand-lime);
-      box-shadow: inset 0 0 6px rgba(141, 229, 0, 0.25);
-    }
-
-    .season-badge.avail {
-      background: var(--horizon-jade-dim);
-      color: var(--horizon-jade);
-      border: 1px solid rgba(46, 168, 114, 0.48);
-    }
-
-    .season-badge.off {
-      background: rgba(20, 14, 36, 0.35);
-      color: var(--text-muted);
-      border: 1px solid rgba(55, 37, 92, 0.4);
-      opacity: 0.55;
-    }
-
-    .season-badge.ring-active {
-      outline: 1px solid var(--brand-lime-bright);
-      outline-offset: 2px;
-      transform: scale(1.06);
-    }
-
-    .regs-cell {
-      padding: 0.45rem 0.85rem;
-      text-align: right;
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .stars-readout {
-      display: block;
-      color: var(--brand-lime);
-      font-size: 0.76rem;
-      letter-spacing: 0.05em;
-    }
-
-    .size-readout {
-      display: block;
-      font-size: 0.68rem;
-      color: var(--text-secondary);
-    }
-
-    .matrix-footer-hint {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      padding: 0.65rem 1rem;
-      background: var(--bg-deep-purple);
-      border-top: 1px solid var(--border-purple);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    /* =========================================================================
-       SPECIES DETAIL MODAL (OS WINDOW OVERLAY)
-       ========================================================================= */
-    .hidden {
-      display: none !important;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(6, 4, 11, 0.82);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem;
-    }
-
-    .modal-window {
-      width: 100%;
-      max-width: 680px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      border-color: var(--brand-lime);
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.9),
-        0 0 28px rgba(141, 229, 0, 0.16);
-      animation: modalBoot 0.16s ease-out;
-    }
-
-    @keyframes modalBoot {
-      from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.985);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .modal-body-scroll {
-      padding: 1.25rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .dossier-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      padding-bottom: 0.85rem;
-      border-bottom: 1px solid var(--border-purple-mid);
-    }
-
-    .dossier-title {
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--text-primary);
-      margin-top: 0.3rem;
-      line-height: 1.2;
-    }
-
-    .dossier-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-
-    .data-panel {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple-mid);
-      border-radius: 3px;
-      padding: 0.85rem 1rem;
-    }
-
-    .panel-heading {
-      font-family: var(--font-display);
-      font-size: 0.86rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text-primary);
-      margin-bottom: 0.65rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid var(--border-purple);
-    }
-
-    .panel-heading span {
-      color: var(--brand-lime);
-      font-family: var(--font-mono);
-      margin-right: 0.35rem;
-    }
-
-    .stat-label {
-      display: block;
-      font-family: var(--font-pixel);
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
-    }
-
-    .stat-value {
-      font-family: var(--font-mono);
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .closure-alert {
-      grid-column: 1 / -1;
-      padding: 0.6rem 0.85rem;
-      background: rgba(255, 79, 43, 0.12);
-      border: 1px solid var(--led-warm);
-      border-left: 3px solid var(--led-warm);
-      border-radius: 3px;
-      color: var(--led-amber);
-      font-size: 0.78rem;
-      font-weight: 500;
-    }
-
-    .tackle-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    .tackle-span-2 {
-      grid-column: 1 / -1;
-    }
-
-    .spots-copy {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .spotsThe Net-Deck retro OS design system from `Xananth Net-Deck Retro Hub.html`[span_9](start_span)[span_9](end_span) has been integrated directly into `fishingcal.html`[span_10](start_span)[span_10](end_span).
-
-### Key Styling & Architectural Updates
-* **Core Net-Deck Design Tokens & Atmosphere**: Applied the Deep Void Purple (`#06040b` / `#0d0917`), Brand Lime (`#8de500`), Horizon Emerald (`#19543e` / `#2ea872`), and Warm LED (`#ff4f2b` / `#ff7733`) palette, ambient radial horizon gradients, fixed architectural grid overlay, and the `.crt-enabled` scanline, rolling phosphor refresh bar, RGB subpixel aperture grille, and vignette effects[span_11](start_span)[span_11](end_span). Also added a daylight marine token overrides block (`html.light`) so the Light/Dark theme button (`#themeToggle`) works seamlessly[span_12](start_span)[span_12](end_span).
-* **Unified OS Window & Slatted Titlebars**: Styled `#win-controls`, `#win-matrix`, and the `#speciesModal` tactical briefing overlay with `.os-window` specular lime top borders, Venetian blind slatted `.win-titlebar` gradients, and warm bulkhead LED indicators[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span).
-* **Seasonal Matrix & Telemetry Components**: Styled `.matrix-table`, sticky first column (`.sticky-col`), active month column highlights (`.active-month-col`), seasonal status badges (`.peak` in glowing lime, `.avail` in horizon jade, `.off` in muted void), and the modal dossier panels (`.data-panel`, `.tackle-grid`, `.closure-alert`, and `.skipper-box`)[span_15](start_span)[span_15](end_span)[span_16](start_span)[span_16](end_span).
-* **Top System Bar Parity**: Added the live `AEST` clock readout (`#clockReadout`) and a `[← NET-DECK]` return button alongside the existing CRT FX switch and theme toggle[span_17](start_span)[span_17](end_span)[span_18](start_span)[span_18](end_span).
-
-### Updated `fishingcal.html`
-
-```html
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>XANANTH // SEA SPIRIT 520 FISHING MATRIX</title>
-  <!-- Google Fonts for Retro Display & Developer Monospace -->
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap)" rel="stylesheet">
-  <!-- Optional Shared Net-Deck Master Stylesheet -->
-  <link rel="stylesheet" href="master.css" />
-
-  <!-- =========================================================================
-       NET-DECK MASTER + FISHING MATRIX STYLESHEET
-       ========================================================================= -->
-  <style>
-    /* =========================================================================
-       DESIGN TOKENS: DEEP VOID PURPLE + BRAND LIME (#8de500) + HORIZON EMERALD
-       Inspired by wallhaven-oggvw9 (dark slatted interior & warm LEDs)
-       and wallhaven-3lpymv (emerald/lime sunrise over dark silhouettes)
-       ========================================================================= */
-    :root {
-      --bg-void: #06040b;
-      --bg-deep-purple: #0d0917;
-      --bg-window: rgba(13, 9, 23, 0.9);
-      --bg-surface: #140e24;
-      --bg-drawer: rgba(8, 5, 15, 0.96);
-      --bg-sticky: #100b1d;
-      --bg-sticky-hover: #19122c;
-
-      --border-purple: #23183b;
-      --border-purple-mid: #37255c;
-      --border-lime-subtle: rgba(141, 229, 0, 0.32);
-
-      --brand-lime: #8de500;
-      --brand-lime-bright: #a7ff1f;
-      --brand-lime-dim: rgba(141, 229, 0, 0.14);
-      --brand-lime-glow: rgba(141, 229, 0, 0.35);
-
-      --horizon-emerald: #19543e;
-      --horizon-jade: #2ea872;
-      --horizon-jade-dim: rgba(46, 168, 114, 0.15);
-      --led-warm: #ff4f2b;
-      --led-amber: #ff7733;
-      --warn-amber: #ff7733;
-
-      --text-primary: #f0ecf8;
-      --text-secondary: #b7abcf;
-      --text-muted: #7c6e99;
-
-      --font-display: 'Chakra Petch', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-pixel: 'Silkscreen', monospace;
-    }
-
-    /* High-contrast daylight deck mode when toggled to Light */
-    html.light {
-      color-scheme: light;
-      --bg-void: #eef3f0;
-      --bg-deep-purple: #e2ebe6;
-      --bg-window: rgba(247, 250, 248, 0.96);
-      --bg-surface: #ffffff;
-      --bg-drawer: #edf4f0;
-      --bg-sticky: #f3f7f5;
-      --bg-sticky-hover: #e5f0ea;
-
-      --border-purple: #c5d6cd;
-      --border-purple-mid: #9eb8ab;
-      --border-lime-subtle: rgba(42, 122, 0, 0.35);
-
-      --brand-lime: #2b7a00;
-      --brand-lime-bright: #389e00;
-      --brand-lime-dim: rgba(43, 122, 0, 0.12);
-      --brand-lime-glow: rgba(43, 122, 0, 0.22);
-
-      --horizon-emerald: #19543e;
-      --horizon-jade: #146c47;
-      --horizon-jade-dim: rgba(20, 108, 71, 0.12);
-      --led-warm: #d9381e;
-      --led-amber: #c85a17;
-      --warn-amber: #c85a17;
-
-      --text-primary: #101814;
-      --text-secondary: #2e4239;
-      --text-muted: #5e746a;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      color-scheme: dark;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-color: var(--bg-void);
-      /* Ambient horizon synthesis: deep void purple top + emerald/lime horizon glow bottom */
-      background-image:
-        radial-gradient(ellipse 90% 55% at 50% 105%, rgba(141, 229, 0, 0.09) 0%, rgba(25, 84, 62, 0.18) 40%, transparent 75%),
-        radial-gradient(ellipse 75% 50% at 50% -5%, rgba(55, 37, 92, 0.42) 0%, transparent 70%),
-        linear-gradient(180deg, #06040b 0%, #0d0917 60%, #081312 88%, #050609 100%);
-      background-attachment: fixed;
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-      font-size: 14px;
-      line-height: 1.55;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    html.light body {
-      background-image:
-        radial-gradient(ellipse 90% 55% at 50% 105%, rgba(43, 122, 0, 0.08) 0%, rgba(25, 84, 62, 0.08) 40%, transparent 75%),
-        linear-gradient(180deg, #eef3f0 0%, #e2ebe6 100%);
-    }
-
-    body.text-compact {
-      font-size: 13px;
-    }
-
-    /* Subtle retro architectural grid texture in the background */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image:
-        linear-gradient(rgba(141, 229, 0, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(55, 37, 92, 0.16) 1px, transparent 1px);
-      background-size: 100% 8px, 36px 100%;
-    }
-
-    /* =========================================================================
-       TACTILE CRT SCANLINE, VIGNETTE & PHOSPHOR BLOOM (.crt-enabled)
-       ========================================================================= */
-    body.crt-enabled::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      background:
-        /* Rolling faint phosphor refresh bar */
-        linear-gradient(
-          180deg,
-          transparent 0%,
-          rgba(141, 229, 0, 0.035) 48%,
-          rgba(141, 229, 0, 0.08) 50%,
-          transparent 52%,
-          transparent 100%
-        ),
-        /* Distinct horizontal CRT scanlines every 3px */
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0.015) 0px,
-          rgba(255, 255, 255, 0.015) 1px,
-          rgba(0, 0, 0, 0.42) 1px,
-          rgba(0, 0, 0, 0.42) 3px
-        ),
-        /* Subtle RGB subpixel vertical aperture grille */
-        repeating-linear-gradient(
-          90deg,
-          rgba(255, 0, 70, 0.025) 0px,
-          rgba(0, 255, 100, 0.025) 1px,
-          rgba(80, 80, 255, 0.025) 2px,
-          transparent 3px
-        ),
-        /* CRT monitor corner vignette */
         radial-gradient(
           circle at 50% 50%,
           transparent 62%,
@@ -1143,14 +170,14 @@
       100% { background-position: 0 100%, 0 0, 0 0, 0 0; }
     }
 
-    body.crt-enabled .lime-glow {
+    body.crt-enabled:not(.light-mode) .lime-glow {
       text-shadow:
-        0 0 8px var(--brand-lime-glow),
-        0 0 18px rgba(141, 229, 0, 0.18);
+        0 0 8px rgba(141, 229, 0, 0.45),
+        0 0 18px rgba(141, 229, 0, 0.22);
     }
 
-    body.crt-enabled .online-pill {
-      text-shadow: 0 0 6px var(--brand-lime-glow);
+    body.crt-enabled:not(.light-mode) .online-pill {
+      text-shadow: 0 0 6px rgba(141, 229, 0, 0.55);
     }
 
     /* =========================================================================
@@ -1174,11 +201,9 @@
         0 8px 24px rgba(0, 0, 0, 0.55);
     }
 
-    html.light .top-bar {
-      background: rgba(240, 246, 242, 0.92);
-      box-shadow:
-        0 1px 0 rgba(43, 122, 0, 0.2),
-        0 4px 16px rgba(0, 0, 0, 0.08);
+    body.light-mode .top-bar {
+      background: rgba(235, 242, 238, 0.94);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
 
     .brand-cluster {
@@ -1186,6 +211,7 @@
       align-items: center;
       gap: 0.875rem;
       min-width: 0;
+      text-decoration: none;
     }
 
     .brand-logo-wrap {
@@ -1199,14 +225,9 @@
       border: 1px solid var(--border-purple-mid);
       border-top-color: var(--brand-lime);
       border-radius: 4px;
-      padding: 6px;
+      padding: 4px;
       box-shadow: inset 0 0 10px rgba(141, 229, 0, 0.1);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      text-decoration: none;
-    }
-
-    html.light .brand-logo-wrap {
-      background: #ffffff;
     }
 
     .brand-logo-wrap:hover {
@@ -1214,8 +235,8 @@
       box-shadow: 0 0 12px var(--brand-lime-glow);
     }
 
-    .brand-logo-wrap svg,
-    .brand-logo-wrap img {
+    .brand-logo-wrap img,
+    .brand-logo-wrap svg {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -1264,20 +285,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.2;
-    }
-
-    .brand-sub {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .lime-glow {
-      text-shadow: 0 0 10px rgba(141, 229, 0, 0.22);
     }
 
     .system-controls {
@@ -1285,6 +292,33 @@
       align-items: center;
       gap: 0.65rem;
       flex-shrink: 0;
+    }
+
+    .nav-btn,
+    .crt-toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.34rem 0.65rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 3px;
+      cursor: pointer;
+      user-select: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.18s ease;
+    }
+
+    .nav-btn:hover,
+    .crt-toggle-wrap:hover,
+    .nav-btn:focus-visible,
+    .crt-toggle-wrap:focus-visible {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      outline: none;
     }
 
     .clock-readout {
@@ -1299,37 +333,10 @@
       letter-spacing: 0.04em;
     }
 
-    .crt-toggle-wrap,
-    .retro-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.34rem 0.65rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple-mid);
-      border-radius: 3px;
-      cursor: pointer;
-      user-select: none;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
-    }
-
-    .crt-toggle-wrap:hover,
-    .crt-toggle-wrap:focus-visible,
-    .retro-btn:hover,
-    .retro-btn:focus-visible {
-      border-color: var(--brand-lime);
-      color: var(--brand-lime);
-      outline: none;
-    }
-
     .crt-switch {
       width: 24px;
       height: 12px;
-      background: var(--bg-deep-purple);
+      background: #120c21;
       border: 1px solid var(--border-purple-mid);
       border-radius: 2px;
       position: relative;
@@ -1347,7 +354,7 @@
     }
 
     body.crt-enabled .crt-switch {
-      border-color: var(--brand-lime);
+      border-color: rgba(141, 229, 0, 0.65);
     }
 
     body.crt-enabled .crt-switch-thumb {
@@ -1357,19 +364,19 @@
     }
 
     /* =========================================================================
-       MAIN SHELL & OS WINDOW ARCHITECTURE
+       MAIN SHELL & RETRO OS WINDOW ARCHITECTURE
        ========================================================================= */
     .main-shell {
       position: relative;
       z-index: 1;
       flex: 1;
       width: 100%;
-      max-width: 1280px;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 1.5rem 1.5rem 2rem;
+      padding: 1.75rem 1.5rem 2rem;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.5rem;
     }
 
     .os-window {
@@ -1378,17 +385,15 @@
       border-top: 1px solid var(--brand-lime);
       border-radius: 4px;
       box-shadow:
-        0 14px 32px -8px rgba(0, 0, 0, 0.75),
+        0 14px 32px -8px rgba(0, 0, 0, 0.72),
         inset 0 1px 0 rgba(141, 229, 0, 0.1);
       overflow: hidden;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    html.light .os-window {
-      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.12);
+    body.light-mode .os-window {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
-    /* Slatted blind texture inside window titlebars (oggvw9 reference) */
     .win-titlebar {
       display: flex;
       align-items: center;
@@ -1407,15 +412,9 @@
       user-select: none;
     }
 
-    html.light .win-titlebar {
-      background-color: #dfe9e3;
-      background-image: repeating-linear-gradient(
-        180deg,
-        rgba(43, 122, 0, 0.04) 0px,
-        rgba(43, 122, 0, 0.04) 1px,
-        transparent 1px,
-        transparent 4px
-      );
+    body.light-mode .win-titlebar {
+      background-color: #d0ddd6;
+      border-bottom-color: var(--border-purple-mid);
     }
 
     .win-title-text {
@@ -1432,8 +431,7 @@
       white-space: nowrap;
     }
 
-    /* Warm indicator LED on primary titlebar label */
-    .win-title-text:first-child::before {
+    .win-title-text::before {
       content: "";
       display: inline-block;
       width: 5px;
@@ -1444,82 +442,273 @@
       flex-shrink: 0;
     }
 
-    .win-close-btn {
-      width: 22px;
-      height: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple-mid);
-      border-radius: 2px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      line-height: 1;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .win-close-btn:hover {
-      background: var(--brand-lime-dim);
-      border-color: var(--brand-lime);
+    .win-telemetry-code {
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
       color: var(--brand-lime);
-    }
-
-    .win-body {
-      padding: 1rem 1.15rem;
+      letter-spacing: 0.06em;
     }
 
     /* =========================================================================
-       FILTER & LEGEND CONSOLE (#win-controls)
+       HERO SONAR BANNER & TELEMETRY READOUT
        ========================================================================= */
-    .deck-controls-body {
+    .hero-banner-wrap {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      background: #07050d;
+      border-bottom: 1px solid var(--border-purple-mid);
+      overflow: hidden;
+    }
+
+    body.light-mode .hero-banner-wrap {
+      background: #10211b;
+      color: #f0ecf8;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .vessel-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .telemetry-pill {
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(141, 229, 0, 0.14);
+      color: #8de500;
+      border: 1px solid rgba(141, 229, 0, 0.45);
+    }
+
+    .telemetry-pill.emerald {
+      background: rgba(46, 168, 114, 0.16);
+      color: #5ce6a8;
+      border-color: rgba(46, 168, 114, 0.45);
+    }
+
+    .hero-heading {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #f0ecf8;
+      line-height: 1.2;
+      margin-top: 0.25rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.82rem;
+      color: #b7abcf;
+      line-height: 1.5;
+    }
+
+    .telemetry-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
+      padding-top: 0.5rem;
+    }
+
+    .stat-box {
+      background: rgba(13, 9, 23, 0.82);
+      border: 1px solid rgba(55, 37, 92, 0.85);
+      border-left: 2px solid #8de500;
+      border-radius: 3px;
+      padding: 0.45rem 0.65rem;
+    }
+
+    .stat-box.amber {
+      border-left-color: var(--led-amber);
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: #7c6e99;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f0ecf8;
+      letter-spacing: 0.03em;
+    }
+
+    .stat-box.amber .stat-value {
+      color: var(--led-amber);
+    }
+
+    .hero-sonar-art {
+      position: relative;
+      min-height: 180px;
+      border-left: 1px solid rgba(55, 37, 92, 0.6);
+      overflow: hidden;
+    }
+
+    .hero-sonar-art svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .hero-sonar-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(6, 4, 11, 0.32) 0px,
+          rgba(6, 4, 11, 0.32) 1px,
+          transparent 1px,
+          transparent 5px
+        ),
+        linear-gradient(90deg, #07050d 0%, transparent 25%);
+    }
+
+    /* =========================================================================
+       TACTICAL CONTROL DECK (MONTH SELECTOR, FILTERS & SORT)
+       ========================================================================= */
+    .controls-body {
+      padding: 1.15rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .month-strip-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.5rem;
     }
 
-    .filter-group {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.85rem;
-    }
-
-    .control-field {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .control-label {
+    .control-section-label {
       font-family: var(--font-pixel);
-      font-size: 0.65rem;
+      font-size: 0.62rem;
+      color: var(--brand-lime);
       letter-spacing: 0.06em;
       text-transform: uppercase;
+    }
+
+    .month-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 0.35rem;
+    }
+
+    .month-btn {
+      padding: 0.48rem 0.25rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 3px;
+      color: var(--text-secondary);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .month-btn:hover {
+      border-color: var(--brand-lime);
       color: var(--brand-lime);
     }
 
-    .control-select {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-primary);
-      background-color: var(--bg-surface);
+    .month-btn.active {
+      background: var(--brand-lime);
+      color: #06040b;
+      border-color: var(--brand-lime-bright);
+      box-shadow: 0 0 12px var(--brand-lime-glow);
+    }
+
+    body.light-mode .month-btn.active {
+      color: #ffffff;
+    }
+
+    .month-btn.current-aest::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--led-warm);
+    }
+
+    .filter-toolbar {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 0.75rem;
+      align-items: end;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .field-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .retro-input,
+    .retro-select {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      background: var(--bg-surface);
       border: 1px solid var(--border-purple-mid);
       border-radius: 3px;
-      padding: 0.38rem 0.65rem;
-      cursor: pointer;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .control-select:hover,
-    .control-select:focus {
-      border-color: var(--brand-lime);
-      box-shadow: 0 0 8px var(--brand-lime-dim);
+    .retro-input:focus,
+    .retro-select:focus {
       outline: none;
+      border-color: var(--brand-lime);
+      box-shadow: 0 0 10px var(--brand-lime-dim);
+    }
+
+    .toolbar-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-purple);
     }
 
     .legend-cluster {
@@ -1527,13 +716,8 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 0.85rem;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--text-secondary);
-      padding: 0.35rem 0.75rem;
-      background: var(--bg-drawer);
-      border: 1px solid var(--border-purple);
-      border-left: 2px solid var(--brand-lime);
-      border-radius: 3px;
     }
 
     .legend-item {
@@ -1542,317 +726,315 @@
       gap: 0.4rem;
     }
 
-    /* =========================================================================
-       12-MONTH SPECIES MATRIX TABLE (#win-matrix)
-       ========================================================================= */
-    #win-matrix .win-body {
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .matrix-scroll-container {
-      width: 100%;
-      overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-purple-mid) var(--bg-deep-purple);
-    }
-
-    .matrix-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      min-width: 920px;
-      font-size: 0.8rem;
-    }
-
-    .matrix-table thead th {
-      background: var(--bg-surface);
-      color: var(--text-secondary);
-      font-family: var(--font-display);
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 0.65rem 0.45rem;
-      border-bottom: 1px solid var(--border-purple-mid);
-      text-align: center;
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .matrix-table thead th.sticky-col {
-      text-align: left;
-      padding-left: 1.1rem;
-      z-index: 3;
-    }
-
-    .sticky-col {
-      position: sticky;
-      left: 0;
-      z-index: 2;
-      background: var(--bg-sticky);
-      border-right: 1px solid var(--border-purple-mid);
-      min-width: 240px;
-      max-width: 290px;
-      padding: 0.6rem 0.9rem 0.6rem 1.1rem;
-      transition: background-color 0.15s ease;
-    }
-
-    .matrix-row {
-      cursor: pointer;
-      transition: background-color 0.15s ease;
-    }
-
-    .matrix-row td {
-      border-bottom: 1px solid var(--border-purple);
-    }
-
-    .matrix-row:hover {
-      background: rgba(141, 229, 0, 0.06);
-    }
-
-    .matrix-row:hover .sticky-col {
-      background: var(--bg-sticky-hover);
-      border-right-color: var(--brand-lime);
-    }
-
-    .matrix-row:hover .species-name {
-      color: var(--brand-lime);
-    }
-
-    .species-name {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: var(--text-primary);
-      line-height: 1.25;
-      margin-bottom: 0.2rem;
-      transition: color 0.15s ease;
-    }
-
-    .species-meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-
-    .zone-pill {
-      display: inline-block;
-      padding: 0.1rem 0.42rem;
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      font-weight: 500;
-      color: var(--horizon-jade);
-      background: var(--horizon-jade-dim);
-      border: 1px solid rgba(46, 168, 114, 0.4);
-      border-radius: 2px;
-      letter-spacing: 0.03em;
-      white-space: nowrap;
-    }
-
-    .sci-name {
-      font-size: 0.7rem;
-      font-style: italic;
-      color: var(--text-muted);
-    }
-
-    /* Monthly Matrix Indicator Cells & Badges */
-    .season-cell {
-      text-align: center;
-      vertical-align: middle;
-      padding: 0.45rem 0.25rem;
-      width: 46px;
-    }
-
-    .season-cell.active-month-col {
-      background: rgba(141, 229, 0, 0.05);
-    }
-
     .season-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 24px;
-      border-radius: 3px;
+      width: 22px;
+      height: 20px;
+      border-radius: 2px;
       font-family: var(--font-mono);
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      line-height: 1;
       user-select: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
     .season-badge.peak {
       background: var(--brand-lime-dim);
       color: var(--brand-lime);
       border: 1px solid rgba(141, 229, 0, 0.55);
-      box-shadow: inset 0 0 6px rgba(141, 229, 0, 0.12);
     }
 
     .season-badge.avail {
-      background: var(--horizon-jade-dim);
+      background: rgba(46, 168, 114, 0.14);
       color: var(--horizon-jade);
-      border: 1px solid rgba(46, 168, 114, 0.45);
+      border: 1px solid rgba(46, 168, 114, 0.4);
     }
 
     .season-badge.off {
       background: rgba(20, 14, 36, 0.45);
       color: var(--text-muted);
       border: 1px solid rgba(55, 37, 92, 0.4);
-      opacity: 0.55;
+      opacity: 0.65;
     }
 
-    html.light .season-badge.off {
+    body.light-mode .season-badge.off {
       background: rgba(0, 0, 0, 0.04);
-      border-color: var(--border-purple);
+      border-color: rgba(0, 0, 0, 0.12);
     }
 
-    .season-badge.ring-active {
-      outline: 1px solid var(--brand-lime);
-      outline-offset: 1px;
-      box-shadow: 0 0 8px var(--brand-lime-dim);
-    }
-
-    /* Eating Quality & Legal Size Column */
-    .regs-cell {
-      padding: 0.5rem 0.85rem;
-      text-align: right;
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    .stars-readout {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--brand-lime);
-      letter-spacing: 0.05em;
-      line-height: 1.2;
-    }
-
-    .size-readout {
-      display: inline-block;
-      margin-top: 0.15rem;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--text-secondary);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-purple);
-      padding: 0.06rem 0.38rem;
-      border-radius: 2px;
-    }
-
-    .matrix-footer-hint {
+    .bulk-actions {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      padding: 0.65rem 1.1rem;
-      background: var(--bg-drawer);
-      border-top: 1px solid var(--border-purple);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
+      gap: 0.5rem;
     }
 
-    /* =========================================================================
-       SPECIES DOSSIER MODAL OVERLAY (#speciesModal)
-       ========================================================================= */
-    .hidden {
-      display: none !important;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: rgba(6, 4, 11, 0.82);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem;
-    }
-
-    .modal-window {
-      width: 100%;
-      max-width: 720px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      border-color: var(--brand-lime);
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.9),
-        0 0 28px rgba(141, 229, 0, 0.16);
-    }
-
-    .modal-body-scroll {
-      padding: 1.25rem 1.35rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
-    }
-
-    .dossier-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      padding-bottom: 0.85rem;
-      border-bottom: 1px solid var(--border-purple-mid);
-    }
-
-    .dossier-title {
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--text-primary);
-      margin-top: 0.3rem;
-      line-height: 1.2;
-    }
-
-    .dossier-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.85rem;
-    }
-
-    .data-panel {
+    .btn-action {
+      padding: 0.36rem 0.68rem;
       background: var(--bg-surface);
       border: 1px solid var(--border-purple-mid);
       border-radius: 3px;
-      padding: 0.85rem 1rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
 
-    .stat-label {
-      display: block;
+    .btn-action:hover {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      background: var(--brand-lime-dim);
+    }
+
+    /* =========================================================================
+       SPECIES SEASONAL MATRIX & EXPANDABLE DOSSIERS
+       ========================================================================= */
+    .matrix-header-row {
+      display: grid;
+      grid-template-columns: minmax(270px, 1.35fr) minmax(360px, 2fr) 90px;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.65rem 1.15rem;
+      background: rgba(17, 11, 31, 0.85);
+      border-bottom: 1px solid var(--border-purple-mid);
       font-family: var(--font-pixel);
       font-size: 0.6rem;
+      color: var(--text-muted);
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
     }
 
-    .stat-value {
-      font-family: var(--font-mono);
-      font-size: 0.95rem;
+    body.light-mode .matrix-header-row {
+      background: #dfe8e3;
+    }
+
+    .matrix-months-head {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 4px;
+      text-align: center;
+    }
+
+    .matrix-month-col-head {
+      padding: 0.2rem 0;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .matrix-month-col-head:hover {
+      color: var(--brand-lime);
+    }
+
+    .matrix-month-col-head.active-col {
+      background: var(--brand-lime-dim);
+      color: var(--brand-lime);
+      border: 1px solid rgba(141, 229, 0, 0.45);
+    }
+
+    .species-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .species-item {
+      border-bottom: 1px solid var(--border-purple);
+      transition: background-color 0.15s ease;
+    }
+
+    .species-item:last-child {
+      border-bottom: none;
+    }
+
+    .species-row {
+      display: grid;
+      grid-template-columns: minmax(270px, 1.35fr) minmax(360px, 2fr) 90px;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.85rem 1.15rem;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .species-row:hover {
+      background-color: var(--bg-row-hover);
+    }
+
+    .species-item.expanded .species-row {
+      background-color: rgba(141, 229, 0, 0.06);
+      border-bottom: 1px dashed var(--border-purple-mid);
+    }
+
+    .species-identity {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0;
+    }
+
+    .species-title-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .species-name {
+      font-family: var(--font-display);
+      font-size: 1.04rem;
       font-weight: 700;
       color: var(--text-primary);
+      letter-spacing: 0.02em;
     }
 
-    .closure-alert {
-      grid-column: 1 / -1;
-      padding: 0.65rem 0.9rem;
-      background: rgba(255, 119, 51, 0.12);
-      border: 1px solid var(--led-amber);
+    .species-sci {
+      font-size: 0.72rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .species-meta-pills {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.15rem;
+    }
+
+    .zone-pill {
+      font-size: 0.66rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 2px;
+      background: rgba(46, 168, 114, 0.12);
+      color: var(--horizon-jade);
+      border: 1px solid rgba(46, 168, 114, 0.35);
+      font-weight: 500;
+    }
+
+    .eating-stars {
+      font-size: 0.7rem;
+      color: var(--brand-lime);
+      letter-spacing: 0.04em;
+      background: var(--brand-lime-dim);
+      border: 1px solid rgba(141, 229, 0, 0.3);
+      padding: 0.08rem 0.42rem;
+      border-radius: 2px;
+    }
+
+    .closure-pill {
+      font-size: 0.65rem;
+      padding: 0.08rem 0.45rem;
+      border-radius: 2px;
+      background: rgba(255, 119, 51, 0.15);
+      color: var(--led-amber);
+      border: 1px solid rgba(255, 119, 51, 0.48);
+      font-weight: 600;
+    }
+
+    .seasons-cells {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .month-cell {
+      height: 30px;
+      display: flex;
+       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      position: relative;
+      transition: transform 0.12s ease;
+    }
+
+    .month-cell .cell-month-lbl {
+      display: none;
+      font-size: 0.52rem;
+      font-weight: 500;
+      opacity: 0.85;
+      line-height: 1;
+    }
+
+    .month-cell.peak {
+      background: var(--brand-lime-dim);
+      color: var(--brand-lime);
+      border: 1px solid rgba(141, 229, 0, 0.52);
+      box-shadow: inset 0 0 8px rgba(141, 229, 0, 0.12);
+    }
+
+    .month-cell.avail {
+      background: rgba(46, 168, 114, 0.13);
+      color: var(--horizon-jade);
+      border: 1px solid rgba(46, 168, 114, 0.35);
+    }
+
+    .month-cell.off {
+      background: rgba(20, 14, 36, 0.4);
+      color: var(--text-muted);
+      border: 1px solid rgba(55, 37, 92, 0.35);
+      opacity: 0.55;
+    }
+
+    body.light-mode .month-cell.off {
+      background: rgba(0, 0, 0, 0.035);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .month-cell.selected-col {
+      outline: 1.5px solid var(--brand-lime);
+      outline-offset: -1px;
+      z-index: 2;
+      opacity: 1;
+    }
+
+    .row-action-col {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-specs {
+      padding: 0.36rem 0.62rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-purple-mid);
+      border-radius: 3px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .species-row:hover .btn-specs,
+    .species-item.expanded .btn-specs {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime);
+      background: var(--brand-lime-dim);
+    }
+
+    /* =========================================================================
+       TACTICAL SPECIES DOSSIER DRAWER
+       ========================================================================= */
+    .species-drawer {
+      display: none;
+      padding: 1.1rem 1.25rem 1.25rem;
+      background: var(--bg-drawer);
+      border-left: 3px solid var(--brand-lime);
+    }
+
+    .species-item.expanded .species-drawer {
+      display: block;
+    }
+
+    .closure-alert-banner {
+      margin-bottom: 0.9rem;
+      padding: 0.6rem 0.85rem;
+      background: rgba(255, 79, 43, 0.12);
+      border: 1px solid rgba(255, 119, 51, 0.55);
       border-left: 3px solid var(--led-warm);
       border-radius: 3px;
       color: var(--led-amber);
@@ -1860,72 +1042,70 @@
       font-weight: 500;
     }
 
-    .panel-heading {
-      font-family: var(--font-display);
-      font-size: 0.92rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text-primary);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.45rem;
-      border-bottom: 1px solid var(--border-purple);
-    }
-
-    .panel-heading span {
-      font-family: var(--font-pixel);
-      font-size: 0.65rem;
-      color: var(--brand-lime);
-      margin-right: 0.4rem;
-    }
-
-    .tackle-grid {
+    .dossier-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem 1rem;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 0.85rem;
     }
 
-    .tackle-span-2 {
-      grid-column: 1 / -1;
-    }
-
-    .spots-copy {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .spots-copy ul {
-      padding-left: 1.1rem;
-    }
-
-    .spots-copy li {
-      margin-bottom: 0.35rem;
-    }
-
-    .spots-copy strong {
-      color: var(--brand-lime);
-    }
-
-    .skipper-box {
-      padding: 0.85rem 1rem;
-      background: var(--bg-drawer);
+    .dossier-card {
+      background: var(--bg-surface);
       border: 1px solid var(--border-purple-mid);
-      border-left: 3px solid var(--brand-lime);
+      border-radius: 3px;
+      padding: 0.75rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .dossier-card-title {
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      color: var(--brand-lime);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-purple);
+      padding-bottom: 0.3rem;
+    }
+
+    .spec-line {
+      font-size: 0.77rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .spec-line strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .skipper-tip-box {
+      margin-top: 0.85rem;
+      padding: 0.7rem 0.9rem;
+      background: rgba(25, 84, 62, 0.15);
+      border: 1px solid rgba(46, 168, 114, 0.45);
+      border-left: 3px solid var(--horizon-jade);
       border-radius: 3px;
       font-size: 0.78rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
+      color: var(--text-primary);
     }
 
-    .skipper-box strong {
+    .skipper-tip-box strong {
       color: var(--brand-lime);
-      font-family: var(--font-pixel);
-      font-size: 0.64rem;
-      letter-spacing: 0.05em;
+      font-family: var(--font-display);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       margin-right: 0.35rem;
+    }
+
+    .empty-state {
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
     }
 
     /* =========================================================================
@@ -1937,7 +1117,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
-      padding-top: 0.5rem;
+      padding-top: 1rem;
       border-top: 1px solid rgba(55, 37, 92, 0.55);
     }
 
@@ -1980,71 +1160,109 @@
     }
 
     /* =========================================================================
-       RESPONSIVE BREAKPOINTS
+       RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
        ========================================================================= */
-    @media (max-width: 780px) {
-      .main-shell {
-        padding: 1rem;
+    @media (max-width: 980px) {
+      .hero-banner-wrap {
+        grid-template-columns: 1fr;
       }
 
-      .brand-sub,
-      .clock-readout {
+      .hero-sonar-art {
         display: none;
       }
 
-      .dossier-grid-2,
-      .tackle-grid {
+      .filter-toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .matrix-header-row {
+        display: none;
+      }
+
+      .species-row {
         grid-template-columns: 1fr;
+        gap: 0.65rem;
+      }
+
+      .row-action-col {
+        display: none;
+      }
+
+      .month-cell {
+        height: 36px;
+      }
+
+      .month-cell .cell-month-lbl {
+        display: block;
       }
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
+      .main-shell {
+        padding: 1.1rem 0.85rem 1.5rem;
+      }
+
       .top-bar {
         padding: 0.65rem 0.9rem;
       }
 
       .brand-heading {
-        font-size: 0.96rem;
+        font-size: 0.95rem;
       }
 
-      .sticky-col {
-        min-width: 175px;
-        max-width: 200px;
-        padding: 0.5rem 0.65rem;
+      .clock-readout,
+      .kb-legend {
+        display: none;
+      }
+
+      .telemetry-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .month-selector-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .filter-toolbar {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-<body class="crt-enabled text-compact">
+<body class="crt-enabled">
 
   <!-- =========================================================================
        STICKY TOP SYSTEM BAR
        ========================================================================= -->
   <header class="top-bar">
-    <div class="brand-cluster">
-      <a href="./index.html" class="brand-logo-wrap framed" title="Return to Xananth // Net-Deck Hub">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-lime)" stroke-width="2" stroke-linecap="square">
-          <path d="M2 18L5 12H19L22 18H2Z" />
-          <path d="M7 12L10 6H15L17 12" />
-          <line x1="12" y1="2" x2="12" y2="6" />
+    <a href="./index.html" class="brand-cluster" title="Return to Xananth // Net-Deck">
+      <div class="brand-logo-wrap">
+        <img src="Xananth Logo Fold 3 Inner~2.png" alt="Xananth Logo" onerror="this.style.display='none'; document.getElementById('xananth-svg-logo').style.display='block';" />
+        <svg id="xananth-svg-logo" style="display:none;" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#8de500">
+            <polygon points="74,12 126,12 142,42 63,118 47,62" />
+            <polygon points="36,80 51,131 24,157 8,130" />
+            <polygon points="56,149 62,172 34,172" />
+            <polygon points="150,58 192,130 168,172 75,172 68,139" />
+          </g>
+          <text x="77" y="164" fill="#06040b" font-family="cursive, sans-serif" font-weight="900" font-style="italic" font-size="25" letter-spacing="0.5">ananth</text>
         </svg>
-      </a>
+      </div>
       <div class="brand-titles">
         <div class="online-pill">
           <span class="online-dot"></span>
-          <span id="systemStatusText">NAV-DECK // ONLINE</span>
+          <span id="sysStatusText">NAV-DECK // ONLINE</span>
         </div>
-        <h1 id="brandHeading" class="brand-heading lime-glow">SEA SPIRIT 520 // FISHING MATRIX</h1>
-        <p id="brandSub" class="brand-sub">Buddina Canal Base &bull; Mooloolaba Harbour &bull; Sunshine Coast Offshore (0–15 NM)</p>
+        <h1 id="pageTitleHeading" class="brand-heading lime-glow">XANANTH // FISHING CALENDAR</h1>
       </div>
-    </div>
+    </a>
 
     <div class="system-controls">
-      <a href="./index.html" class="retro-btn" title="Return to Net-Deck Launcher">
-        <span>&larr; HUB</span>
-      </a>
+      <a href="./index.html" class="nav-btn" title="Return to Net-Deck Launcher">&larr; NET-DECK</a>
 
-      <span id="clockReadout" class="clock-readout">AEST --:--</span>
+      <button id="themeToggle" type="button" class="nav-btn" title="Toggle Daylight / Night Deck Mode">
+        [MODE: NIGHT]
+      </button>
 
       <div id="crtToggle" class="crt-toggle-wrap" role="switch" aria-checked="true" tabindex="0" title="Toggle CRT Scanline & Phosphor FX">
         <span id="crtLabel">[CRT FX: ON]</span>
@@ -2053,250 +1271,285 @@
         </div>
       </div>
 
-      <button id="themeToggle" type="button" aria-label="Toggle light/dark mode" class="retro-btn">
-        <span id="themeIcon">☀️</span>
-        <span id="themeLabel">Light</span>
-      </button>
+      <span id="clockReadout" class="clock-readout">AEST --:--</span>
     </div>
   </header>
 
   <!-- =========================================================================
        MAIN WORKSPACE
        ========================================================================= -->
-  <main class="main-shell matrix-shell">
+  <main class="main-shell">
 
-    <!-- FILTER & LEGEND CONSOLE WINDOW -->
-    <section class="os-window" id="win-controls">
+    <!-- 1. VESSEL TELEMETRY & SONAR HEADER WINDOW -->
+    <section class="os-window" aria-label="Vessel Telemetry">
       <div class="win-titlebar">
-        <span class="win-title-text">system://matrix_query_parameters</span>
-        <span id="speciesCountBadge" class="win-title-text" style="color: var(--brand-lime);">[LOADING SPECIES...]</span>
+        <span class="win-title-text">telemetry://sunshine-coast/sonar-matrix</span>
+        <span class="win-telemetry-code">SONAR // 26.68°S 153.13°E</span>
       </div>
-      <div class="win-body deck-controls-body">
-        <div class="filter-group">
-          <div class="control-field">
-            <label for="monthSelect" class="control-label">Month:</label>
-            <select id="monthSelect" class="control-select">
-              <option value="0">JAN</option><option value="1">FEB</option><option value="2">MAR</option>
-              <option value="3">APR</option><option value="4">MAY</option><option value="5">JUN</option>
-              <option value="6">JUL</option><option value="7">AUG</option><option value="8">SEP</option>
-              <option value="9">OCT</option><option value="10">NOV</option><option value="11">DEC</option>
-            </select>
+
+      <div class="hero-banner-wrap">
+        <div class="hero-content">
+          <div>
+            <div class="vessel-tag-row">
+              <span id="vesselBadge" class="telemetry-pill">VESSEL: SEA SPIRIT 520</span>
+              <span id="rangeBadge" class="telemetry-pill emerald">RANGE: 0–28 NM</span>
+              <span id="activeMonthBadge" class="telemetry-pill">TARGET: ---</span>
+            </div>
+            <h2 id="heroHeading" class="hero-heading lime-glow">SUNSHINE COAST FISHING CALENDAR</h2>
+            <p id="heroSubtitle" class="hero-subtitle">
+              Buddina Canal Base • Mooloolaba Harbour • Sunshine Coast Offshore &amp; Barwon Banks (0–28 NM)
+            </p>
           </div>
 
-          <div class="control-field">
-            <label for="zoneFilter" class="control-label">Zone:</label>
-            <select id="zoneFilter" class="control-select">
-              <option value="all">All Grounds</option>
-              <option value="Canal & Estuary">Canal &amp; Estuary</option>
-              <option value="Inshore & Harbour">Inshore &amp; Harbour</option>
-              <option value="Offshore Reef">Offshore Reef (5-15 NM)</option>
-              <option value="Pelagic & Game">Offshore Pelagics</option>
-            </select>
-          </div>
-
-          <div class="control-field">
-            <label for="sortBy" class="control-label">Sort:</label>
-            <select id="sortBy" class="control-select">
-              <option value="season">Seasonal Availability First (A-Z tie-break)</option>
-              <option value="eating">Eating Quality First (A-Z tie-break)</option>
-              <option value="alpha">Species Name (A to Z)</option>
-            </select>
+          <div class="telemetry-stats-grid">
+            <div class="stat-box">
+              <div class="stat-label">Showing Species</div>
+              <div id="statShowing" class="stat-value">--</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Peak This Month</div>
+              <div id="statPeak" class="stat-value">--</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">5★ Table Prime</div>
+              <div id="statPrime" class="stat-value">--</div>
+            </div>
+            <div class="stat-box amber">
+              <div class="stat-label">Closure Alerts</div>
+              <div id="statClosures" class="stat-value">--</div>
+            </div>
           </div>
         </div>
 
-        <div id="legendCluster" class="legend-cluster">
-          <span style="font-weight:700; color:var(--text-primary);">LEGEND:</span>
-          <span class="legend-item"><span class="season-badge peak" style="width:18px;height:18px;font-size:10px;">✓</span> Peak Season</span>
-          <span class="legend-item"><span class="season-badge avail" style="width:18px;height:18px;font-size:10px;">•</span> Available</span>
-          <span class="legend-item"><span class="season-badge off" style="width:18px;height:18px;font-size:10px;">-</span> Off Season</span>
+        <!-- Retro SVG Bathymetry & Horizon Graphic -->
+        <div class="hero-sonar-art" aria-hidden="true">
+          <svg viewBox="0 0 480 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="calSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0b0714"/>
+                <stop offset="50%" stop-color="#13382c"/>
+                <stop offset="82%" stop-color="#287a58"/>
+                <stop offset="100%" stop-color="#071210"/>
+              </linearGradient>
+              <linearGradient id="calWater" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0b2922"/>
+                <stop offset="100%" stop-color="#06040b"/>
+              </linearGradient>
+            </defs>
+            <rect width="480" height="190" fill="url(#calSky)"/>
+            <polygon points="0,22 210,10 370,30 0,38" fill="#1b523e" opacity="0.35"/>
+            <polygon points="150,32 480,14 480,46 240,52" fill="#2ea872" opacity="0.22"/>
+            <circle cx="290" cy="96" r="28" fill="#eaffd0" opacity="0.9"/>
+            <circle cx="290" cy="96" r="38" fill="#8de500" opacity="0.2"/>
+            <!-- Glasshouse / Headland Silhouettes -->
+            <polygon points="0,98 65,78 130,90 195,68 255,88 330,66 395,84 445,72 480,86 480,104 0,104" fill="#0d261f"/>
+            <polygon points="0,102 90,86 175,95 255,84 345,92 420,80 480,94 480,106 0,106" fill="#081715"/>
+            <!-- Water & Sonar Bathymetry -->
+            <rect x="0" y="102" width="480" height="88" fill="url(#calWater)"/>
+            <line x1="0" y1="102" x2="480" y2="102" stroke="#8de500" stroke-width="1" stroke-opacity="0.7"/>
+            <g stroke="#2ea872" stroke-width="1" opacity="0.32" fill="none">
+              <line x1="80" y1="102" x2="45" y2="190"/>
+              <line x1="165" y1="102" x2="145" y2="190"/>
+              <line x1="250" y1="102" x2="250" y2="190"/>
+              <line x1="335" y1="102" x2="355" y2="190"/>
+              <line x1="415" y1="102" x2="450" y2="190"/>
+              <path d="M 0,124 Q 130,112 250,130 T 480,120" />
+              <path d="M 0,152 Q 150,168 280,144 T 480,158" stroke="#8de500" stroke-opacity="0.6"/>
+            </g>
+            <!-- Reef Target Blips (Gneerings / Murphy's / Barwon Banks) -->
+            <g fill="#8de500">
+              <circle cx="135" cy="134" r="2.5"/>
+              <circle cx="135" cy="134" r="6" fill="none" stroke="#8de500" stroke-width="0.8" opacity="0.6"/>
+              <text x="145" y="137" fill="#8de500" font-family="monospace" font-size="8" opacity="0.85">GNEERINGS</text>
+              <circle cx="255" cy="148" r="3"/>
+              <circle cx="255" cy="148" r="8" fill="none" stroke="#8de500" stroke-width="0.8" opacity="0.55"/>
+              <text x="267" y="151" fill="#8de500" font-family="monospace" font-size="8" opacity="0.85">12 MILE</text>
+              <circle cx="378" cy="164" r="3.5"/>
+              <circle cx="378" cy="164" r="9" fill="none" stroke="#8de500" stroke-width="0.9" opacity="0.65"/>
+              <text x="390" y="167" fill="#8de500" font-family="monospace" font-size="8" opacity="0.9">BARWON BANKS</text>
+            </g>
+            <path d="M 10,18 L 10,10 L 18,10 M 470,18 L 470,10 L 462,10 M 10,172 L 10,180 L 18,180 M 470,172 L 470,180 L 462,180" stroke="#8de500" stroke-width="1" fill="none" opacity="0.55"/>
+          </svg>
         </div>
       </div>
     </section>
 
-    <!-- MAIN 12-MONTH SPECIES MATRIX WINDOW -->
-    <section class="os-window" id="win-matrix">
+    <!-- 2. TACTICAL FILTER & SORT DECK -->
+    <section class="os-window" aria-label="Filter and Sort Controls">
       <div class="win-titlebar">
-        <span class="win-title-text">module://01_sunshine_coast_seasonal_matrix</span>
-        <span class="win-title-text">[CLICK ROW FOR TACKLE &amp; GPS MARKS]</span>
+        <span class="win-title-text">module://01_tactical-filter-deck</span>
+        <span class="win-telemetry-code">QUERY // MATRIX</span>
       </div>
-      <div class="win-body">
-        <div class="matrix-scroll-container">
-          <table class="matrix-table">
-            <thead>
-              <tr id="matrixHeadRow">
-                <th scope="col" class="sticky-col">Species &amp; Classification</th>
-                <th scope="col">Jan</th>
-                <th scope="col">Feb</th>
-                <th scope="col">Mar</th>
-                <th scope="col">Apr</th>
-                <th scope="col">May</th>
-                <th scope="col">Jun</th>
-                <th scope="col">Jul</th>
-                <th scope="col">Aug</th>
-                <th scope="col">Sep</th>
-                <th scope="col">Oct</th>
-                <th scope="col">Nov</th>
-                <th scope="col">Dec</th>
-                <th scope="col">Eating / Regs</th>
-              </tr>
-            </thead>
-            <tbody id="matrixBody">
-              <tr>
-                <td colspan="14" style="padding: 18px 14px; color: var(--brand-lime);">
-                  // LOADING SPECIES MATRIX FROM fish.json...
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+      <div class="controls-body">
+        <div class="month-strip-header">
+          <span class="control-section-label">Target Month Selection (Click to prioritize &amp; highlight)</span>
+          <span id="currentMonthHint" style="font-size:0.72rem; color:var(--text-muted);">Red LED marks current AEST month</span>
         </div>
-        <div class="matrix-footer-hint">
-          <span id="footerVesselMeta">VESSEL PROFILE: SEA SPIRIT 520 // RANGE: 0–15 NM</span>
-          <span>ESC TO CLOSE DOSSIER MODAL &nbsp;|&nbsp; CLICK ANY SPECIES ROW FOR FULL BRIEFING</span>
+
+        <div id="monthSelectorGrid" class="month-selector-grid" role="group" aria-label="Target Month">
+          <!-- Populated from fish.json months -->
         </div>
+
+        <div class="filter-toolbar">
+          <div class="field-group">
+            <label for="searchInput" class="field-label">
+              <span>Search Species / Bait / Reef Spot</span>
+              <span>[/]</span>
+            </label>
+            <input
+              id="searchInput"
+              type="search"
+              class="retro-input"
+              placeholder="e.g. Snapper, Barwon Banks, Buddina, live yakka..."
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="zoneSelect" class="field-label">Fishing Zone</label>
+            <select id="zoneSelect" class="retro-select">
+              <!-- Populated from fish.json zones -->
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="seasonFilterSelect" class="field-label">Month Availability</label>
+            <select id="seasonFilterSelect" class="retro-select">
+              <option value="all">All Statuses (Peak / Avail / Off)</option>
+              <option value="peak">Peak Season Only (✓)</option>
+              <option value="active">Peak + Available (✓ &amp; •)</option>
+              <option value="closures">Has Seasonal Closure Alert (⚠️)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="sortSelect" class="field-label">Sort Order (Tertiary: Species A–Z)</label>
+            <select id="sortSelect" class="retro-select">
+              <option value="seasonal">1. Seasonal Availability &rarr; Eating &rarr; Name</option>
+              <option value="eating">2. Eating Quality (5★–1★) &rarr; Season &rarr; Name</option>
+              <option value="alpha">3. Species Name (A–Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toolbar-footer">
+          <div id="legendCluster" class="legend-cluster">
+            <!-- Populated from fish.json seasonLegend -->
+          </div>
+
+          <div class="bulk-actions">
+            <button id="expandAllBtn" type="button" class="btn-action">[EXPAND ALL]</button>
+            <button id="collapseAllBtn" type="button" class="btn-action">[COLLAPSE ALL]</button>
+            <button id="resetFiltersBtn" type="button" class="btn-action">[RESET]</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 12-MONTH SPECIES MATRIX WINDOW -->
+    <section class="os-window" aria-label="Seasonal Species Matrix">
+      <div class="win-titlebar">
+        <span class="win-title-text">database://fish.json/seasonal-species-matrix</span>
+        <span id="matrixCountReadout" class="win-telemetry-code">LOADING...</span>
+      </div>
+
+      <div class="matrix-header-row">
+        <div>Species // Zone // Table Rating</div>
+        <div id="matrixMonthsHead" class="matrix-months-head">
+          <!-- Populated from fish.json months -->
+        </div>
+        <div style="text-align:right;">Dossier</div>
+      </div>
+
+      <div id="speciesList" class="species-list">
+        <!-- Populated dynamically from fish.json species -->
       </div>
     </section>
 
     <!-- FOOTER DOCK -->
     <footer class="footer-dock">
       <div class="badge-wall">
-        <a href="./index.html" class="retro-badge">&larr; Xananth Net-Deck</a>
+        <a href="./index.html" class="retro-badge">&larr; Net-Deck Hub</a>
+        <a href="https://youtube.com/day9tv" target="_blank" rel="noopener noreferrer" class="retro-badge">Inspiration</a>
+        <a href="https://webfpv.org" target="_blank" rel="noopener noreferrer" class="retro-badge">Motivation</a>
       </div>
+
       <div class="kb-legend">
-        SONAR // 26.68&deg;S &nbsp;|&nbsp; ESC to close dossier
+        [/] Search &nbsp;|&nbsp; [&larr;/&rarr;] Change Month &nbsp;|&nbsp; [ESC] Collapse / Reset
       </div>
     </footer>
 
   </main>
 
-  <!-- =========================================================================
-       SPECIES DETAIL MODAL (OS WINDOW OVERLAY)
-       ========================================================================= -->
-  <div id="speciesModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="os-window modal-window">
-      <div class="win-titlebar">
-        <span class="win-title-text">dossier://species_tactical_briefing</span>
-        <button id="modalCloseBtn" class="win-close-btn" aria-label="Close modal" title="Close Window (ESC)">x</button>
-      </div>
-
-      <div class="modal-body-scroll">
-        <!-- Dossier Header -->
-        <div class="dossier-header">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span id="modalZoneBadge" class="zone-pill">Zone</span>
-              <span id="modalEatingStars" class="stars-readout">★★★★★</span>
-            </div>
-            <h2 id="modalCommonName" class="dossier-title lime-glow">Species Name</h2>
-            <p id="modalSciName" class="sci-name">Scientific name</p>
-          </div>
-        </div>
-
-        <!-- QLD Legal Limits & Closures -->
-        <div class="dossier-grid-2">
-          <div class="data-panel">
-            <span class="stat-label">QLD Legal Size</span>
-            <span id="modalSizeLimit" class="stat-value" style="color: var(--brand-lime);">Min: 35 cm</span>
-          </div>
-          <div class="data-panel">
-            <span class="stat-label">Possession Limit</span>
-            <span id="modalBagLimit" class="stat-value">5 in total</span>
-          </div>
-          <div id="modalClosureNote" class="closure-alert hidden">
-            ⚠️ <span>Closure note</span>
-          </div>
-        </div>
-
-        <!-- Sea Spirit 520 Tackle Strategy -->
-        <div class="data-panel">
-          <h3 class="panel-heading"><span>[TACKLE]</span> Sea Spirit 520 Tackle Strategy</h3>
-          <div class="tackle-grid">
-            <div>
-              <span class="stat-label">Rod &amp; Reel Combo:</span>
-              <span id="modalRodReel" style="font-weight:700; color:var(--text-primary);">2500 Spin, 7'0" 2-5kg</span>
-            </div>
-            <div>
-              <span class="stat-label">Mainline &amp; Leader:</span>
-              <span id="modalLineLeader" style="font-weight:700; color:var(--text-primary);">10 lb Braid + 12 lb Fluorocarbon</span>
-            </div>
-            <div class="tackle-span-2">
-              <span class="stat-label">Preferred Rig / Hooks:</span>
-              <span id="modalRig">Running sinker rig to 1/0 circle hook or 1/8oz jighead</span>
-            </div>
-            <div class="tackle-span-2">
-              <span class="stat-label">Top Baits / Lures:</span>
-              <span id="modalBaits">Live poddy mullet, fresh canal prawn, 2.5" Grub soft plastic</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Local Sunshine Coast Hotspots -->
-        <div class="data-panel">
-          <h3 class="panel-heading"><span>[WAYPOINTS]</span> Sunshine Coast Spots (Suited for 5.2m Vessel)</h3>
-          <div id="modalSpots" class="spots-copy">
-            <!-- Spots inserted here -->
-          </div>
-        </div>
-
-        <!-- Boat Skipper's Note -->
-        <div class="skipper-box">
-          <strong>// SKIPPER'S LOG:</strong>
-          <span id="modalSkipperTip">Guidance on drift control, livewell aeration, and navigation safety for a 5.2m vessel.</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Hidden file input fallback if opened via strict local file:// protocol -->
+  <input id="localJsonPicker" type="file" accept=".json,application/json" style="display:none;" />
 
   <!-- =========================================================================
-       APPLICATION LOGIC & EXTERNAL JSON LOADER
+       APPLICATION LOGIC: DYNAMIC fish.json LOADER, SORTER & MATRIX RENDERER
        ========================================================================= -->
   <script>
-    let SPECIES_DB = [];
-    let SEASON_LEGEND = {
-      "2": { key: "peak", label: "Peak Season", symbol: "✓" },
-      "1": { key: "avail", label: "Available", symbol: "•" },
-      "0": { key: "off", label: "Off Season", symbol: "-" }
+    const state = {
+      meta: {},
+      months: [],
+      seasonLegend: {},
+      zones: [],
+      species: [],
+      selectedMonth: 0,
+      currentAestMonth: 0,
+      searchQuery: '',
+      selectedZone: 'all',
+      seasonFilter: 'all',
+      sortBy: 'seasonal',
+      expandedIds: new Set()
     };
 
-    // DOM Elements
-    const matrixBody = document.getElementById('matrixBody');
-    const matrixHeadRow = document.getElementById('matrixHeadRow');
-    const monthSelect = document.getElementById('monthSelect');
-    const zoneFilter = document.getElementById('zoneFilter');
-    const sortBy = document.getElementById('sortBy');
-    const speciesCountBadge = document.getElementById('speciesCountBadge');
-    const legendCluster = document.getElementById('legendCluster');
+    // DOM References
+    const sysStatusText = document.getElementById('sysStatusText');
+    const pageTitleHeading = document.getElementById('pageTitleHeading');
+    const vesselBadge = document.getElementById('vesselBadge');
+    const rangeBadge = document.getElementById('rangeBadge');
+    const activeMonthBadge = document.getElementById('activeMonthBadge');
+    const heroHeading = document.getElementById('heroHeading');
+    const heroSubtitle = document.getElementById('heroSubtitle');
 
-    const systemStatusText = document.getElementById('systemStatusText');
-    const brandHeading = document.getElementById('brandHeading');
-    const brandSub = document.getElementById('brandSub');
-    const footerVesselMeta = document.getElementById('footerVesselMeta');
+    const statShowing = document.getElementById('statShowing');
+    const statPeak = document.getElementById('statPeak');
+    const statPrime = document.getElementById('statPrime');
+    const statClosures = document.getElementById('statClosures');
+
+    const monthSelectorGrid = document.getElementById('monthSelectorGrid');
+    const matrixMonthsHead = document.getElementById('matrixMonthsHead');
+    const zoneSelect = document.getElementById('zoneSelect');
+    const seasonFilterSelect = document.getElementById('seasonFilterSelect');
+    const sortSelect = document.getElementById('sortSelect');
+    const searchInput = document.getElementById('searchInput');
+    const legendCluster = document.getElementById('legendCluster');
+    const speciesList = document.getElementById('speciesList');
+    const matrixCountReadout = document.getElementById('matrixCountReadout');
 
     const crtToggle = document.getElementById('crtToggle');
     const crtLabel = document.getElementById('crtLabel');
     const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeLabel = document.getElementById('themeLabel');
+    const localJsonPicker = document.getElementById('localJsonPicker');
 
-    const modal = document.getElementById('speciesModal');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
-    const modalCommonName = document.getElementById('modalCommonName');
-    const modalSciName = document.getElementById('modalSciName');
-    const modalZoneBadge = document.getElementById('modalZoneBadge');
-    const modalEatingStars = document.getElementById('modalEatingStars');
-    const modalSizeLimit = document.getElementById('modalSizeLimit');
-    const modalBagLimit = document.getElementById('modalBagLimit');
-    const modalClosureNote = document.getElementById('modalClosureNote');
-    const modalRodReel = document.getElementById('modalRodReel');
-    const modalLineLeader = document.getElementById('modalLineLeader');
-    const modalRig = document.getElementById('modalRig');
-    const modalBaits = document.getElementById('modalBaits');
-    const modalSpots = document.getElementById('modalSpots');
-    const modalSkipperTip = document.getElementById('modalSkipperTip');
+    // =========================================================================
+    // DETERMINE CURRENT AEST MONTH & LIVE CLOCK
+    // =========================================================================
+    function initAestTime() {
+      const now = new Date();
+      const aestMonthStr = now.toLocaleDateString('en-AU', {
+        timeZone: 'Australia/Brisbane',
+        month: 'numeric'
+      });
+      const parsedMonth = parseInt(aestMonthStr, 10) - 1;
+      state.currentAestMonth = (!isNaN(parsedMonth) && parsedMonth >= 0 && parsedMonth <= 11)
+        ? parsedMonth
+        : now.getMonth();
+      state.selectedMonth = state.currentAestMonth;
+    }
 
-    // Live AEST Clock (Matches Net-Deck Hub)
     function updateClock() {
-      const clockEl = document.getElementById('clockReadout');
-      if (!clockEl) return;
       const now = new Date();
       const timeStr = now.toLocaleTimeString('en-AU', {
         timeZone: 'Australia/Brisbane',
@@ -2304,12 +1557,16 @@
         minute: '2-digit',
         hour12: false
       });
-      clockEl.textContent = `AEST ${timeStr}`;
+      document.getElementById('clockReadout').textContent = `AEST ${timeStr}`;
     }
+
+    initAestTime();
     updateClock();
     setInterval(updateClock, 15000);
 
-    // CRT FX Toggle
+    // =========================================================================
+    // CRT FX & DAYLIGHT/NIGHT MODE TOGGLES
+    // =========================================================================
     function toggleCrt() {
       const enabled = document.body.classList.toggle('crt-enabled');
       crtToggle.setAttribute('aria-checked', String(enabled));
@@ -2324,228 +1581,458 @@
       }
     });
 
-    // Theme Management
-    function initTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      const isDark = savedTheme ? savedTheme === 'dark' : true;
-      applyTheme(isDark);
-    }
-
-    function applyTheme(isDark) {
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-        themeIcon.textContent = '☀️';
-        themeLabel.textContent = 'Light';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        themeIcon.textContent = '🌙';
-        themeLabel.textContent = 'Dark';
-        localStorage.setItem('theme', 'light');
-      }
-    }
-
     themeToggle.addEventListener('click', () => {
-      const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      applyTheme(!isCurrentlyDark);
+      const isLight = document.body.classList.toggle('light-mode');
+      themeToggle.textContent = isLight ? '[MODE: DAYLIGHT]' : '[MODE: NIGHT]';
     });
 
-    // Default to current calendar month
-    const currentRealMonth = new Date().getMonth();
-    monthSelect.value = currentRealMonth;
-
-    function hydrateConfigFromJson(data) {
-      if (data.meta) {
-        if (data.meta.pageTitle) document.title = data.meta.pageTitle;
-        if (data.meta.systemStatus) systemStatusText.textContent = data.meta.systemStatus;
-        if (data.meta.heading) brandHeading.textContent = data.meta.heading;
-        if (data.meta.subtitle) brandSub.textContent = data.meta.subtitle;
-        if (data.meta.vesselProfile && data.meta.range) {
-          footerVesselMeta.textContent = `VESSEL PROFILE: ${data.meta.vesselProfile} // RANGE: ${data.meta.range}`;
-        }
-      }
-
-      if (Array.isArray(data.months) && data.months.length === 12) {
-        const preservedMonth = monthSelect.value;
-        monthSelect.innerHTML = data.months
-          .map(m => `<option value="${m.index}">${m.short}</option>`)
-          .join('');
-        monthSelect.value = preservedMonth;
-
-        matrixHeadRow.innerHTML = `
-          <th scope="col" class="sticky-col">Species &amp; Classification</th>
-          ${data.months.map(m => `<th scope="col">${m.label}</th>`).join('')}
-          <th scope="col">Eating / Regs</th>
-        `;
-      }
-
-      if (data.seasonLegend) {
-        SEASON_LEGEND = data.seasonLegend;
-        const orderedKeys = ['2', '1', '0'].filter(k => SEASON_LEGEND[k]);
-        legendCluster.innerHTML = `
-          <span style="font-weight:700; color:var(--text-primary);">LEGEND:</span>
-          ${orderedKeys.map(k => {
-            const item = SEASON_LEGEND[k];
-            return `<span class="legend-item"><span class="season-badge ${item.key}" style="width:18px;height:18px;font-size:10px;">${item.symbol}</span> ${item.label}</span>`;
-          }).join('')}
-        `;
-      }
-
-      if (Array.isArray(data.zones) && data.zones.length > 0) {
-        zoneFilter.innerHTML = data.zones
-          .map(z => {
-            const label = z.value === 'all' ? `${z.label} (${SPECIES_DB.length} Species)` : z.label;
-            return `<option value="${z.value}">${label}</option>`;
-          })
-          .join('');
-      } else {
-        const allOpt = zoneFilter.querySelector('option[value="all"]');
-        if (allOpt) allOpt.textContent = `All Grounds (${SPECIES_DB.length} Species)`;
-      }
-
-      speciesCountBadge.textContent = `[${SPECIES_DB.length} SPECIES INDEXED]`;
+    // =========================================================================
+    // ESCAPE HTML HELPER (For safe plain-text fields)
+    // =========================================================================
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
     }
 
-    async function loadFishData() {
+    // =========================================================================
+    // INITIALIZE UI FROM fish.json DATA
+    // =========================================================================
+    function hydrateFromFishJson(data) {
+      state.meta = data.meta || {};
+      state.months = Array.isArray(data.months) ? data.months : [];
+      state.seasonLegend = data.seasonLegend || {};
+      state.zones = Array.isArray(data.zones) ? data.zones : [];
+      state.species = Array.isArray(data.species) ? data.species : [];
+
+      // 1. Hydrate Meta Header
+      if (state.meta.pageTitle) {
+        document.title = state.meta.pageTitle;
+        pageTitleHeading.textContent = state.meta.pageTitle;
+      }
+      if (state.meta.systemStatus) {
+        sysStatusText.textContent = state.meta.systemStatus;
+      }
+      if (state.meta.heading) {
+        heroHeading.textContent = state.meta.heading.trim();
+      }
+      if (state.meta.subtitle) {
+        heroSubtitle.textContent = state.meta.subtitle;
+      }
+      if (state.meta.vesselProfile) {
+        vesselBadge.textContent = `VESSEL: ${state.meta.vesselProfile}`;
+      }
+      if (state.meta.range) {
+        rangeBadge.textContent = `RANGE: ${state.meta.range}`;
+      }
+
+      // 2. Hydrate Zones Dropdown
+      zoneSelect.innerHTML = state.zones.map(z =>
+        `<option value="${escapeHtml(z.value)}">${escapeHtml(z.label)}</option>`
+      ).join('');
+
+      // 3. Hydrate Season Legend
+      const legendOrder = ['2', '1', '0'];
+      legendCluster.innerHTML = legendOrder
+        .filter(code => state.seasonLegend[code])
+        .map(code => {
+          const item = state.seasonLegend[code];
+          return `
+            <span class="legend-item">
+              <span class="season-badge ${escapeHtml(item.key)}">${escapeHtml(item.symbol)}</span>
+              <span>${escapeHtml(item.label)}</span>
+            </span>
+          `;
+        }).join('');
+
+      // 4. Render Month Controls & Species Matrix
+      renderMonthSelectors();
+      renderSpeciesMatrix();
+    }
+
+    // =========================================================================
+    // RENDER MONTH BUTTONS & TABLE COLUMN HEADERS
+    // =========================================================================
+    function renderMonthSelectors() {
+      const activeMonthObj = state.months[state.selectedMonth] || { short: '---', label: '---' };
+      activeMonthBadge.textContent = `TARGET: ${activeMonthObj.short}`;
+
+      monthSelectorGrid.innerHTML = state.months.map(m => {
+        const isActive = m.index === state.selectedMonth;
+        const isCurrentAest = m.index === state.currentAestMonth;
+        return `
+          <button
+            type="button"
+            class="month-btn ${isActive ? 'active' : ''} ${isCurrentAest ? 'current-aest' : ''}"
+            data-month-index="${m.index}"
+            title="Select ${escapeHtml(m.label)}${isCurrentAest ? ' (Current AEST Month)' : ''}"
+          >
+            ${escapeHtml(m.short)}
+          </button>
+        `;
+      }).join('');
+
+      matrixMonthsHead.innerHTML = state.months.map(m => {
+        const isActive = m.index === state.selectedMonth;
+        return `
+          <div
+            class="matrix-month-col-head ${isActive ? 'active-col' : ''}"
+            data-month-index="${m.index}"
+            title="Prioritize ${escapeHtml(m.label)}"
+          >
+            ${escapeHtml(m.short)}
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('[data-month-index]').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.dataset.monthIndex, 10);
+          if (!isNaN(idx)) {
+            state.selectedMonth = idx;
+            renderMonthSelectors();
+            renderSpeciesMatrix();
+          }
+        });
+      });
+    }
+
+    // =========================================================================
+    // FILTER & SORT SPECIES (Tertiary sort strictly alphabetical on species name)
+    // =========================================================================
+    function getFilteredAndSortedSpecies() {
+      const q = state.searchQuery.trim().toLowerCase();
+      const mIdx = state.selectedMonth;
+
+      const filtered = state.species.filter(sp => {
+        // Zone filter
+        if (state.selectedZone !== 'all' && sp.zone !== state.selectedZone) {
+          return false;
+        }
+
+        // Season status filter in selected month
+        const mScore = Array.isArray(sp.seasons) ? (sp.seasons[mIdx] || 0) : 0;
+        if (state.seasonFilter === 'peak' && mScore !== 2) return false;
+        if (state.seasonFilter === 'active' && mScore < 1) return false;
+        if (state.seasonFilter === 'closures' && (!sp.closure || !sp.closure.trim())) return false;
+
+        // Search query filter
+        if (q) {
+          const haystack = [
+            sp.name,
+            sp.sci,
+            sp.zone,
+            sp.baits,
+            sp.rig,
+            sp.spots,
+            sp.tip,
+            sp.closure
+          ].join(' ').toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+
+        return true;
+      });
+
+      // Sort with tertiary sort strictly alphabetical on species name
+      filtered.sort((a, b) => {
+        const seasonA = Array.isArray(a.seasons) ? (a.seasons[mIdx] || 0) : 0;
+        const seasonB = Array.isArray(b.seasons) ? (b.seasons[mIdx] || 0) : 0;
+        const eatA = Number(a.eating) || 0;
+        const eatB = Number(b.eating) || 0;
+
+        if (state.sortBy === 'seasonal') {
+          if (seasonB !== seasonA) return seasonB - seasonA;
+          if (eatB !== eatA) return eatB - eatA;
+          return a.name.localeCompare(b.name);
+        }
+
+        if (state.sortBy === 'eating') {
+          if (eatB !== eatA) return eatB - eatA;
+          if (seasonB !== seasonA) return seasonB - seasonA;
+          return a.name.localeCompare(b.name);
+        }
+
+        // Alphabetical on species name
+        return a.name.localeCompare(b.name);
+      });
+
+      return filtered;
+    }
+
+    // =========================================================================
+    // RENDER SPECIES MATRIX & EXPANDABLE TACTICAL DOSSIERS
+    // =========================================================================
+    function renderSpeciesMatrix() {
+      const filtered = getFilteredAndSortedSpecies();
+      const mIdx = state.selectedMonth;
+      const activeMonthObj = state.months[mIdx] || { short: '---' };
+
+      // Update Top Telemetry Counters
+      const peakCount = filtered.filter(s => (s.seasons && s.seasons[mIdx] === 2)).length;
+      const primeCount = filtered.filter(s => Number(s.eating) === 5).length;
+      const closureCount = filtered.filter(s => s.closure && s.closure.trim().length > 0).length;
+
+      statShowing.textContent = `${filtered.length} / ${state.species.length}`;
+      statPeak.textContent = `${peakCount} (${activeMonthObj.short})`;
+      statPrime.textContent = String(primeCount);
+      statClosures.textContent = String(closureCount);
+      matrixCountReadout.textContent = `RECORDS // ${filtered.length} SPECIES`;
+
+      if (filtered.length === 0) {
+        speciesList.innerHTML = `
+          <div class="empty-state">
+            <div>No Sunshine Coast species match your current filter telemetry.</div>
+            <button type="button" class="btn-action" id="emptyResetBtn">[RESET ALL FILTERS]</button>
+          </div>
+        `;
+        const emptyResetBtn = document.getElementById('emptyResetBtn');
+        if (emptyResetBtn) emptyResetBtn.addEventListener('click', resetFilters);
+        return;
+      }
+
+      speciesList.innerHTML = filtered.map(sp => {
+        const isExpanded = state.expandedIds.has(sp.id);
+        const stars = '★'.repeat(Math.max(0, Math.min(5, Number(sp.eating) || 0))) +
+                      '☆'.repeat(Math.max(0, 5 - (Number(sp.eating) || 0)));
+        const hasClosure = sp.closure && sp.closure.trim().length > 0;
+
+        // Build 12 month cells
+        const monthCellsHtml = state.months.map(m => {
+          const code = String(Array.isArray(sp.seasons) ? (sp.seasons[m.index] ?? 0) : 0);
+          const legendItem = state.seasonLegend[code] || { key: 'off', label: 'Off Season', symbol: '-' };
+          const isSelectedCol = m.index === mIdx;
+
+          return `
+            <div
+              class="month-cell ${escapeHtml(legendItem.key)} ${isSelectedCol ? 'selected-col' : ''}"
+              title="${escapeHtml(sp.name)} — ${escapeHtml(m.label)}: ${escapeHtml(legendItem.label)}"
+            >
+              <span class="cell-month-lbl">${escapeHtml(m.short)}</span>
+              <span>${escapeHtml(legendItem.symbol)}</span>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <article class="species-item ${isExpanded ? 'expanded' : ''}" id="species-${escapeHtml(sp.id)}">
+            <div class="species-row" data-toggle-id="${escapeHtml(sp.id)}">
+              <div class="species-identity">
+                <div class="species-title-line">
+                  <h3 class="species-name">${escapeHtml(sp.name)}</h3>
+                  <span class="species-sci">${escapeHtml(sp.sci)}</span>
+                </div>
+                <div class="species-meta-pills">
+                  <span class="zone-pill">${escapeHtml(sp.zone)}</span>
+                  <span class="eating-stars" title="Eating Quality: ${sp.eating}/5">${stars}</span>
+                  ${hasClosure ? `<span class="closure-pill" title="${escapeHtml(sp.closure)}">⚠️ CLOSURE</span>` : ''}
+                </div>
+              </div>
+
+              <div class="seasons-cells">
+                ${monthCellsHtml}
+              </div>
+
+              <div class="row-action-col">
+                <button type="button" class="btn-specs" aria-expanded="${isExpanded}">
+                  ${isExpanded ? '[HIDE]' : '[SPECS]'}
+                </button>
+              </div>
+            </div>
+
+            <div class="species-drawer">
+              ${hasClosure ? `<div class="closure-alert-banner">${escapeHtml(sp.closure)}</div>` : ''}
+
+              <div class="dossier-grid">
+                <div class="dossier-card">
+                  <div class="dossier-card-title">QLD Regulations &amp; Limits</div>
+                  <div class="spec-line"><strong>Size Limit:</strong> ${escapeHtml(sp.sizeLimit)}</div>
+                  <div class="spec-line"><strong>Bag Limit:</strong> ${escapeHtml(sp.bagLimit)}</div>
+                  <div class="spec-line"><strong>Eating Quality:</strong> ${sp.eating} / 5 (${stars})</div>
+                </div>
+
+                <div class="dossier-card">
+                  <div class="dossier-card-title">Tackle &amp; Line Matrix</div>
+                  <div class="spec-line"><strong>Rod &amp; Reel:</strong> ${escapeHtml(sp.rodReel)}</div>
+                  <div class="spec-line"><strong>Line &amp; Leader:</strong> ${escapeHtml(sp.lineLeader)}</div>
+                </div>
+
+                <div class="dossier-card">
+                  <div class="dossier-card-title">Terminal Rig &amp; Baits</div>
+                  <div class="spec-line"><strong>Rig:</strong> ${escapeHtml(sp.rig)}</div>
+                  <div class="spec-line"><strong>Baits / Lures:</strong> ${escapeHtml(sp.baits)}</div>
+                </div>
+
+                <div class="dossier-card">
+                  <div class="dossier-card-title">Local Hotspots (0–28 NM)</div>
+                  <div class="spec-line">${sp.spots || ''}</div>
+                </div>
+              </div>
+
+              ${sp.tip ? `
+                <div class="skipper-tip-box">
+                  <strong>Skipper's Tactical Tip //</strong> ${escapeHtml(sp.tip)}
+                </div>
+              ` : ''}
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      // Bind row click to expand/collapse dossier
+      speciesList.querySelectorAll('[data-toggle-id]').forEach(row => {
+        row.addEventListener('click', () => {
+          const id = row.dataset.toggleId;
+          if (state.expandedIds.has(id)) {
+            state.expandedIds.delete(id);
+          } else {
+            state.expandedIds.add(id);
+          }
+          renderSpeciesMatrix();
+        });
+      });
+    }
+
+    // =========================================================================
+    // FILTER & BULK ACTION LISTENERS
+    // =========================================================================
+    searchInput.addEventListener('input', (e) => {
+      state.searchQuery = e.target.value;
+      renderSpeciesMatrix();
+    });
+
+    zoneSelect.addEventListener('change', (e) => {
+      state.selectedZone = e.target.value;
+      renderSpeciesMatrix();
+    });
+
+    seasonFilterSelect.addEventListener('change', (e) => {
+      state.seasonFilter = e.target.value;
+      renderSpeciesMatrix();
+    });
+
+    sortSelect.addEventListener('change', (e) => {
+      state.sortBy = e.target.value;
+      renderSpeciesMatrix();
+    });
+
+    document.getElementById('expandAllBtn').addEventListener('click', () => {
+      getFilteredAndSortedSpecies().forEach(sp => state.expandedIds.add(sp.id));
+      renderSpeciesMatrix();
+    });
+
+    document.getElementById('collapseAllBtn').addEventListener('click', () => {
+      state.expandedIds.clear();
+      renderSpeciesMatrix();
+    });
+
+    function resetFilters() {
+      state.searchQuery = '';
+      state.selectedZone = 'all';
+      state.seasonFilter = 'all';
+      state.sortBy = 'seasonal';
+      state.selectedMonth = state.currentAestMonth;
+      state.expandedIds.clear();
+
+      searchInput.value = '';
+      zoneSelect.value = 'all';
+      seasonFilterSelect.value = 'all';
+      sortSelect.value = 'seasonal';
+
+      renderMonthSelectors();
+      renderSpeciesMatrix();
+    }
+
+    document.getElementById('resetFiltersBtn').addEventListener('click', resetFilters);
+
+    // =========================================================================
+    // KEYBOARD SHORTCUTS (/, Left/Right Month Navigation, Esc)
+    // =========================================================================
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        if (document.activeElement === searchInput && searchInput.value) {
+          searchInput.value = '';
+          state.searchQuery = '';
+          renderSpeciesMatrix();
+          searchInput.blur();
+          return;
+        }
+        state.expandedIds.clear();
+        renderSpeciesMatrix();
+        return;
+      }
+
+      if (document.activeElement === document.body && state.months.length === 12) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          state.selectedMonth = (state.selectedMonth + 11) % 12;
+          renderMonthSelectors();
+          renderSpeciesMatrix();
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          state.selectedMonth = (state.selectedMonth + 1) % 12;
+          renderMonthSelectors();
+          renderSpeciesMatrix();
+        }
+      }
+    });
+
+    // =========================================================================
+    // LOAD ./fish.json (With Manual File Picker Fallback for strict file:// CORS)
+    // =========================================================================
+    async function loadFishDatabase() {
       try {
-        const response = await fetch('fish.json');
+        const response = await fetch('./fish.json', { cache: 'no-store' });
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status} (${response.statusText})`);
+          throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
-        SPECIES_DB = Array.isArray(data) ? data : (data.species || []);
-        hydrateConfigFromJson(Array.isArray(data) ? {} : data);
-        renderMatrix();
+        hydrateFromFishJson(data);
       } catch (err) {
-        console.error('Failed to load fish.json:', err);
-        speciesCountBadge.textContent = '[DB ERROR]';
-        matrixBody.innerHTML = `
-          <tr>
-            <td colspan="14" style="padding: 18px 14px; color: var(--warn-amber);">
-              ⚠️ ERROR LOADING <strong>fish.json</strong>: ${err.message}. Ensure <code>fish.json</code> is in the same directory and served over HTTP/HTTPS.
-            </td>
-          </tr>
-        `;
-      }
-    }
-
-    function renderMatrix() {
-      const selectedMonth = parseInt(monthSelect.value, 10);
-      const selectedZone = zoneFilter.value;
-      const sortPreference = sortBy.value;
-
-      // Filter by Zone
-      let filtered = SPECIES_DB.filter(sp => {
-        if (selectedZone === 'all') return true;
-        return sp.zone === selectedZone;
-      });
-
-      // Sorting Algorithm
-      filtered.sort((a, b) => {
-        if (sortPreference === 'season') {
-          const seasonDiff = b.seasons[selectedMonth] - a.seasons[selectedMonth];
-          if (seasonDiff !== 0) return seasonDiff;
-          const eatDiff = b.eating - a.eating;
-          if (eatDiff !== 0) return eatDiff;
-          return a.name.localeCompare(b.name);
-        } else if (sortPreference === 'eating') {
-          const eatDiff = b.eating - a.eating;
-          if (eatDiff !== 0) return eatDiff;
-          const seasonDiff = b.seasons[selectedMonth] - a.seasons[selectedMonth];
-          if (seasonDiff !== 0) return seasonDiff;
-          return a.name.localeCompare(b.name);
-        } else {
-          const nameDiff = a.name.localeCompare(b.name);
-          if (nameDiff !== 0) return nameDiff;
-          return b.seasons[selectedMonth] - a.seasons[selectedMonth];
-        }
-      });
-
-      // Generate HTML
-      matrixBody.innerHTML = '';
-      filtered.forEach(species => {
-        const row = document.createElement('tr');
-        row.className = 'matrix-row';
-        row.onclick = () => openSpeciesModal(species);
-
-        let html = `
-          <td class="sticky-col">
-            <div class="species-name">${species.name}</div>
-            <div class="species-meta">
-              <span class="zone-pill">${species.zone}</span>
-              <span class="sci-name">${species.sci}</span>
+        console.warn('Automatic fetch of ./fish.json blocked or failed:', err);
+        matrixCountReadout.textContent = 'AWAITING // fish.json';
+        speciesList.innerHTML = `
+          <div class="empty-state">
+            <div>
+              Unable to auto-fetch <strong>./fish.json</strong> (browser local <code>file://</code> security policy or missing file).
             </div>
-          </td>
+            <button type="button" class="btn-action" id="manualLoadBtn" style="border-color:var(--brand-lime); color:var(--brand-lime);">
+              [LOAD fish.json MANUALLY]
+            </button>
+          </div>
         `;
-
-        // 12 Monthly Matrix Indicators
-        species.seasons.forEach((val, idx) => {
-          const isSelectedMonth = (idx === selectedMonth);
-          const ringClass = isSelectedMonth ? 'ring-active' : '';
-          const meta = SEASON_LEGEND[String(val)] || { key: 'off', symbol: '-' };
-          const pill = `<span class="season-badge ${meta.key} ${ringClass}">${meta.symbol}</span>`;
-
-          html += `<td class="season-cell ${isSelectedMonth ? 'active-month-col' : ''}">${pill}</td>`;
-        });
-
-        // Eating Quality & Size limit cell
-        const stars = '★'.repeat(species.eating) + '☆'.repeat(5 - species.eating);
-        html += `
-          <td class="regs-cell">
-            <span class="stars-readout">${stars}</span>
-            <span class="size-readout">${species.sizeLimit.replace('Min:', '')}</span>
-          </td>
-        `;
-
-        row.innerHTML = html;
-        matrixBody.appendChild(row);
-      });
+        const manualBtn = document.getElementById('manualLoadBtn');
+        if (manualBtn) {
+          manualBtn.addEventListener('click', () => localJsonPicker.click());
+        }
+      }
     }
 
-    function openSpeciesModal(species) {
-      modalCommonName.textContent = species.name;
-      modalSciName.textContent = species.sci;
-      modalZoneBadge.textContent = species.zone;
-      modalEatingStars.textContent = '★'.repeat(species.eating) + '☆'.repeat(5 - species.eating);
-
-      modalSizeLimit.textContent = species.sizeLimit;
-      modalBagLimit.textContent = species.bagLimit;
-
-      if (species.closure) {
-        modalClosureNote.classList.remove('hidden');
-        modalClosureNote.innerHTML = species.closure;
-      } else {
-        modalClosureNote.classList.add('hidden');
-      }
-
-      modalRodReel.textContent = species.rodReel;
-      modalLineLeader.textContent = species.lineLeader;
-      modalRig.textContent = species.rig;
-      modalBaits.textContent = species.baits;
-      modalSpots.innerHTML = species.spots;
-      modalSkipperTip.textContent = species.tip;
-
-      modal.classList.remove('hidden');
-    }
-
-    modalCloseBtn.onclick = () => modal.classList.add('hidden');
-    window.onclick = (e) => { if (e.target === modal) modal.classList.add('hidden'); };
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        modal.classList.add('hidden');
-      }
+    localJsonPicker.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const parsed = JSON.parse(String(evt.target.result || '{}'));
+          hydrateFromFishJson(parsed);
+        } catch (parseErr) {
+          alert('Failed to parse selected JSON file.');
+        }
+      };
+      reader.readAsText(file);
     });
 
-    monthSelect.addEventListener('change', renderMatrix);
-    zoneFilter.addEventListener('change', renderMatrix);
-    sortBy.addEventListener('change', renderMatrix);
-
-    // Initializations
-    initTheme();
-    loadFishData();
-    toggleCrt();
+    // Boot Fishing Calendar
+    loadFishDatabase();
   </script>
 </body>
 </html>
