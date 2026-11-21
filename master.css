@@ -386,6 +386,13 @@ body.crt-enabled .crt-switch-thumb {
   gap: 1.5rem;
 }
 
+.main-shell:has(.chart-workspace-grid) {
+  max-width: 1440px;
+  padding: 1.25rem 1.5rem 1.75rem;
+  justify-content: flex-start;
+  gap: 1.15rem;
+}
+
 .spa-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -1385,6 +1392,845 @@ body.light-mode .month-cell.off {
 }
 
 /* =========================================================================
+   FISHING MAP: TACTICAL VECTOR REEF CHARTPLOTTER & INTEL DRAWER
+   ========================================================================= */
+.hidden {
+  display: none !important;
+}
+
+.chart-controls-bar {
+  display: grid;
+  grid-template-columns: 0.7fr 1.15fr 1.45fr 1.15fr;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.chart-layer-toggles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-purple);
+}
+
+.chart-layer-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.btn-action.active {
+  border-color: var(--brand-lime);
+  color: var(--brand-lime);
+  background: var(--brand-lime-dim);
+}
+
+.chart-workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr 410px;
+  gap: 1.15rem;
+  align-items: stretch;
+}
+
+.chart-window-body {
+  padding: 0;
+  gap: 0;
+}
+
+.map-frame-wrap {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 280px);
+  min-height: 540px;
+  background: radial-gradient(ellipse 85% 75% at 65% 45%, #0a1f1c 0%, #070b14 60%, #05040a 100%);
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.map-frame-wrap:active {
+  cursor: grabbing;
+}
+
+body.light-mode .map-frame-wrap {
+  background: radial-gradient(ellipse 85% 75% at 65% 45%, #cde3d7 0%, #bdd6c9 70%, #b1ccbe 100%);
+}
+
+/* Subtle Tactical Radar Grid Behind Chart */
+.map-frame-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(141, 229, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(141, 229, 0, 0.045) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+body.light-mode .map-frame-wrap::before {
+  background-image:
+    linear-gradient(to right, rgba(25, 84, 62, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(25, 84, 62, 0.09) 1px, transparent 1px);
+}
+
+#tacticalSvgChart {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* SVG Vector Cartography Theme Styling */
+.bathy-line {
+  fill: none;
+  stroke: rgba(46, 168, 114, 0.34);
+  stroke-width: 1.1;
+  stroke-dasharray: 5 5;
+}
+
+.bathy-line.shelf-edge {
+  stroke: rgba(255, 119, 51, 0.5);
+  stroke-width: 1.4;
+  stroke-dasharray: 8 4;
+}
+
+body.light-mode .bathy-line {
+  stroke: rgba(20, 99, 70, 0.38);
+}
+
+body.light-mode .bathy-line.shelf-edge {
+  stroke: rgba(201, 86, 20, 0.58);
+}
+
+.bathy-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Mainland & Island Vector Styling */
+.land-mass {
+  fill: #110c1f;
+  stroke: var(--brand-lime);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+body.light-mode .land-mass {
+  fill: #b4cbbd;
+  stroke: #1e4d00;
+}
+
+.land-pattern-overlay {
+  fill: url(#landGridPattern);
+  pointer-events: none;
+}
+
+.waterway-channel {
+  fill: #071115;
+  stroke: rgba(141, 229, 0, 0.55);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+body.light-mode .waterway-channel {
+  fill: #d4e8db;
+  stroke: #2d7a00;
+}
+
+.sandbar-feature {
+  fill: rgba(255, 119, 51, 0.14);
+  stroke: rgba(255, 119, 51, 0.5);
+  stroke-width: 0.9;
+  stroke-dasharray: 3 3;
+}
+
+.breakwall-structure {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 2.6;
+  stroke-linecap: square;
+}
+
+/* Detailed Reef Structures */
+.reef-zone-group {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.reef-outer-footprint {
+  fill: url(#reefHatchPattern);
+  stroke: rgba(141, 229, 0, 0.58);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+  transition: fill 0.15s ease, stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.reef-zone-group:hover .reef-outer-footprint,
+.reef-zone-group.selected .reef-outer-footprint {
+  fill: rgba(141, 229, 0, 0.24);
+  stroke: var(--brand-lime);
+  stroke-width: 2.2;
+}
+
+.reef-ledge-ridge {
+  fill: rgba(141, 229, 0, 0.22);
+  stroke: var(--brand-lime);
+  stroke-width: 1.1;
+}
+
+.reef-rubble-field {
+  fill: url(#rubbleStipplePattern);
+  stroke: rgba(46, 168, 114, 0.45);
+  stroke-width: 0.85;
+  stroke-dasharray: 2 2;
+}
+
+.reef-pinnacle-dot {
+  fill: var(--led-amber);
+  stroke: #06040b;
+  stroke-width: 0.8;
+}
+
+.reef-sub-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  fill: var(--text-secondary);
+  pointer-events: none;
+  letter-spacing: 0.03em;
+}
+
+.geo-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text-secondary);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.geo-label.sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  fill: var(--text-muted);
+}
+
+/* Range Rings & Navigation Beacons */
+.range-ring-circle {
+  fill: none;
+  stroke: var(--brand-lime);
+  stroke-width: 1;
+  stroke-opacity: 0.28;
+  stroke-dasharray: 4 6;
+  pointer-events: none;
+}
+
+.range-ring-circle.max-range {
+  stroke: var(--led-amber);
+  stroke-width: 1.4;
+  stroke-opacity: 0.6;
+  stroke-dasharray: 7 5;
+}
+
+.range-ring-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: var(--brand-lime);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.range-ring-label.max-range {
+  fill: var(--led-amber);
+}
+
+.nav-beacon-diamond {
+  fill: #06040b;
+  stroke: var(--led-amber);
+  stroke-width: 1.4;
+}
+
+.nav-beacon-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  fill: var(--led-amber);
+  pointer-events: none;
+}
+
+/* HTML Pin Overlay Layer (Stays Crisp at Any Zoom Level) */
+#pinOverlayLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 30;
+}
+
+.tac-pin {
+  position: absolute;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px;
+  background: rgba(10, 7, 18, 0.94);
+  border: 1px solid var(--brand-lime);
+  border-radius: 2px;
+  color: var(--brand-lime);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 0 10px var(--brand-lime-glow), inset 1px 1px 0 rgba(255, 255, 255, 0.12);
+  transform: translate(-50%, -125%);
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  cursor: pointer;
+}
+
+body.light-mode .tac-pin {
+  background: rgba(247, 250, 248, 0.96);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.tac-pin::before {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-lime);
+  box-shadow: 0 0 6px var(--brand-lime);
+  transform: translateX(-50%);
+}
+
+.tac-pin::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 1px;
+  height: 5px;
+  background: var(--brand-lime);
+  transform: translateX(-50%);
+}
+
+.tac-pin.avail-only {
+  border-color: var(--horizon-jade);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.tac-pin.avail-only::before,
+.tac-pin.avail-only::after {
+  background: var(--horizon-jade);
+  box-shadow: none;
+}
+
+.tac-pin.off-only {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+  opacity: 0.72;
+  box-shadow: none;
+}
+
+.tac-pin.off-only::before,
+.tac-pin.off-only::after {
+  background: var(--text-muted);
+  box-shadow: none;
+}
+
+.tac-pin:hover,
+.tac-pin.selected {
+  background: var(--brand-lime);
+  color: #06040b;
+  transform: translate(-50%, -132%) scale(1.08);
+  z-index: 100 !important;
+  box-shadow: 0 0 18px var(--brand-lime-glow);
+}
+
+body.light-mode .tac-pin:hover,
+body.light-mode .tac-pin.selected {
+  color: #ffffff;
+}
+
+.tac-pin:hover .pin-count,
+.tac-pin.selected .pin-count {
+  background: #06040b;
+  color: var(--brand-lime);
+}
+
+.pin-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--brand-lime);
+  color: #06040b;
+  font-size: 9.5px;
+  font-weight: 700;
+  border-radius: 2px;
+}
+
+body.light-mode .pin-count {
+  color: #ffffff;
+}
+
+.tac-pin.avail-only .pin-count {
+  background: rgba(46, 168, 114, 0.16);
+  color: var(--horizon-jade);
+  border: 1px solid rgba(46, 168, 114, 0.45);
+}
+
+/* Home Base Anchor Marker */
+.base-pin {
+  position: absolute;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  background: rgba(6, 4, 11, 0.92);
+  border: 1px solid var(--led-amber);
+  border-radius: 2px;
+  color: var(--led-amber);
+  font-family: var(--font-pixel);
+  font-size: 8.5px;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(255, 119, 51, 0.35);
+  transform: translate(-105%, -50%);
+  z-index: 20;
+}
+
+body.light-mode .base-pin {
+  background: rgba(247, 250, 248, 0.95);
+}
+
+/* Floating Chart Controls & Telemetry HUD */
+.chart-zoom-controls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.chart-zoom-btn {
+  width: 32px;
+  height: 30px;
+  background: var(--bg-surface);
+  color: var(--brand-lime);
+  border: 1px solid var(--border-purple-mid);
+  border-radius: 3px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.chart-zoom-btn.preset-btn {
+  width: auto;
+  padding: 0 7px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+.chart-zoom-btn:hover {
+  background: var(--brand-lime);
+  border-color: var(--brand-lime-bright);
+  color: #06040b;
+}
+
+body.light-mode .chart-zoom-btn:hover {
+  color: #ffffff;
+}
+
+.chart-hud-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 40;
+  background: var(--bg-window);
+  border: 1px solid var(--border-purple-mid);
+  border-top: 1px solid var(--border-lime-subtle);
+  border-radius: 3px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  padding: 8px 12px;
+  font-size: 10.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.hud-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--text-secondary);
+}
+
+.hud-row strong {
+  color: var(--brand-lime);
+}
+
+.chart-scale-bar {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 40;
+  background: var(--bg-window);
+  border: 1px solid var(--border-purple-mid);
+  border-radius: 3px;
+  padding: 4px 9px;
+  font-size: 10px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scale-segment {
+  height: 5px;
+  border-left: 1px solid var(--brand-lime);
+  border-right: 1px solid var(--brand-lime);
+  border-bottom: 1.5px solid var(--brand-lime);
+  transition: width 0.15s ease;
+}
+
+.chart-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.55rem 0.9rem;
+  background: var(--bg-drawer);
+  border-top: 1px solid var(--border-purple);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+/* Right Intel Drawer */
+.intel-drawer-window {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 210px);
+  min-height: 580px;
+}
+
+.intel-drawer-body {
+  padding: 0.85rem;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.65rem;
+}
+
+.waypoint-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-purple-mid);
+  border-radius: 3px;
+  padding: 0.7rem 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.waypoint-card:hover {
+  border-color: var(--brand-lime);
+  background: var(--bg-row-hover);
+  transform: translateX(2px);
+}
+
+.waypoint-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.waypoint-card-title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 0.25rem;
+}
+
+.waypoint-card:hover .waypoint-card-title {
+  color: var(--brand-lime);
+}
+
+.waypoint-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.waypoint-meta-row strong {
+  color: var(--text-primary);
+}
+
+.waypoint-meta-row strong.dist-highlight {
+  color: var(--brand-lime);
+}
+
+.gps-box {
+  background: var(--bg-drawer);
+  border: 1px solid var(--border-purple-mid);
+  border-left: 2px solid var(--brand-lime);
+  border-radius: 3px;
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.74rem;
+}
+
+.gps-coords {
+  color: var(--brand-lime);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.gps-dec {
+  font-size: 0.66rem;
+  color: var(--text-muted);
+}
+
+.intel-section-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--border-purple);
+}
+
+.intel-list-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.manifest-species-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-purple-mid);
+  border-radius: 3px;
+  padding: 0.65rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.manifest-species-card:hover {
+  border-color: var(--brand-lime);
+  background: var(--bg-row-hover);
+}
+
+.manifest-sp-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.manifest-sp-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.manifest-species-card:hover .manifest-sp-name {
+  color: var(--brand-lime);
+}
+
+.manifest-spot-excerpt {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  border-left: 2px solid var(--border-purple-mid);
+  padding-left: 0.55rem;
+  margin-top: 0.15rem;
+  line-height: 1.45;
+}
+
+.manifest-spot-excerpt strong {
+  color: var(--brand-lime);
+}
+
+/* =========================================================================
+   SPECIES TACTICAL DOSSIER MODAL (SHARED CHARTPLOTTER OVERLAY)
+   ========================================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(6, 4, 11, 0.8);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.modal-window {
+  width: 100%;
+  max-width: 720px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body-scroll {
+  padding: 1.15rem 1.25rem 1.35rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.dossier-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-purple);
+}
+
+.dossier-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  margin-top: 0.3rem;
+}
+
+.sci-name {
+  font-size: 0.74rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.stars-readout {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: var(--brand-lime);
+  letter-spacing: 0.04em;
+  background: var(--brand-lime-dim);
+  border: 1px solid rgba(141, 229, 0, 0.3);
+  padding: 0.08rem 0.42rem;
+  border-radius: 2px;
+}
+
+.size-readout {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+}
+
+.dossier-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.dossier-grid-2 .closure-alert-banner {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+.data-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-purple-mid);
+  border-radius: 3px;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panel-heading {
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  color: var(--brand-lime);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-purple);
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.tackle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+}
+
+.tackle-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tackle-span-2 {
+  grid-column: 1 / -1;
+}
+
+.spots-copy {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.spots-copy strong {
+  color: var(--text-primary);
+}
+
+/* =========================================================================
    FOOTER DOCK
    ========================================================================= */
 .footer-dock {
@@ -1438,6 +2284,22 @@ body.light-mode .month-cell.off {
 /* =========================================================================
    RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
    ========================================================================= */
+@media (max-width: 1080px) {
+  .chart-workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-frame-wrap {
+    height: 520px;
+  }
+
+  .intel-drawer-window {
+    height: auto;
+    min-height: 0;
+    max-height: 620px;
+  }
+}
+
 @media (max-width: 980px) {
   .hero-banner-wrap {
     grid-template-columns: 1fr;
@@ -1447,7 +2309,8 @@ body.light-mode .month-cell.off {
     display: none;
   }
 
-  .filter-toolbar {
+  .filter-toolbar,
+  .chart-controls-bar {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -1481,10 +2344,15 @@ body.light-mode .month-cell.off {
   .spa-grid {
     grid-template-columns: 1fr;
   }
+
+  .chart-hud-overlay {
+    display: none;
+  }
 }
 
 @media (max-width: 640px) {
-  .main-shell:has(.species-list) {
+  .main-shell:has(.species-list),
+  .main-shell:has(.chart-workspace-grid) {
     padding: 1.1rem 0.85rem 1.5rem;
   }
 
@@ -1509,7 +2377,10 @@ body.light-mode .month-cell.off {
     grid-template-columns: repeat(6, 1fr);
   }
 
-  .filter-toolbar {
+  .filter-toolbar,
+  .chart-controls-bar,
+  .dossier-grid-2,
+  .tackle-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -3,625 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>XANANTH // SEA SPIRIT 520 TACTICAL REEF CHART</title>
+  <title>XANANTH // REEF TOPOGRAPHY CHART</title>
   <!-- Google Fonts for Retro Display & Developer Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
   <!-- Shared Net-Deck Master Stylesheet -->
   <link rel="stylesheet" href="master.css" />
-
-  <!-- =========================================================================
-       DEFERRED VECTOR CHART STYLES (CANDIDATE FOR SECTION 11 OF master.css)
-       ========================================================================= -->
-  <style id="deferred-map-styles">
-    .chart-workspace-grid {
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 16px;
-      align-items: stretch;
-    }
-
-    .map-frame-wrap {
-      position: relative;
-      width: 100%;
-      height: calc(100vh - 235px);
-      min-height: 550px;
-      background: #040906;
-      overflow: hidden;
-      cursor: grab;
-      user-select: none;
-      touch-action: none;
-    }
-
-    .map-frame-wrap:active {
-      cursor: grabbing;
-    }
-
-    html.light .map-frame-wrap {
-      background: #cbe0d2;
-    }
-
-    /* Subtle Tactical Radar Grid Behind Chart */
-    .map-frame-wrap::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(to right, rgba(141, 229, 0, 0.045) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(141, 229, 0, 0.045) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-
-    html.light .map-frame-wrap::before {
-      background-image:
-        linear-gradient(to right, rgba(43, 110, 0, 0.07) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(43, 110, 0, 0.07) 1px, transparent 1px);
-    }
-
-    #tacticalSvgChart {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* SVG Vector Cartography Theme Styling */
-    .ocean-band-shallow { fill: rgba(141, 229, 0, 0.045); }
-    .ocean-band-mid     { fill: rgba(141, 229, 0, 0.022); }
-    .ocean-band-deep    { fill: rgba(0, 0, 0, 0.25); }
-
-    html.light .ocean-band-shallow { fill: rgba(43, 110, 0, 0.08); }
-    html.light .ocean-band-mid     { fill: rgba(43, 110, 0, 0.04); }
-    html.light .ocean-band-deep    { fill: rgba(16, 48, 28, 0.08); }
-
-    .bathy-line {
-      fill: none;
-      stroke: rgba(141, 229, 0, 0.22);
-      stroke-width: 1.1;
-      stroke-dasharray: 5 5;
-    }
-
-    .bathy-line.shelf-edge {
-      stroke: rgba(245, 183, 0, 0.38);
-      stroke-width: 1.4;
-      stroke-dasharray: 8 4;
-    }
-
-    html.light .bathy-line {
-      stroke: rgba(43, 110, 0, 0.32);
-    }
-
-    .bathy-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      fill: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    /* Mainland & Island Vector Styling */
-    .land-mass {
-      fill: #0c1710;
-      stroke: var(--brand-lime);
-      stroke-width: 1.6;
-      stroke-linejoin: round;
-    }
-
-    html.light .land-mass {
-      fill: #b4cbbd;
-      stroke: #1e4d00;
-    }
-
-    .land-pattern-overlay {
-      fill: url(#landGridPattern);
-      pointer-events: none;
-    }
-
-    .waterway-channel {
-      fill: #050c08;
-      stroke: rgba(141, 229, 0, 0.55);
-      stroke-width: 1.1;
-      stroke-linejoin: round;
-    }
-
-    html.light .waterway-channel {
-      fill: #d4e8db;
-      stroke: #2b6e00;
-    }
-
-    .sandbar-feature {
-      fill: rgba(245, 183, 0, 0.14);
-      stroke: rgba(245, 183, 0, 0.45);
-      stroke-width: 0.9;
-      stroke-dasharray: 3 3;
-    }
-
-    .breakwall-structure {
-      fill: none;
-      stroke: var(--text-primary);
-      stroke-width: 2.6;
-      stroke-linecap: square;
-    }
-
-    /* Detailed Reef Structures */
-    .reef-zone-group {
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-
-    .reef-outer-footprint {
-      fill: url(#reefHatchPattern);
-      stroke: rgba(141, 229, 0, 0.58);
-      stroke-width: 1.25;
-      stroke-linejoin: round;
-      transition: fill 0.15s, stroke 0.15s, stroke-width 0.15s;
-    }
-
-    .reef-zone-group:hover .reef-outer-footprint,
-    .reef-zone-group.selected .reef-outer-footprint {
-      fill: rgba(141, 229, 0, 0.24);
-      stroke: var(--brand-lime);
-      stroke-width: 2.2;
-    }
-
-    .reef-ledge-ridge {
-      fill: rgba(141, 229, 0, 0.22);
-      stroke: var(--brand-lime);
-      stroke-width: 1.1;
-    }
-
-    .reef-rubble-field {
-      fill: url(#rubbleStipplePattern);
-      stroke: rgba(141, 229, 0, 0.35);
-      stroke-width: 0.8;
-      stroke-dasharray: 2 2;
-    }
-
-    .reef-pinnacle-dot {
-      fill: var(--warn-amber);
-      stroke: #050a06;
-      stroke-width: 0.8;
-    }
-
-    .reef-sub-label {
-      font-family: var(--font-mono);
-      font-size: 8.5px;
-      fill: var(--text-secondary);
-      pointer-events: none;
-      letter-spacing: 0.03em;
-    }
-
-    .geo-label {
-      font-family: var(--font-display);
-      font-size: 11px;
-      font-weight: 700;
-      fill: var(--text-secondary);
-      letter-spacing: 0.08em;
-      pointer-events: none;
-      text-transform: uppercase;
-    }
-
-    .geo-label.sub {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 500;
-      fill: var(--text-muted);
-    }
-
-    /* Range Rings & Navigation Beacons */
-    .range-ring-circle {
-      fill: none;
-      stroke: var(--brand-lime);
-      stroke-width: 1;
-      stroke-opacity: 0.28;
-      stroke-dasharray: 4 6;
-      pointer-events: none;
-    }
-
-    .range-ring-circle.max-range {
-      stroke: var(--warn-amber);
-      stroke-width: 1.4;
-      stroke-opacity: 0.55;
-      stroke-dasharray: 7 5;
-    }
-
-    .range-ring-label {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      font-weight: 700;
-      fill: var(--brand-lime);
-      opacity: 0.75;
-      pointer-events: none;
-    }
-
-    .range-ring-label.max-range {
-      fill: var(--warn-amber);
-    }
-
-    .nav-beacon-diamond {
-      fill: #050a06;
-      stroke: var(--warn-amber);
-      stroke-width: 1.4;
-    }
-
-    .nav-beacon-label {
-      font-family: var(--font-mono);
-      font-size: 8.5px;
-      fill: var(--warn-amber);
-      pointer-events: none;
-    }
-
-    /* HTML Pin Overlay Layer (Stays Crisp at Any Zoom Level) */
-    #pinOverlayLayer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 30;
-    }
-
-    .tac-pin {
-      position: absolute;
-      pointer-events: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 7px;
-      background: rgba(7, 14, 10, 0.94);
-      border: 1px solid var(--brand-lime);
-      color: var(--brand-lime);
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      white-space: nowrap;
-      box-shadow: 0 0 10px var(--brand-lime-glow), inset 1px 1px 0 rgba(255, 255, 255, 0.14);
-      transform: translate(-50%, -125%);
-      transition: transform 0.1s, background 0.12s, box-shadow 0.12s;
-      cursor: pointer;
-    }
-
-    html.light .tac-pin {
-      background: rgba(235, 243, 237, 0.96);
-    }
-
-    /* Anchor stem & crosshair dot on exact coordinate */
-    .tac-pin::before {
-      content: "";
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--brand-lime);
-      box-shadow: 0 0 6px var(--brand-lime);
-      transform: translateX(-50%);
-    }
-
-    .tac-pin::after {
-      content: "";
-      position: absolute;
-      bottom: -5px;
-      left: 50%;
-      width: 1px;
-      height: 5px;
-      background: var(--brand-lime);
-      transform: translateX(-50%);
-    }
-
-    .tac-pin.avail-only {
-      border-color: var(--border-bevel);
-      color: var(--text-primary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
-    }
-
-    .tac-pin.avail-only::before,
-    .tac-pin.avail-only::after {
-      background: var(--border-bevel);
-    }
-
-    .tac-pin.off-only {
-      border-color: var(--text-muted);
-      color: var(--text-muted);
-      opacity: 0.7;
-      box-shadow: none;
-    }
-
-    .tac-pin:hover,
-    .tac-pin.selected {
-      background: var(--brand-lime);
-      color: #050a06;
-      transform: translate(-50%, -132%) scale(1.08);
-      z-index: 100 !important;
-      box-shadow: 0 0 18px var(--brand-lime);
-    }
-
-    .tac-pin:hover .pin-count,
-    .tac-pin.selected .pin-count {
-      background: #050a06;
-      color: var(--brand-lime);
-    }
-
-    .pin-count {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 16px;
-      height: 16px;
-      padding: 0 4px;
-      background: var(--brand-lime);
-      color: #050a06;
-      font-size: 9.5px;
-      font-weight: 700;
-      border-radius: 2px;
-    }
-
-    .tac-pin.avail-only .pin-count {
-      background: var(--brand-lime-tint);
-      color: var(--brand-lime);
-      border: 1px solid var(--border-main);
-    }
-
-    /* Home Base Anchor Marker */
-    .base-pin {
-      position: absolute;
-      pointer-events: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 6px;
-      background: rgba(5, 10, 6, 0.92);
-      border: 1px solid var(--warn-amber);
-      color: var(--warn-amber);
-      font-family: var(--font-pixel);
-      font-size: 8.5px;
-      white-space: nowrap;
-      box-shadow: 0 0 10px rgba(245, 183, 0, 0.4);
-      transform: translate(-105%, -50%);
-      z-index: 20;
-    }
-
-    /* Floating Chart Controls & Telemetry HUD */
-    .chart-zoom-controls {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      z-index: 40;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .chart-zoom-btn {
-      width: 30px;
-      height: 30px;
-      background: var(--win-surface-solid);
-      color: var(--brand-lime);
-      border: 1px solid var(--border-main);
-      box-shadow: inset 1px 1px 0 var(--border-bevel), 0 3px 8px rgba(0, 0, 0, 0.6);
-      font-family: var(--font-mono);
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .chart-zoom-btn:hover {
-      background: var(--brand-lime);
-      color: #050a06;
-    }
-
-    .chart-hud-overlay {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 40;
-      background: var(--topbar-bg);
-      border: 1px solid var(--border-main);
-      box-shadow: inset 1px 1px 0 var(--border-bevel), 0 4px 12px rgba(0, 0, 0, 0.65);
-      padding: 8px 12px;
-      font-size: 10.5px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      pointer-events: none;
-    }
-
-    .hud-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--text-secondary);
-    }
-
-    .hud-row strong {
-      color: var(--brand-lime);
-    }
-
-    .chart-scale-bar {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      z-index: 40;
-      background: var(--topbar-bg);
-      border: 1px solid var(--border-main);
-      padding: 4px 9px;
-      font-size: 10px;
-      color: var(--text-secondary);
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .scale-segment {
-      height: 5px;
-      border-left: 1px solid var(--brand-lime);
-      border-right: 1px solid var(--brand-lime);
-      border-bottom: 1.5px solid var(--brand-lime);
-      transition: width 0.15s;
-    }
-
-    /* Right Intel Drawer */
-    .intel-drawer-window {
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 172px);
-      min-height: 588px;
-    }
-
-    .intel-drawer-body {
-      padding: 12px;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .waypoint-card {
-      background: var(--win-surface-solid);
-      border: 1px solid var(--border-main);
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: border-color 0.12s, background 0.12s, transform 0.1s;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .waypoint-card:hover {
-      border-color: var(--brand-lime);
-      background: var(--row-hover);
-      transform: translateX(2px);
-    }
-
-    .waypoint-card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .waypoint-card-title {
-      font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .waypoint-card:hover .waypoint-card-title {
-      color: var(--brand-lime);
-    }
-
-    .waypoint-meta-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    .gps-box {
-      background: var(--win-surface-deep);
-      border: 1px solid var(--border-main);
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 11.5px;
-    }
-
-    .gps-coords {
-      color: var(--brand-lime);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-
-    .manifest-species-card {
-      background: var(--win-surface-solid);
-      border: 1px solid var(--border-main);
-      padding: 9px 11px;
-      cursor: pointer;
-      transition: border-color 0.12s, background 0.12s;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .manifest-species-card:hover {
-      border-color: var(--brand-lime);
-      background: var(--row-hover);
-    }
-
-    .manifest-sp-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .manifest-sp-name {
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--text-primary);
-    }
-
-    .manifest-species-card:hover .manifest-sp-name {
-      color: var(--brand-lime);
-    }
-
-    .manifest-spot-excerpt {
-      font-size: 11px;
-      color: var(--text-secondary);
-      border-left: 2px solid var(--border-main);
-      padding-left: 8px;
-      margin-top: 2px;
-      line-height: 1.4;
-    }
-
-    .manifest-spot-excerpt strong {
-      color: var(--brand-lime);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-width: 1080px) {
-      .chart-workspace-grid {
-        grid-template-columns: 1fr;
-      }
-      .map-frame-wrap {
-        height: 520px;
-      }
-      .intel-drawer-window {
-        height: auto;
-        max-height: 620px;
-      }
-    }
-  </style>
 </head>
-<body class="crt-enabled text-compact">
+<body class="crt-enabled">
 
   <!-- =========================================================================
        STICKY TOP SYSTEM BAR
        ========================================================================= -->
   <header class="top-bar">
-    <div class="brand-cluster">
-      <div class="brand-logo-wrap framed" title="Sea Spirit 520 // Tactical Reef Chartplotter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-lime)" stroke-width="2" stroke-linecap="square">
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="4" />
-          <line x1="12" y1="1" x2="12" y2="23" />
-          <line x1="1" y1="12" x2="23" y2="12" />
+    <a href="./index.html" class="brand-cluster" title="Return to Xananth // Net-Deck">
+      <div class="brand-logo-wrap">
+        <img src="Xananth Logo Fold 3 Inner~2.png" alt="Xananth Logo" onerror="this.style.display='none'; document.getElementById('xananth-svg-logo').style.display='block';" />
+        <svg id="xananth-svg-logo" style="display:none;" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#8de500">
+            <polygon points="74,12 126,12 142,42 63,118 47,62" />
+            <polygon points="36,80 51,131 24,157 8,130" />
+            <polygon points="56,149 62,172 34,172" />
+            <polygon points="150,58 192,130 168,172 75,172 68,139" />
+          </g>
+          <text x="77" y="164" fill="#06040b" font-family="cursive, sans-serif" font-weight="900" font-style="italic" font-size="25" letter-spacing="0.5">ananth</text>
         </svg>
       </div>
       <div class="brand-titles">
@@ -629,15 +35,20 @@
           <span class="online-dot"></span>
           <span id="systemStatusText">BATHY-DECK // ONLINE</span>
         </div>
-        <h1 id="brandHeading" class="brand-heading lime-glow">SEA SPIRIT 520 // REEF TOPOGRAPHY CHART</h1>
-        <p id="brandSub" class="brand-sub">Buddina Canal Base &bull; Mooloolaba Harbour &bull; Sunshine Coast Reefs (0–15 NM)</p>
+        <h1 id="brandHeading" class="brand-heading lime-glow">XANANTH // REEF TOPOGRAPHY CHART</h1>
       </div>
-    </div>
+    </a>
 
     <div class="system-controls">
-      <a href="fishingcal.html" id="matrixLinkBtn" class="retro-btn" title="Open 12-Month Seasonal Matrix">
-        <span>[MATRIX VIEW]</span>
+      <a href="./index.html" class="nav-btn" title="Return to Net-Deck Launcher">&larr; NET-DECK</a>
+
+      <a href="./fishingcal.html" id="matrixLinkBtn" class="nav-btn" title="Open 12-Month Seasonal Matrix">
+        [MATRIX VIEW]
       </a>
+
+      <button id="themeToggle" type="button" class="nav-btn" title="Toggle Daylight / Night Deck Mode">
+        [MODE: NIGHT]
+      </button>
 
       <div id="crtToggle" class="crt-toggle-wrap" role="switch" aria-checked="true" tabindex="0" title="Toggle CRT Scanline & Phosphor FX">
         <span id="crtLabel">[CRT FX: ON]</span>
@@ -646,29 +57,27 @@
         </div>
       </div>
 
-      <button id="themeToggle" type="button" aria-label="Toggle light/dark mode" class="retro-btn">
-        <span id="themeIcon">☀️</span>
-        <span id="themeLabel">Light</span>
-      </button>
+      <span id="clockReadout" class="clock-readout">AEST --:--</span>
     </div>
   </header>
 
   <!-- =========================================================================
        MAIN WORKSPACE
        ========================================================================= -->
-  <main class="main-shell matrix-shell">
+  <main class="main-shell">
 
     <!-- FILTER & CHART LAYER CONSOLE WINDOW -->
-    <section class="os-window" id="win-controls">
+    <section class="os-window" id="win-controls" aria-label="Chart Parameters and Layer Controls">
       <div class="win-titlebar">
         <span class="win-title-text">system://bathy_chart_parameters</span>
-        <span id="waypointCountBadge" class="win-title-text" style="color: var(--brand-lime);">[LOADING CHART DATA...]</span>
+        <span id="waypointCountBadge" class="win-telemetry-code">LOADING CHART DATA...</span>
       </div>
-      <div class="win-body deck-controls-body">
-        <div class="filter-group">
-          <div class="control-field">
-            <label for="monthSelect" class="control-label">Month:</label>
-            <select id="monthSelect" class="control-select">
+
+      <div class="controls-body">
+        <div class="chart-controls-bar">
+          <div class="field-group">
+            <label for="monthSelect" class="field-label">Target Month</label>
+            <select id="monthSelect" class="retro-select">
               <option value="0">JAN</option><option value="1">FEB</option><option value="2">MAR</option>
               <option value="3">APR</option><option value="4">MAY</option><option value="5">JUN</option>
               <option value="6">JUL</option><option value="7">AUG</option><option value="8">SEP</option>
@@ -676,27 +85,27 @@
             </select>
           </div>
 
-          <div class="control-field">
-            <label for="zoneFilter" class="control-label">Zone:</label>
-            <select id="zoneFilter" class="control-select">
+          <div class="field-group">
+            <label for="zoneFilter" class="field-label">Fishing Zone</label>
+            <select id="zoneFilter" class="retro-select">
               <option value="all">All Grounds</option>
               <option value="Canal & Estuary">Canal &amp; Estuary</option>
               <option value="Inshore & Harbour">Inshore &amp; Harbour</option>
-              <option value="Offshore Reef">Offshore Reef (5-15 NM)</option>
+              <option value="Offshore Reef">Offshore Reef (5-28 NM)</option>
               <option value="Pelagic & Game">Offshore Pelagics</option>
             </select>
           </div>
 
-          <div class="control-field">
-            <label for="speciesFilter" class="control-label">Species:</label>
-            <select id="speciesFilter" class="control-select">
+          <div class="field-group">
+            <label for="speciesFilter" class="field-label">Target Species</label>
+            <select id="speciesFilter" class="retro-select">
               <option value="all">All Target Species</option>
             </select>
           </div>
 
-          <div class="control-field">
-            <label for="seasonFilter" class="control-label">Activity:</label>
-            <select id="seasonFilter" class="control-select">
+          <div class="field-group">
+            <label for="seasonFilter" class="field-label">Seasonal Activity</label>
+            <select id="seasonFilter" class="retro-select">
               <option value="active">Peak + Available (✓ / •)</option>
               <option value="peak">Peak Season Only (✓)</option>
               <option value="all">All Year-Round (✓ / • / -)</option>
@@ -704,19 +113,36 @@
           </div>
         </div>
 
-        <div class="filter-group">
-          <button id="toggleReefDetailBtn" type="button" class="retro-btn" title="Toggle Detailed Reef Ledges, Gutters & Bommie Callouts">
-            [REEF LAYOUTS: ON]
-          </button>
-          <button id="toggleBathyBtn" type="button" class="retro-btn" title="Toggle 10m–60m Bathymetric Depth Contours">
-            [CONTOURS: ON]
-          </button>
-          <button id="toggleRangeBtn" type="button" class="retro-btn" title="Toggle 2, 5, 10, 15 NM Range Rings from Mooloolaba Bar">
-            [RINGS: ON]
-          </button>
-          <button id="resetChartBtn" type="button" class="retro-btn" title="Reset Zoom, Pan & Filters">
-            [RESET VIEW]
-          </button>
+        <div class="chart-layer-toggles">
+          <div class="legend-cluster">
+            <span class="legend-item">
+              <span class="season-badge peak">✓</span>
+              <span>Peak Season</span>
+            </span>
+            <span class="legend-item">
+              <span class="season-badge avail">•</span>
+              <span>Available</span>
+            </span>
+            <span class="legend-item">
+              <span class="season-badge off">-</span>
+              <span>Off Season</span>
+            </span>
+          </div>
+
+          <div class="chart-layer-group">
+            <button id="toggleReefDetailBtn" type="button" class="btn-action active" title="Toggle Detailed Reef Ledges, Gutters & Bommie Callouts">
+              [REEF LAYOUTS: ON]
+            </button>
+            <button id="toggleBathyBtn" type="button" class="btn-action active" title="Toggle 10m–150m Bathymetric Depth Contours">
+              [CONTOURS: ON]
+            </button>
+            <button id="toggleRangeBtn" type="button" class="btn-action active" title="Toggle 2–28 NM Range Rings from Mooloolaba Bar">
+              [RINGS: ON]
+            </button>
+            <button id="resetChartBtn" type="button" class="btn-action" title="Reset Zoom, Pan & Filters">
+              [RESET VIEW]
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -725,23 +151,27 @@
     <div class="chart-workspace-grid">
 
       <!-- PRIMARY VECTOR CHARTPLOTTER WINDOW -->
-      <section class="os-window" id="win-chart">
+      <section class="os-window" id="win-chart" aria-label="Sunshine Coast Vector Reef Chart">
         <div class="win-titlebar">
           <span class="win-title-text">module://02_sunshine_coast_vector_reef_chart</span>
-          <span id="chartModeReadout" class="win-title-text">[DRAG TO PAN &bull; SCROLL TO ZOOM &bull; CLICK REEF OR PIN]</span>
+          <span id="chartModeReadout" class="win-telemetry-code">DRAG PAN // SCROLL ZOOM // CLICK REEF</span>
         </div>
-        <div class="win-body">
+
+        <div class="win-body chart-window-body">
           <div class="map-frame-wrap" id="mapViewport">
 
-            <!-- Zoom Controls -->
+            <!-- Zoom & Sector Focus Controls -->
             <div class="chart-zoom-controls">
               <button type="button" id="zoomInBtn" class="chart-zoom-btn" title="Zoom In (+)">+</button>
-              <button type="button" id="zoomOutBtn" class="chart-zoom-btn" title="Zoom Out (-)">−</button>
-              <button type="button" id="zoomInshoreBtn" class="chart-zoom-btn" style="font-size:10px; width:auto; padding:0 6px;" title="Focus Buddina Canals & Harbour Entrance">
+              <button type="button" id="zoomOutBtn" class="chart-zoom-btn" title="Zoom Out (-)">&minus;</button>
+              <button type="button" id="zoomInshoreBtn" class="chart-zoom-btn preset-btn" title="Focus Buddina Canals & Harbour Entrance">
                 CANAL
               </button>
-              <button type="button" id="zoomReefsBtn" class="chart-zoom-btn" style="font-size:10px; width:auto; padding:0 6px;" title="Focus Gneerings & Murphy's Reef">
+              <button type="button" id="zoomReefsBtn" class="chart-zoom-btn preset-btn" title="Focus Gneerings & Murphy's Reef (3–12 NM)">
                 REEFS
+              </button>
+              <button type="button" id="zoomBarwonBtn" class="chart-zoom-btn preset-btn" title="Focus Barwon Banks & Outer Shelf (20–28 NM)">
+                BARWON
               </button>
             </div>
 
@@ -756,8 +186,8 @@
                 <strong>[✓ PEAK / TOTAL SPECIES]</strong>
               </div>
               <div class="hud-row">
-                <span>REEF TOPO:</span>
-                <strong>LEDGES / RUBBLE / BOMMIES</strong>
+                <span>RANGE COVERAGE:</span>
+                <strong id="hudRangeReadout">0–28 NM (BARWON BANKS)</strong>
               </div>
             </div>
 
@@ -768,7 +198,7 @@
             </div>
 
             <!-- Pure SVG Vector Cartography -->
-            <svg id="tacticalSvgChart" viewBox="0 0 1300 1060" preserveAspectRatio="xMidYMid slice">
+            <svg id="tacticalSvgChart" viewBox="0 0 1960 1600" preserveAspectRatio="xMidYMid slice">
               <defs>
                 <!-- Reef Diagonal Sonar Hatch -->
                 <pattern id="reefHatchPattern" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
@@ -777,7 +207,7 @@
                 <!-- Gravel & Broken Rubble Stipple -->
                 <pattern id="rubbleStipplePattern" width="6" height="6" patternUnits="userSpaceOnUse">
                   <circle cx="1.5" cy="1.5" r="0.8" fill="#8de500" fill-opacity="0.45" />
-                  <circle cx="4.5" cy="4.5" r="0.7" fill="#f5b700" fill-opacity="0.35" />
+                  <circle cx="4.5" cy="4.5" r="0.7" fill="#ff7733" fill-opacity="0.38" />
                 </pattern>
                 <!-- Mainland Topographic Grid -->
                 <pattern id="landGridPattern" width="16" height="16" patternUnits="userSpaceOnUse">
@@ -794,19 +224,19 @@
 
           </div>
 
-          <div class="matrix-footer-hint">
+          <div class="chart-footer-bar">
             <span id="cursorTelemetry">CURSOR: 26° 40.770' S, 153° 07.950' E // BRG: 000° // DIST: 0.0 NM FROM HARBOUR BAR</span>
-            <span id="footerVesselMeta">VESSEL PROFILE: SEA SPIRIT 520 // RANGE: 0–15 NM</span>
+            <span id="footerVesselMeta">VESSEL PROFILE: SEA SPIRIT 520 // RANGE: 0–28 NM</span>
           </div>
         </div>
       </section>
 
       <!-- WAYPOINT INTEL & SPECIES MANIFEST DRAWER -->
-      <aside class="os-window intel-drawer-window" id="win-intel">
+      <aside class="os-window intel-drawer-window" id="win-intel" aria-label="Waypoint Intelligence Directory">
         <div class="win-titlebar">
           <span id="intelTitleText" class="win-title-text">intel://waypoint_directory</span>
-          <button id="intelBackBtn" type="button" class="retro-btn hidden" style="padding: 1px 7px; font-size: 10px;">
-            ← ALL SPOTS
+          <button id="intelBackBtn" type="button" class="btn-action hidden" style="padding: 0.16rem 0.48rem; font-size: 0.66rem;">
+            &larr; ALL SPOTS
           </button>
         </div>
 
@@ -818,10 +248,28 @@
       </aside>
 
     </div>
+
+    <!-- FOOTER DOCK -->
+    <footer class="footer-dock">
+      <div class="badge-wall">
+        <a href="./index.html" class="retro-badge">&larr; Net-Deck Hub</a>
+        <a href="./fishingcal.html" class="retro-badge">Fishing Calendar</a>
+        <a href="https://youtube.com/day9tv" target="_blank" rel="noopener noreferrer" class="retro-badge">Inspiration</a>
+        <a href="https://webfpv.org" target="_blank" rel="noopener noreferrer" class="retro-badge">Motivation</a>
+      </div>
+
+      <div class="kb-legend">
+        [+/-] Zoom &nbsp;|&nbsp; Drag to Pan &nbsp;|&nbsp; [ESC] Close Modal / Clear Selection
+      </div>
+    </footer>
+
   </main>
 
+  <!-- Hidden file input fallback if opened via strict local file:// protocol -->
+  <input id="localJsonPicker" type="file" accept=".json,application/json" style="display:none;" />
+
   <!-- =========================================================================
-       SPECIES DETAIL MODAL (SHARED WITH FISHINGCAL.HTML)
+       SPECIES DETAIL MODAL
        ========================================================================= -->
   <div id="speciesModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
     <div class="os-window modal-window">
@@ -833,7 +281,7 @@
       <div class="modal-body-scroll">
         <div class="dossier-header">
           <div>
-            <div style="display:flex; align-items:center; gap:10px;">
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
               <span id="modalZoneBadge" class="zone-pill">Zone</span>
               <span id="modalEatingStars" class="stars-readout">★★★★★</span>
             </div>
@@ -855,29 +303,29 @@
             <span class="stat-label">Possession Limit</span>
             <span id="modalBagLimit" class="stat-value">5 in total</span>
           </div>
-          <div id="modalClosureNote" class="closure-alert hidden">
-            ⚠️ <span>Closure note</span>
+          <div id="modalClosureNote" class="closure-alert-banner hidden">
+            ⚠️ Closure note
           </div>
         </div>
 
         <!-- Sea Spirit 520 Tackle Strategy -->
         <div class="data-panel">
-          <h3 class="panel-heading"><span>[TACKLE]</span> Sea Spirit 520 Tackle Strategy</h3>
+          <h3 class="panel-heading">[TACKLE] Sea Spirit 520 Tackle Strategy</h3>
           <div class="tackle-grid">
             <div>
-              <span class="stat-label">Rod &amp; Reel Combo:</span>
-              <span id="modalRodReel" style="font-weight:700;">2500 Spin, 7'0" 2-5kg</span>
+              <span class="stat-label">Rod &amp; Reel Combo</span>
+              <span id="modalRodReel">2500 Spin, 7'0" 2-5kg</span>
             </div>
             <div>
-              <span class="stat-label">Mainline &amp; Leader:</span>
-              <span id="modalLineLeader" style="font-weight:700;">10 lb Braid + 12 lb Fluorocarbon</span>
+              <span class="stat-label">Mainline &amp; Leader</span>
+              <span id="modalLineLeader">10 lb Braid + 12 lb Fluorocarbon</span>
             </div>
             <div class="tackle-span-2">
-              <span class="stat-label">Preferred Rig / Hooks:</span>
+              <span class="stat-label">Preferred Rig / Hooks</span>
               <span id="modalRig">Running sinker rig to 1/0 circle hook or 1/8oz jighead</span>
             </div>
             <div class="tackle-span-2">
-              <span class="stat-label">Top Baits / Lures:</span>
+              <span class="stat-label">Top Baits / Lures</span>
               <span id="modalBaits">Live poddy mullet, fresh canal prawn, 2.5" Grub soft plastic</span>
             </div>
           </div>
@@ -885,13 +333,13 @@
 
         <!-- Local Sunshine Coast Hotspots -->
         <div class="data-panel">
-          <h3 class="panel-heading"><span>[WAYPOINTS]</span> Sunshine Coast Spots (Suited for 5.2m Vessel)</h3>
+          <h3 class="panel-heading">[WAYPOINTS] Sunshine Coast Hotspots (0–28 NM)</h3>
           <div id="modalSpots" class="spots-copy"></div>
         </div>
 
         <!-- Boat Skipper's Note -->
-        <div class="skipper-box">
-          <strong>// SKIPPER'S LOG:</strong>
+        <div class="skipper-tip-box" style="margin-top:0;">
+          <strong>Skipper's Tactical Log //</strong>
           <span id="modalSkipperTip">Guidance on drift control, livewell aeration, and navigation safety for a 5.2m vessel.</span>
         </div>
       </div>
@@ -904,9 +352,13 @@
   <script>
     // =========================================================================
     // 1. GEODESIC PROJECTION ENGINE (1 NM = 60.0 SVG UNITS EXACT)
+    //    Expanded viewport covering Sunshine Coast 0–28 NM (incl. Barwon Banks)
     // =========================================================================
+    const VIEWBOX_W = 1960;
+    const VIEWBOX_H = 1600;
+
     const PROJ = {
-      lat0: -26.555,
+      lat0: -26.420,
       lng0: 153.065,
       pxPerDegLat: 3600,
       cosLat: Math.cos((-26.7 * Math.PI) / 180) // ~0.89337
@@ -941,9 +393,10 @@
     // 2. STYLIZED COASTLINE, CANAL NETWORK, BATHYMETRY & REEF TOPOGRAPHY DATA
     // =========================================================================
     const COASTLINE_POLYGONS = [
-      // Northern Mainland (Mudjimba to Maroochy River North Shore)
+      // Northern Mainland (Peregian / Coolum / Mudjimba to Maroochy River North Shore)
       [
-        [-26.555, 153.065], [-26.555, 153.103], [-26.585, 153.100],
+        [-26.420, 153.065], [-26.420, 153.106], [-26.465, 153.099],
+        [-26.520, 153.096], [-26.555, 153.103], [-26.585, 153.100],
         [-26.615, 153.098], [-26.638, 153.101], [-26.645, 153.096],
         [-26.643, 153.065]
       ],
@@ -961,8 +414,8 @@
         [-26.6805, 153.140], [-26.686, 153.139], [-26.702, 153.138],
         [-26.728, 153.136], [-26.752, 153.135], [-26.766, 153.134],
         [-26.788, 153.142], [-26.805, 153.146], [-26.812, 153.134],
-        [-26.802, 153.126], [-26.820, 153.118], [-26.850, 153.115],
-        [-26.850, 153.065]
+        [-26.802, 153.126], [-26.820, 153.118], [-26.860, 153.115],
+        [-26.860, 153.065]
       ],
       // Old Woman Island (Mudjimba Island)
       [
@@ -971,20 +424,17 @@
       ],
       // Northern Tip of Bribie Island (Pumicestone Passage)
       [
-        [-26.814, 153.138], [-26.850, 153.142],
-        [-26.850, 153.129], [-26.822, 153.131]
+        [-26.814, 153.138], [-26.860, 153.142],
+        [-26.860, 153.129], [-26.822, 153.131]
       ]
     ];
 
     // Stylized Canal Fingers & River Channels for Buddina / Minyama / Mooloolah River
     const CANAL_CHANNELS = [
-      // Buddina Eastern Canal Fingers
       [[-26.691, 153.133], [-26.691, 153.136], [-26.693, 153.136], [-26.693, 153.133]],
       [[-26.696, 153.132], [-26.696, 153.136], [-26.698, 153.136], [-26.698, 153.132]],
       [[-26.701, 153.131], [-26.701, 153.135], [-26.703, 153.135], [-26.703, 153.131]],
-      // Minyama Island Loop Canals
       [[-26.690, 153.131], [-26.690, 153.122], [-26.699, 153.121], [-26.699, 153.130]],
-      // Currimundi Lake Entrance
       [[-26.765, 153.134], [-26.764, 153.118], [-26.768, 153.118], [-26.767, 153.134]]
     ];
 
@@ -993,52 +443,71 @@
         depth: "-10m",
         shelf: false,
         coords: [
-          [-26.555, 153.112], [-26.605, 153.111], [-26.615, 153.123],
-          [-26.630, 153.112], [-26.655, 153.118], [-26.676, 153.144],
-          [-26.695, 153.144], [-26.734, 153.157], [-26.765, 153.143],
-          [-26.805, 153.154], [-26.850, 153.152]
+          [-26.420, 153.118], [-26.500, 153.114], [-26.555, 153.112],
+          [-26.605, 153.111], [-26.615, 153.123], [-26.630, 153.112],
+          [-26.655, 153.118], [-26.676, 153.144], [-26.695, 153.144],
+          [-26.734, 153.157], [-26.765, 153.143], [-26.805, 153.154], [-26.860, 153.152]
         ]
       },
       {
         depth: "-20m",
         shelf: false,
         coords: [
-          [-26.555, 153.145], [-26.615, 153.152], [-26.642, 153.178],
-          [-26.665, 153.175], [-26.695, 153.172], [-26.735, 153.178],
-          [-26.762, 153.216], [-26.805, 153.205], [-26.850, 153.198]
+          [-26.420, 153.150], [-26.500, 153.146], [-26.555, 153.145],
+          [-26.615, 153.152], [-26.642, 153.178], [-26.665, 153.175],
+          [-26.695, 153.172], [-26.735, 153.178], [-26.762, 153.216],
+          [-26.805, 153.205], [-26.860, 153.198]
         ]
       },
       {
         depth: "-30m",
         shelf: false,
         coords: [
-          [-26.555, 153.195], [-26.625, 153.204], [-26.652, 153.212],
-          [-26.668, 153.248], [-26.695, 153.242], [-26.750, 153.245],
-          [-26.790, 153.262], [-26.850, 153.255]
+          [-26.420, 153.202], [-26.500, 153.198], [-26.555, 153.195],
+          [-26.625, 153.204], [-26.652, 153.212], [-26.668, 153.248],
+          [-26.695, 153.242], [-26.750, 153.245], [-26.790, 153.262], [-26.860, 153.255]
         ]
       },
       {
         depth: "-40m",
         shelf: false,
         coords: [
-          [-26.555, 153.255], [-26.620, 153.262], [-26.675, 153.272],
-          [-26.740, 153.275], [-26.815, 153.285], [-26.850, 153.282]
+          [-26.420, 153.262], [-26.500, 153.258], [-26.555, 153.255],
+          [-26.620, 153.262], [-26.675, 153.272], [-26.740, 153.275],
+          [-26.815, 153.285], [-26.860, 153.282]
         ]
       },
       {
         depth: "-50m",
         shelf: false,
         coords: [
-          [-26.555, 153.315], [-26.605, 153.332], [-26.675, 153.325],
-          [-26.750, 153.315], [-26.825, 153.310], [-26.850, 153.308]
+          [-26.420, 153.332], [-26.500, 153.322], [-26.555, 153.315],
+          [-26.605, 153.332], [-26.675, 153.325], [-26.750, 153.315],
+          [-26.825, 153.310], [-26.860, 153.308]
         ]
       },
       {
-        depth: "-60m SHELF",
+        depth: "-60m",
+        shelf: false,
+        coords: [
+          [-26.420, 153.420], [-26.495, 153.430], [-26.555, 153.440],
+          [-26.640, 153.435], [-26.746, 153.445], [-26.810, 153.425], [-26.860, 153.415]
+        ]
+      },
+      {
+        depth: "-100m SHELF",
         shelf: true,
         coords: [
-          [-26.555, 153.395], [-26.640, 153.410], [-26.746, 153.445],
-          [-26.810, 153.425], [-26.850, 153.415]
+          [-26.420, 153.545], [-26.490, 153.562], [-26.565, 153.575],
+          [-26.645, 153.570], [-26.740, 153.555], [-26.860, 153.540]
+        ]
+      },
+      {
+        depth: "-150m TRENCH",
+        shelf: true,
+        coords: [
+          [-26.420, 153.605], [-26.500, 153.620], [-26.585, 153.635],
+          [-26.675, 153.628], [-26.765, 153.612], [-26.860, 153.595]
         ]
       }
     ];
@@ -1049,9 +518,7 @@
         waypointId: "old-woman-island",
         name: "MUDJIMBA FRINGING REEF",
         outer: [[-26.609, 153.112], [-26.609, 153.122], [-26.621, 153.122], [-26.621, 153.112]],
-        ledges: [
-          [[-26.611, 153.118], [-26.618, 153.120], [-26.619, 153.116]]
-        ],
+        ledges: [[[-26.611, 153.118], [-26.618, 153.120], [-26.619, 153.116]]],
         rubble: [],
         pinnacles: [{ lat: -26.6115, lng: 153.1195, label: "NE Wash" }]
       },
@@ -1128,12 +595,8 @@
         outer: [
           [-26.750, 153.198], [-26.752, 153.218], [-26.766, 153.220], [-26.765, 153.200]
         ],
-        ledges: [
-          [[-26.755, 153.204], [-26.760, 153.214], [-26.762, 153.207]]
-        ],
-        rubble: [
-          [[-26.752, 153.202], [-26.757, 153.216], [-26.759, 153.206]]
-        ],
+        ledges: [[[-26.755, 153.204], [-26.760, 153.214], [-26.762, 153.207]]],
+        rubble: [[[-26.752, 153.202], [-26.757, 153.216], [-26.759, 153.206]]],
         pinnacles: [{ lat: -26.7583, lng: 153.2092, label: "Coffee Rock (22m)" }]
       },
       {
@@ -1142,9 +605,7 @@
         outer: [
           [-26.778, 153.242], [-26.780, 153.262], [-26.794, 153.264], [-26.793, 153.244]
         ],
-        ledges: [
-          [[-26.783, 153.249], [-26.788, 153.258], [-26.790, 153.251]]
-        ],
+        ledges: [[[-26.783, 153.249], [-26.788, 153.258], [-26.790, 153.251]]],
         rubble: [],
         pinnacles: [{ lat: -26.7861, lng: 153.2532, label: "Bait Pinnacle (28m)" }]
       },
@@ -1167,16 +628,79 @@
         ]
       },
       {
+        waypointId: "barwon-sand-corridors",
+        name: "BARWON SAND CORRIDORS",
+        outer: [
+          [-26.615, 153.332], [-26.618, 153.372], [-26.645, 153.370], [-26.642, 153.330]
+        ],
+        ledges: [],
+        rubble: [
+          [[-26.620, 153.338], [-26.624, 153.364], [-26.640, 153.362], [-26.636, 153.336]]
+        ],
+        pinnacles: [{ lat: -26.6300, lng: 153.3500, label: "38m Spanner Flats" }]
+      },
+      {
         waypointId: "caloundra-wide",
         name: "CALOUNDRA WIDE SHELF",
         outer: [
           [-26.732, 153.438], [-26.735, 153.462], [-26.762, 153.465], [-26.760, 153.440]
         ],
-        ledges: [
-          [[-26.740, 153.446], [-26.754, 153.456], [-26.756, 153.448]]
-        ],
+        ledges: [[[-26.740, 153.446], [-26.754, 153.456], [-26.756, 153.448]]],
         rubble: [],
         pinnacles: [{ lat: -26.7460, lng: 153.4532, label: "FAD 18 / 65m Drop" }]
+      },
+      {
+        waypointId: "barwon-banks",
+        name: "BARWON BANKS COMPLEX",
+        outer: [
+          [-26.530, 153.485], [-26.535, 153.532], [-26.625, 153.542],
+          [-26.642, 153.512], [-26.632, 153.478], [-26.565, 153.474]
+        ],
+        ledges: [
+          [[-26.545, 153.495], [-26.555, 153.518], [-26.572, 153.515], [-26.562, 153.492]],
+          [[-26.582, 153.492], [-26.592, 153.524], [-26.612, 153.520], [-26.605, 153.488]],
+          [[-26.618, 153.496], [-26.626, 153.526], [-26.636, 153.516], [-26.628, 153.490]]
+        ],
+        rubble: [
+          [[-26.538, 153.486], [-26.580, 153.528], [-26.588, 153.498]],
+          [[-26.602, 153.484], [-26.632, 153.532], [-26.638, 153.498]]
+        ],
+        pinnacles: [
+          { lat: -26.5540, lng: 153.5080, label: "N. Coral Bommies (36m)" },
+          { lat: -26.5920, lng: 153.5040, label: "Middle Reefs (44m)" },
+          { lat: -26.6240, lng: 153.5160, label: "Southern Ledges (52m)" }
+        ]
+      },
+      {
+        waypointId: "northern-hards",
+        name: "NORTHERN HARDS EDGE",
+        outer: [
+          [-26.455, 153.455], [-26.460, 153.505], [-26.498, 153.508], [-26.495, 153.458]
+        ],
+        ledges: [
+          [[-26.465, 153.468], [-26.476, 153.494], [-26.488, 153.488], [-26.478, 153.464]]
+        ],
+        rubble: [
+          [[-26.462, 153.462], [-26.492, 153.498], [-26.493, 153.470]]
+        ],
+        pinnacles: [
+          { lat: -26.4740, lng: 153.4820, label: "Hards Pinnacle (48m)" }
+        ]
+      },
+      {
+        waypointId: "barwon-eastern-shelf",
+        name: "BARWON EASTERN DROP-OFF",
+        outer: [
+          [-26.545, 153.568], [-26.550, 153.618], [-26.645, 153.620], [-26.640, 153.570]
+        ],
+        ledges: [
+          [[-26.562, 153.580], [-26.595, 153.604], [-26.628, 153.600], [-26.595, 153.578]]
+        ],
+        rubble: [],
+        pinnacles: [
+          { lat: -26.5760, lng: 153.5920, label: "85m Shelf Ledge" },
+          { lat: -26.6120, lng: 153.6060, label: "130m Outer Trench" }
+        ]
       }
     ];
 
@@ -1188,7 +712,7 @@
     ];
 
     // =========================================================================
-    // 3. DEFAULT SUNSHINE COAST WAYPOINTS (OVERRIDDEN BY fish.json IF PRESENT)
+    // 3. DEFAULT SUNSHINE COAST WAYPOINTS (0–28 NM, OVERRIDDEN BY fish.json IF PRESENT)
     // =========================================================================
     const DEFAULT_WAYPOINTS = [
       {
@@ -1321,7 +845,7 @@
         depth: "8m – 18m",
         structure: "Shallow coral rubble, rocky ledges, gutters & high-relief bommies.",
         vesselNote: "2.9 NM NE of Mooloolaba bar. Accessible for the Sea Spirit 520 on calm dawn/dusk runs for squire and sweetlip.",
-        keywords: ["inner gneerings", "inner & outer gneerings"]
+        keywords: ["inner gneerings", "inner & outer gneerings", "inner/outer gneerings"]
       },
       {
         id: "outer-gneerings",
@@ -1333,7 +857,7 @@
         depth: "18m – 32m",
         structure: "Deep pressure faces, steep coral pinnacles, caves & deep gravel edges.",
         vesselNote: "4.0 NM ENE of Mooloolaba bar. Prime territory for coral trout, snapper, cobia, and trolling Spanish mackerel.",
-        keywords: ["outer gneerings", "inner & outer gneerings", "gneerings"]
+        keywords: ["outer gneerings", "inner & outer gneerings", "inner/outer gneerings", "gneerings"]
       },
       {
         id: "murphys-reef",
@@ -1384,16 +908,65 @@
         keywords: ["fad", "flotsam"]
       },
       {
+        id: "barwon-sand-corridors",
+        name: "Barwon Sand Corridors",
+        shortCode: "BRW-SND",
+        zone: "Offshore Reef",
+        lat: -26.6300,
+        lng: 153.3500,
+        depth: "25m – 50m",
+        structure: "Clean open sand flats and gentle current corridors between inner reefs and Barwon Banks.",
+        vesselNote: "12.0 NM ENE of Mooloolaba bar. Deploy dillies in clean sand away from coral structure on the run out to the Banks.",
+        keywords: ["en route to barwon", "sandy corridors", "clean sand flats"]
+      },
+      {
         id: "caloundra-wide",
         name: "Caloundra Wide & FAD 18",
         shortCode: "CAL-WIDE",
         zone: "Pelagic & Game",
         lat: -26.7460,
         lng: 153.4532,
-        depth: "60m – 72m",
-        structure: "Outer reef shelf edge, deep current lines, gravel bars & warm bluewater temperature breaks.",
-        vesselNote: "17.7 NM ESE of Mooloolaba bar (outer shelf boundary). Glass-out weather only in the 520.",
-        keywords: ["caloundra wide", "barwon", "outer trench"]
+        depth: "55m – 75m",
+        structure: "Outer reef shelf edge, deep gravel rubble, current lines & warm bluewater temperature breaks.",
+        vesselNote: "17.7 NM ESE of Mooloolaba bar. Glass-out forecast only (<10 kt) for the Sea Spirit 520.",
+        keywords: ["caloundra wide"]
+      },
+      {
+        id: "barwon-banks",
+        name: "Barwon Banks Main Reefs",
+        shortCode: "BARWON",
+        zone: "Offshore Reef",
+        lat: -26.5900,
+        lng: 153.5080,
+        depth: "35m – 70m",
+        structure: "Major offshore coral bank featuring high-relief bommies, middle reefs, southern ledges, western edge & deep gravel rubble.",
+        vesselNote: "20.8 NM ENE of Mooloolaba bar. Full offshore safety kit, EPIRB & <10 kt glass-out window required in a 5.2m vessel.",
+        keywords: ["barwon banks"],
+        excludeKeywords: ["en route to barwon", "outer shelf trench"]
+      },
+      {
+        id: "northern-hards",
+        name: "Northern Hards Edge",
+        shortCode: "N-HARDS",
+        zone: "Offshore Reef",
+        lat: -26.4760,
+        lng: 153.4820,
+        depth: "45m – 85m",
+        structure: "High-relief northern coral peaks, steep deep ledges & heavy current pressure faces.",
+        vesselNote: "22.3 NM NE of Mooloolaba bar. Prime territory for dogtooth tuna, kingfish, and goldband jobfish on calm weather windows.",
+        keywords: ["northern hards", "hards edge", "northern pinnacles"]
+      },
+      {
+        id: "barwon-eastern-shelf",
+        name: "Barwon Eastern Drop-off & Trench",
+        shortCode: "BRW-SHLF",
+        zone: "Pelagic & Game",
+        lat: -26.5920,
+        lng: 153.5950,
+        depth: "60m – 150m+",
+        structure: "Steep continental shelf break, 80–150m+ canyon edges & warm East Australian Current (EAC) temperature breaks.",
+        vesselNote: "25.3 NM ENE of Mooloolaba bar (outer 28 NM boundary). Deep-drop electric reels for bar cod/flame snapper and heavy game trolling.",
+        keywords: ["eastern drop-off", "eastern edge", "eastern shelf", "outer shelf", "shelf break", "deep trench", "canyon"]
       }
     ];
 
@@ -1416,10 +989,10 @@
 
     // Pan & Zoom Viewport Transform State (in SVG coordinates)
     const viewState = {
-      x: 20,
-      y: 90,
-      scale: 1.55,
-      minScale: 0.85,
+      x: 0,
+      y: 0,
+      scale: 0.92,
+      minScale: 0.55,
       maxScale: 5.5,
       isDragging: false,
       dragStartX: 0,
@@ -1444,7 +1017,9 @@
     const chartModeReadout = document.getElementById('chartModeReadout');
     const cursorTelemetry = document.getElementById('cursorTelemetry');
     const footerVesselMeta = document.getElementById('footerVesselMeta');
+    const hudRangeReadout = document.getElementById('hudRangeReadout');
     const matrixLinkBtn = document.getElementById('matrixLinkBtn');
+    const localJsonPicker = document.getElementById('localJsonPicker');
 
     const toggleReefDetailBtn = document.getElementById('toggleReefDetailBtn');
     const toggleBathyBtn = document.getElementById('toggleBathyBtn');
@@ -1455,6 +1030,7 @@
     const zoomOutBtn = document.getElementById('zoomOutBtn');
     const zoomInshoreBtn = document.getElementById('zoomInshoreBtn');
     const zoomReefsBtn = document.getElementById('zoomReefsBtn');
+    const zoomBarwonBtn = document.getElementById('zoomBarwonBtn');
 
     const intelTitleText = document.getElementById('intelTitleText');
     const intelBackBtn = document.getElementById('intelBackBtn');
@@ -1464,8 +1040,6 @@
     const crtToggle = document.getElementById('crtToggle');
     const crtLabel = document.getElementById('crtLabel');
     const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeLabel = document.getElementById('themeLabel');
 
     // Modal DOM Elements
     const modal = document.getElementById('speciesModal');
@@ -1486,8 +1060,31 @@
     const modalSkipperTip = document.getElementById('modalSkipperTip');
 
     // =========================================================================
-    // 5. CRT & THEME CONTROLS
+    // 5. LIVE AEST CLOCK, CRT FX & DAYLIGHT/NIGHT MODE TOGGLES
     // =========================================================================
+    function getAestCurrentMonth() {
+      const now = new Date();
+      const aestMonthStr = now.toLocaleDateString('en-AU', {
+        timeZone: 'Australia/Brisbane',
+        month: 'numeric'
+      });
+      const parsed = parseInt(aestMonthStr, 10) - 1;
+      return (!isNaN(parsed) && parsed >= 0 && parsed <= 11) ? parsed : now.getMonth();
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-AU', {
+        timeZone: 'Australia/Brisbane',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      document.getElementById('clockReadout').textContent = `AEST ${timeStr}`;
+    }
+    updateClock();
+    setInterval(updateClock, 15000);
+
     function toggleCrt() {
       const enabled = document.body.classList.toggle('crt-enabled');
       crtToggle.setAttribute('aria-checked', String(enabled));
@@ -1502,31 +1099,25 @@
       }
     });
 
-    function initTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      const isDark = savedTheme ? savedTheme === 'dark' : true;
-      applyTheme(isDark);
+    function applyTheme(isLight) {
+      document.body.classList.toggle('light-mode', isLight);
+      themeToggle.textContent = isLight ? '[MODE: DAYLIGHT]' : '[MODE: NIGHT]';
+      try {
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      } catch (_) {}
     }
 
-    function applyTheme(isDark) {
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-        themeIcon.textContent = '☀️';
-        themeLabel.textContent = 'Light';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        themeIcon.textContent = '🌙';
-        themeLabel.textContent = 'Dark';
-        localStorage.setItem('theme', 'light');
-      }
+    function initTheme() {
+      let savedTheme = null;
+      try {
+        savedTheme = localStorage.getItem('theme');
+      } catch (_) {}
+      applyTheme(savedTheme === 'light');
     }
 
     themeToggle.addEventListener('click', () => {
-      const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      applyTheme(!isCurrentlyDark);
+      const isLight = !document.body.classList.contains('light-mode');
+      applyTheme(isLight);
     });
 
     // =========================================================================
@@ -1576,11 +1167,12 @@
     function buildVectorChart() {
       let svgHtml = '';
 
-      // A. Bathymetric Depth Contours & Shading
+      // A. Bathymetric Depth Contours
       svgHtml += `<g id="layer-bathy" class="${showBathyContours ? '' : 'hidden'}">`;
       BATHYMETRY_CONTOURS.forEach((contour) => {
         const pts = polyPoints(contour.coords);
-        const labelPt = latLngToSvg(contour.coords[2][0], contour.coords[2][1]);
+        const labelIdx = Math.min(3, contour.coords.length - 1);
+        const labelPt = latLngToSvg(contour.coords[labelIdx][0], contour.coords[labelIdx][1]);
         svgHtml += `
           <polyline points="${pts}" class="bathy-line ${contour.shelf ? 'shelf-edge' : ''}" />
           <text x="${(labelPt.x + 5).toFixed(1)}" y="${labelPt.y.toFixed(1)}" class="bathy-label">${contour.depth}</text>
@@ -1602,15 +1194,12 @@
         svgHtml += `<polygon points="${outerPts}" class="reef-outer-footprint" />`;
 
         if (showReefLayouts) {
-          // Rubble / gravel fields
           reef.rubble.forEach((rubPoly) => {
             svgHtml += `<polygon points="${polyPoints(rubPoly)}" class="reef-rubble-field" />`;
           });
-          // High-relief ledges & bommies
           reef.ledges.forEach((ledgePoly) => {
             svgHtml += `<polygon points="${polyPoints(ledgePoly)}" class="reef-ledge-ridge" />`;
           });
-          // Specific pinnacles & micro-marks
           reef.pinnacles.forEach((pin) => {
             const pt = latLngToSvg(pin.lat, pin.lng);
             svgHtml += `
@@ -1620,7 +1209,7 @@
           });
         }
 
-        svgHtml += `<text x="${centerPt.x.toFixed(1)}" y="${(centerPt.y + 16).toFixed(1)}" text-anchor="middle" class="geo-label sub">${reef.name}</text>`;
+        svgHtml += `<text x="${centerPt.x.toFixed(1)}" y="${(centerPt.y + 18).toFixed(1)}" text-anchor="middle" class="geo-label sub">${reef.name}</text>`;
         svgHtml += `</g>`;
       });
       svgHtml += `</g>`;
@@ -1633,16 +1222,13 @@
         svgHtml += `<polygon points="${pts}" class="land-pattern-overlay" />`;
       });
 
-      // Carved Canal Fingers & Lake Channels
       CANAL_CHANNELS.forEach((chan) => {
         svgHtml += `<polygon points="${polyPoints(chan)}" class="waterway-channel" />`;
       });
 
-      // La Balsa Sand Flats highlight
       const balsaPt = latLngToSvg(-26.6865, 153.1332);
       svgHtml += `<ellipse cx="${balsaPt.x.toFixed(1)}" cy="${balsaPt.y.toFixed(1)}" rx="5" ry="9" class="sandbar-feature" />`;
 
-      // Mooloolaba Harbour Breakwalls
       const westWall = polyPoints([[-26.6805, 153.1312], [-26.6782, 153.1318]]);
       const eastWall = polyPoints([[-26.6808, 153.1342], [-26.6785, 153.1338]]);
       svgHtml += `
@@ -1650,8 +1236,8 @@
         <polyline points="${eastWall}" class="breakwall-structure" />
       `;
 
-      // Geographic Labels
       const geoLabels = [
+        { text: "COOLUM", lat: -26.528, lng: 153.076 },
         { text: "MUDJIMBA", lat: -26.612, lng: 153.084 },
         { text: "MAROOCHY RIVER", lat: -26.646, lng: 153.082 },
         { text: "ALEX HEADLAND", lat: -26.669, lng: 153.095 },
@@ -1681,12 +1267,12 @@
       });
       svgHtml += `</g>`;
 
-      // E. Range Rings (2, 5, 10, 15 NM from Mooloolaba Harbour Bar)
+      // E. Range Rings (2, 5, 10, 15, 20, 28 NM from Mooloolaba Harbour Bar)
       const barPt = latLngToSvg(HARBOUR_BAR_COORDS.lat, HARBOUR_BAR_COORDS.lng);
       svgHtml += `<g id="layer-rings" class="${showRangeRings ? '' : 'hidden'}">`;
-      [2, 5, 10, 15].forEach((nm) => {
+      [2, 5, 10, 15, 20, 28].forEach((nm) => {
         const rPx = nm * 60; // Exact 60 SVG units per Nautical Mile
-        const isMax = nm === 15;
+        const isMax = nm === 28;
         svgHtml += `
           <circle cx="${barPt.x.toFixed(1)}" cy="${barPt.y.toFixed(1)}" r="${rPx}" class="range-ring-circle ${isMax ? 'max-range' : ''}" />
           <text x="${(barPt.x + rPx * 0.707 + 4).toFixed(1)}" y="${(barPt.y - rPx * 0.707).toFixed(1)}" class="range-ring-label ${isMax ? 'max-range' : ''}">${nm} NM</text>
@@ -1711,12 +1297,9 @@
 
     function svgToScreen(svgX, svgY) {
       const rect = tacticalSvgChart.getBoundingClientRect();
-      // Account for viewBox="0 0 1300 1060" preserveAspectRatio="xMidYMid slice"
-      const vbW = 1300;
-      const vbH = 1060;
-      const scaleRatio = Math.max(rect.width / vbW, rect.height / vbH);
-      const offsetX = (rect.width - vbW * scaleRatio) / 2;
-      const offsetY = (rect.height - vbH * scaleRatio) / 2;
+      const scaleRatio = Math.max(rect.width / VIEWBOX_W, rect.height / VIEWBOX_H);
+      const offsetX = (rect.width - VIEWBOX_W * scaleRatio) / 2;
+      const offsetY = (rect.height - VIEWBOX_H * scaleRatio) / 2;
 
       const transformedX = svgX * viewState.scale + viewState.x;
       const transformedY = svgY * viewState.scale + viewState.y;
@@ -1729,11 +1312,9 @@
 
     function screenToSvg(clientX, clientY) {
       const rect = tacticalSvgChart.getBoundingClientRect();
-      const vbW = 1300;
-      const vbH = 1060;
-      const scaleRatio = Math.max(rect.width / vbW, rect.height / vbH);
-      const offsetX = (rect.width - vbW * scaleRatio) / 2;
-      const offsetY = (rect.height - vbH * scaleRatio) / 2;
+      const scaleRatio = Math.max(rect.width / VIEWBOX_W, rect.height / VIEWBOX_H);
+      const offsetX = (rect.width - VIEWBOX_W * scaleRatio) / 2;
+      const offsetY = (rect.height - VIEWBOX_H * scaleRatio) / 2;
 
       const vbX = (clientX - rect.left - offsetX) / scaleRatio;
       const vbY = (clientY - rect.top - offsetY) / scaleRatio;
@@ -1747,7 +1328,7 @@
     function updateScaleBar() {
       const rect = tacticalSvgChart.getBoundingClientRect();
       if (!rect.width) return;
-      const scaleRatio = Math.max(rect.width / 1300, rect.height / 1060);
+      const scaleRatio = Math.max(rect.width / VIEWBOX_W, rect.height / VIEWBOX_H);
       const pxPerNm = 60 * viewState.scale * scaleRatio;
 
       if (pxPerNm >= 90) {
@@ -1756,9 +1337,12 @@
       } else if (pxPerNm >= 40) {
         scaleBarLine.style.width = `${pxPerNm.toFixed(0)}px`;
         scaleBarText.textContent = '1.0 NM';
-      } else {
+      } else if (pxPerNm >= 18) {
         scaleBarLine.style.width = `${(pxPerNm * 2).toFixed(0)}px`;
         scaleBarText.textContent = '2.0 NM';
+      } else {
+        scaleBarLine.style.width = `${(pxPerNm * 5).toFixed(0)}px`;
+        scaleBarText.textContent = '5.0 NM';
       }
     }
 
@@ -1771,9 +1355,9 @@
       const newScale = Math.min(viewState.maxScale, Math.max(viewState.minScale, viewState.scale * factor));
       if (newScale === viewState.scale) return;
 
-      const scaleRatio = Math.max(rect.width / 1300, rect.height / 1060);
-      const offsetX = (rect.width - 1300 * scaleRatio) / 2;
-      const offsetY = (rect.height - 1060 * scaleRatio) / 2;
+      const scaleRatio = Math.max(rect.width / VIEWBOX_W, rect.height / VIEWBOX_H);
+      const offsetX = (rect.width - VIEWBOX_W * scaleRatio) / 2;
+      const offsetY = (rect.height - VIEWBOX_H * scaleRatio) / 2;
       const vbX = (cx - rect.left - offsetX) / scaleRatio;
       const vbY = (cy - rect.top - offsetY) / scaleRatio;
 
@@ -1784,11 +1368,11 @@
       applyViewportTransform();
     }
 
-    function focusOnCoords(lat, lng, targetScale = 2.1) {
+    function focusOnCoords(lat, lng, targetScale = 1.65) {
       const pt = latLngToSvg(lat, lng);
       viewState.scale = targetScale;
-      viewState.x = 650 - pt.x * targetScale;
-      viewState.y = 530 - pt.y * targetScale;
+      viewState.x = (VIEWBOX_W / 2) - pt.x * targetScale;
+      viewState.y = (VIEWBOX_H / 2) - pt.y * targetScale;
       applyViewportTransform();
     }
 
@@ -1810,7 +1394,6 @@
     });
 
     mapViewport.addEventListener('pointermove', (e) => {
-      // Live Cursor Marine GPS Telemetry
       const svgPt = screenToSvg(e.clientX, e.clientY);
       const { lat, lng } = svgToLatLng(svgPt.x, svgPt.y);
       const nav = calcDistanceNmAndBearing(HARBOUR_BAR_COORDS.lat, HARBOUR_BAR_COORDS.lng, lat, lng);
@@ -1818,7 +1401,7 @@
 
       if (!viewState.isDragging) return;
       const rect = tacticalSvgChart.getBoundingClientRect();
-      const scaleRatio = Math.max(rect.width / 1300, rect.height / 1060);
+      const scaleRatio = Math.max(rect.width / VIEWBOX_W, rect.height / VIEWBOX_H);
       const dx = (e.clientX - viewState.dragStartX) / scaleRatio;
       const dy = (e.clientY - viewState.dragStartY) / scaleRatio;
       viewState.x = viewState.dragOriginX + dx;
@@ -1851,7 +1434,9 @@
 
       WAYPOINTS_DB.forEach((wp) => {
         const keywords = wp.keywords || [wp.name.toLowerCase()];
-        if (keywords.some((kw) => spotsLower.includes(kw.toLowerCase()))) {
+        const excludeKeywords = wp.excludeKeywords || [];
+        const isExcluded = excludeKeywords.some((ex) => spotsLower.includes(ex.toLowerCase()));
+        if (!isExcluded && keywords.some((kw) => spotsLower.includes(kw.toLowerCase()))) {
           matchedIds.push(wp.id);
         }
       });
@@ -1863,65 +1448,92 @@
       return matchedIds;
     }
 
+    function hydrateFromFishJson(data) {
+      SPECIES_DB = Array.isArray(data) ? data : (data.species || []);
+
+      if (Array.isArray(data.waypoints) && data.waypoints.length > 0) {
+        const customMap = new Map(data.waypoints.map((w) => [w.id, w]));
+        WAYPOINTS_DB = DEFAULT_WAYPOINTS.map((def) => customMap.get(def.id) ? { ...def, ...customMap.get(def.id) } : def);
+        data.waypoints.forEach((w) => {
+          if (!WAYPOINTS_DB.some((existing) => existing.id === w.id)) {
+            WAYPOINTS_DB.push(w);
+          }
+        });
+      } else {
+        WAYPOINTS_DB = [...DEFAULT_WAYPOINTS];
+      }
+
+      SPECIES_DB.forEach((sp) => {
+        sp._resolvedWaypointIds = resolveSpeciesWaypoints(sp);
+      });
+
+      hydrateControls(Array.isArray(data) ? {} : data);
+      applyUrlParameters();
+      buildVectorChart();
+      focusOnCoords(-26.6450, 153.2850, 0.96);
+      renderChartAndIntel();
+    }
+
     async function loadChartData() {
       try {
-        const response = await fetch('fish.json');
+        const response = await fetch('./fish.json', { cache: 'no-store' });
         if (!response.ok) {
           throw new Error(`HTTP ${response.status} (${response.statusText})`);
         }
         const data = await response.json();
-        SPECIES_DB = Array.isArray(data) ? data : (data.species || []);
-
-        if (Array.isArray(data.waypoints) && data.waypoints.length > 0) {
-          const customMap = new Map(data.waypoints.map((w) => [w.id, w]));
-          WAYPOINTS_DB = DEFAULT_WAYPOINTS.map((def) => customMap.get(def.id) ? { ...def, ...customMap.get(def.id) } : def);
-          data.waypoints.forEach((w) => {
-            if (!WAYPOINTS_DB.some((existing) => existing.id === w.id)) {
-              WAYPOINTS_DB.push(w);
-            }
-          });
-        } else {
-          WAYPOINTS_DB = [...DEFAULT_WAYPOINTS];
-        }
-
-        SPECIES_DB.forEach((sp) => {
-          sp._resolvedWaypointIds = resolveSpeciesWaypoints(sp);
-        });
-
-        hydrateControls(Array.isArray(data) ? {} : data);
-        applyUrlParameters();
-        buildVectorChart();
-        focusOnCoords(-26.6850, 153.1850, 1.65);
-        renderChartAndIntel();
+        hydrateFromFishJson(data);
       } catch (err) {
-        console.error('Failed to load fish.json:', err);
-        waypointCountBadge.textContent = '[DB ERROR]';
+        console.warn('Automatic fetch of ./fish.json blocked or failed:', err);
+        waypointCountBadge.textContent = 'AWAITING // fish.json';
         intelDirectoryView.innerHTML = `
-          <div class="closure-alert" style="display:block;">
-            ⚠️ ERROR LOADING <strong>fish.json</strong>: ${err.message}. Ensure <code>fish.json</code> is in the same directory and served over HTTP/HTTPS.
+          <div class="empty-state">
+            <div>
+              Unable to auto-fetch <strong>./fish.json</strong> (browser local <code>file://</code> security policy or missing file).
+            </div>
+            <button type="button" class="btn-action" id="manualLoadBtn" style="border-color:var(--brand-lime); color:var(--brand-lime);">
+              [LOAD fish.json MANUALLY]
+            </button>
           </div>
         `;
+        const manualBtn = document.getElementById('manualLoadBtn');
+        if (manualBtn) {
+          manualBtn.addEventListener('click', () => localJsonPicker.click());
+        }
       }
     }
+
+    localJsonPicker.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const parsed = JSON.parse(String(evt.target.result || '{}'));
+          hydrateFromFishJson(parsed);
+        } catch (parseErr) {
+          alert('Failed to parse selected JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    });
 
     function hydrateControls(data) {
       if (data.meta && data.meta.vesselProfile && data.meta.range) {
         footerVesselMeta.textContent = `VESSEL PROFILE: ${data.meta.vesselProfile} // RANGE: ${data.meta.range}`;
+        hudRangeReadout.textContent = `${data.meta.range} (BARWON BANKS)`;
       }
 
       if (data.seasonLegend) {
         SEASON_LEGEND = data.seasonLegend;
       }
 
+      const currentMonth = getAestCurrentMonth();
       if (Array.isArray(data.months) && data.months.length === 12) {
-        const currentMonth = new Date().getMonth();
         monthSelect.innerHTML = data.months
           .map((m) => `<option value="${m.index}">${m.short}</option>`)
           .join('');
-        monthSelect.value = String(currentMonth);
-      } else {
-        monthSelect.value = String(new Date().getMonth());
       }
+      monthSelect.value = String(currentMonth);
 
       if (Array.isArray(data.zones) && data.zones.length > 0) {
         zoneFilter.innerHTML = data.zones
@@ -1968,8 +1580,10 @@
       if (selectedWaypointId) params.set('waypoint', selectedWaypointId);
 
       const newUrl = `${window.location.pathname}?${params.toString()}`;
-      window.history.replaceState({}, '', newUrl);
-      matrixLinkBtn.href = `fishingcal.html?month=${monthSelect.value}`;
+      try {
+        window.history.replaceState({}, '', newUrl);
+      } catch (_) {}
+      matrixLinkBtn.href = `./fishingcal.html?month=${monthSelect.value}`;
     }
 
     // =========================================================================
@@ -1994,9 +1608,11 @@
       const results = [];
 
       WAYPOINTS_DB.forEach((wp) => {
-        if (selectedZone !== 'all' && wp.zone !== selectedZone) return;
-
         let matchingSpecies = SPECIES_DB.filter((sp) => sp._resolvedWaypointIds.includes(wp.id));
+
+        if (selectedZone !== 'all') {
+          matchingSpecies = matchingSpecies.filter((sp) => sp.zone === selectedZone);
+        }
 
         if (selectedSpeciesId !== 'all') {
           matchingSpecies = matchingSpecies.filter((sp) => sp.id === selectedSpeciesId);
@@ -2075,7 +1691,9 @@
       buildVectorChart();
 
       const evaluated = getEvaluatedWaypoints();
-      waypointCountBadge.textContent = `[${evaluated.length} ACTIVE WAYPOINTS]`;
+      const uniqueSpeciesIds = new Set();
+      evaluated.forEach((e) => e.speciesList.forEach((s) => uniqueSpeciesIds.add(s.id)));
+      waypointCountBadge.textContent = `${evaluated.length} WAYPOINTS // ${uniqueSpeciesIds.size} SPECIES`;
 
       renderedPinsCache = evaluated;
       let html = '';
@@ -2143,13 +1761,13 @@
       intelBackBtn.classList.add('hidden');
       intelDetailView.classList.add('hidden');
       intelDirectoryView.classList.remove('hidden');
-      chartModeReadout.textContent = '[DRAG TO PAN • SCROLL TO ZOOM • CLICK REEF OR PIN]';
+      chartModeReadout.textContent = 'DRAG PAN // SCROLL ZOOM // CLICK REEF';
 
       if (evaluatedList.length === 0) {
         intelDirectoryView.innerHTML = `
-          <div class="data-panel" style="text-align:center; padding: 24px 14px; color: var(--text-secondary);">
-            No active waypoints match the current Month / Zone / Species filter.<br/><br/>
-            <button type="button" class="retro-btn" onclick="resetAllFilters()">[RESET FILTERS]</button>
+          <div class="empty-state">
+            <div>No active waypoints match the current Month / Zone / Species filter.</div>
+            <button type="button" class="btn-action" onclick="resetAllFilters()">[RESET FILTERS]</button>
           </div>
         `;
         return;
@@ -2162,7 +1780,7 @@
               <div class="waypoint-card-top">
                 <div>
                   <span class="zone-pill">${waypoint.zone}</span>
-                  <h3 class="waypoint-card-title" style="margin-top:4px;">${waypoint.name}</h3>
+                  <h3 class="waypoint-card-title">${waypoint.name}</h3>
                 </div>
                 <div style="display:flex; gap:4px; align-items:center;">
                   ${peakCount > 0 ? `<span class="season-badge peak" title="${peakCount} Peak Season Species">✓${peakCount}</span>` : ''}
@@ -2170,9 +1788,9 @@
                 </div>
               </div>
               <div class="waypoint-meta-row">
-                <span>DEPTH: <strong style="color:var(--text-primary);">${waypoint.depth}</strong></span>
+                <span>DEPTH: <strong>${waypoint.depth}</strong></span>
                 <span>&bull;</span>
-                <span>BAR DIST: <strong style="color:var(--brand-lime);">${nav.nm} NM (${nav.brg}°)</strong></span>
+                <span>BAR DIST: <strong class="dist-highlight">${nav.nm} NM (${nav.brg}°)</strong></span>
                 <span>&bull;</span>
                 <span>${totalCount} SPECIES</span>
               </div>
@@ -2191,7 +1809,7 @@
       intelBackBtn.classList.remove('hidden');
       intelDirectoryView.classList.add('hidden');
       intelDetailView.classList.remove('hidden');
-      chartModeReadout.textContent = `[LOCKED: ${waypoint.name.toUpperCase()} // ${nav.nm} NM FROM BAR]`;
+      chartModeReadout.textContent = `LOCKED: ${waypoint.name.toUpperCase()} // ${nav.nm} NM`;
 
       const gpsFormatted = formatMarineGps(waypoint.lat, waypoint.lng);
       const gpsDecimal = `${waypoint.lat.toFixed(4)}, ${waypoint.lng.toFixed(4)}`;
@@ -2205,14 +1823,14 @@
           return `
             <div class="manifest-species-card" onclick="openSpeciesModalById('${sp.id}')">
               <div class="manifest-sp-top">
-                <div style="display:flex; align-items:center; gap:8px;">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
                   <span class="season-badge ${meta.key}" title="${meta.label} in ${monthShort}">${meta.symbol}</span>
                   <div>
-                    <div class="manifest-sp-name">${sp.name} ${sp.closure ? '<span title="Seasonal Closure Applies" style="color:var(--warn-amber);">⚠️</span>' : ''}</div>
-                    <div class="sci-name" style="font-size:10px;">${sp.sci}</div>
+                    <div class="manifest-sp-name">${sp.name} ${sp.closure ? '<span title="Seasonal Closure Applies" style="color:var(--led-amber);">⚠️</span>' : ''}</div>
+                    <div class="sci-name">${sp.sci}</div>
                   </div>
                 </div>
-                <div style="text-align:right;">
+                <div style="text-align:right; flex-shrink:0;">
                   <span class="stars-readout">${stars}</span>
                   <span class="size-readout">${sp.sizeLimit.replace('Min:', '')}</span>
                 </div>
@@ -2224,14 +1842,14 @@
         .join('');
 
       intelDetailView.innerHTML = `
-        <div class="dossier-header" style="padding-bottom:8px;">
+        <div class="dossier-header" style="padding-bottom:0.55rem;">
           <div>
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
               <span class="zone-pill">${waypoint.zone}</span>
-              <span style="font-size:11px; color:var(--text-secondary);">DEPTH: <strong style="color:var(--text-primary);">${waypoint.depth}</strong></span>
-              <span style="font-size:11px; color:var(--brand-lime); font-weight:700;">${nav.nm} NM (${nav.brg}°)</span>
+              <span style="font-size:0.72rem; color:var(--text-secondary);">DEPTH: <strong style="color:var(--text-primary);">${waypoint.depth}</strong></span>
+              <span style="font-size:0.72rem; color:var(--brand-lime); font-weight:700;">${nav.nm} NM (${nav.brg}°)</span>
             </div>
-            <h2 class="dossier-title lime-glow" style="font-size:20px; margin-top:5px;">${waypoint.name}</h2>
+            <h2 class="dossier-title lime-glow" style="font-size:1.2rem;">${waypoint.name}</h2>
           </div>
         </div>
 
@@ -2239,31 +1857,31 @@
           <div>
             <span class="stat-label">GPS Mark (WGS84)</span>
             <div class="gps-coords">${gpsFormatted}</div>
-            <div style="font-size:10px; color:var(--text-secondary);">DEC: ${gpsDecimal}</div>
+            <div class="gps-dec">DEC: ${gpsDecimal}</div>
           </div>
-          <button type="button" id="copyGpsBtn" class="retro-btn" onclick="copyCoords('${gpsFormatted} (${gpsDecimal})')">
+          <button type="button" id="copyGpsBtn" class="btn-action" onclick="copyCoords('${gpsFormatted} (${gpsDecimal})')">
             [COPY GPS]
           </button>
         </div>
 
-        <div class="data-panel" style="padding:9px 11px;">
+        <div class="data-panel">
           <span class="stat-label">Bottom Structure &amp; Habitat</span>
-          <div style="font-size:12px; color:var(--text-primary);">${waypoint.structure}</div>
+          <div class="spec-line" style="color:var(--text-primary);">${waypoint.structure}</div>
         </div>
 
-        <div class="skipper-box" style="padding:9px 11px;">
-          <strong>// SEA SPIRIT 520 APPROACH:</strong>
+        <div class="skipper-tip-box" style="margin-top:0;">
+          <strong>Sea Spirit 520 Approach //</strong>
           <span>${waypoint.vesselNote}</span>
         </div>
 
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
-          <span class="control-label" style="color:var(--brand-lime);">
-            TARGET MANIFEST (${monthShort}): ${peakCount} PEAK / ${availCount} AVAIL
+        <div class="intel-section-bar">
+          <span class="control-section-label">
+            MANIFEST (${monthShort}): ${peakCount} PEAK / ${availCount} AVAIL
           </span>
-          <span style="font-size:10px; color:var(--text-secondary);">[CLICK SPECIES FOR RIGS]</span>
+          <span style="font-size:0.65rem; color:var(--text-muted);">[CLICK FOR RIGS]</span>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="intel-list-stack">
           ${speciesHtml}
         </div>
       `;
@@ -2276,7 +1894,7 @@
       if (panTo) {
         const wp = WAYPOINTS_DB.find((w) => w.id === waypointId);
         if (wp) {
-          focusOnCoords(wp.lat, wp.lng, Math.max(viewState.scale, 2.2));
+          focusOnCoords(wp.lat, wp.lng, Math.max(viewState.scale, 1.8));
         }
       }
     }
@@ -2352,6 +1970,12 @@
           selectedWaypointId = null;
           renderChartAndIntel();
         }
+      } else if ((e.key === '+' || e.key === '=') && document.activeElement === document.body) {
+        e.preventDefault();
+        zoomAtPoint(1.25);
+      } else if (e.key === '-' && document.activeElement === document.body) {
+        e.preventDefault();
+        zoomAtPoint(0.8);
       }
     });
 
@@ -2373,32 +1997,36 @@
     toggleReefDetailBtn.addEventListener('click', () => {
       showReefLayouts = !showReefLayouts;
       toggleReefDetailBtn.textContent = showReefLayouts ? '[REEF LAYOUTS: ON]' : '[REEF LAYOUTS: OFF]';
+      toggleReefDetailBtn.classList.toggle('active', showReefLayouts);
       buildVectorChart();
     });
 
     toggleBathyBtn.addEventListener('click', () => {
       showBathyContours = !showBathyContours;
       toggleBathyBtn.textContent = showBathyContours ? '[CONTOURS: ON]' : '[CONTOURS: OFF]';
+      toggleBathyBtn.classList.toggle('active', showBathyContours);
       buildVectorChart();
     });
 
     toggleRangeBtn.addEventListener('click', () => {
       showRangeRings = !showRangeRings;
       toggleRangeBtn.textContent = showRangeRings ? '[RINGS: ON]' : '[RINGS: OFF]';
+      toggleRangeBtn.classList.toggle('active', showRangeRings);
       buildVectorChart();
     });
 
     zoomInBtn.addEventListener('click', () => zoomAtPoint(1.3));
     zoomOutBtn.addEventListener('click', () => zoomAtPoint(0.77));
-    zoomInshoreBtn.addEventListener('click', () => focusOnCoords(-26.6950, 153.1300, 3.4));
-    zoomReefsBtn.addEventListener('click', () => focusOnCoords(-26.6550, 153.2050, 2.5));
+    zoomInshoreBtn.addEventListener('click', () => focusOnCoords(-26.6950, 153.1300, 3.2));
+    zoomReefsBtn.addEventListener('click', () => focusOnCoords(-26.6550, 153.2050, 2.2));
+    zoomBarwonBtn.addEventListener('click', () => focusOnCoords(-26.5800, 153.5250, 1.45));
 
     function resetAllFilters() {
       zoneFilter.value = 'all';
       speciesFilter.value = 'all';
       seasonFilter.value = 'active';
       selectedWaypointId = null;
-      focusOnCoords(-26.6850, 153.1850, 1.65);
+      focusOnCoords(-26.6450, 153.2850, 0.96);
       renderChartAndIntel();
     }
 
