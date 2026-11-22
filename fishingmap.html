@@ -219,9 +219,10 @@
 
             <!-- Zoom & Sector Focus Controls -->
             <div class="chart-zoom-controls">
-              <button type="button" id="zoomInBtn" class="chart-zoom-btn" title="Zoom In (+)">+</button>
-              <button type="button" id="zoomOutBtn" class="chart-zoom-btn" title="Zoom Out (-)">&minus;</button>
-              <button type="button" id="zoomInshoreBtn" class="chart-zoom-btn preset-btn" title="Focus Buddina Canals, Mooloolah River &amp; Harbour Entrance">
+              <button type="button" id="zoomInBtn" class="chart-zoom-btn" title="Zoom In (+ / Scroll Up / Double-Click)">+</button>
+              <button type="button" id="zoomOutBtn" class="chart-zoom-btn" title="Zoom Out (- / Scroll Down)">&minus;</button>
+              <div id="zoomLevelReadout" class="chart-zoom-btn preset-btn" style="pointer-events:none; color:var(--text-secondary);">1.0x</div>
+              <button type="button" id="zoomInshoreBtn" class="chart-zoom-btn preset-btn" title="Deep Zoom: Buddina Canals, Mooloolah River &amp; Harbour Entrance">
                 CANAL
               </button>
               <button type="button" id="zoomReefsBtn" class="chart-zoom-btn preset-btn" title="Focus Inner/Outer Gneerings, HMAS Brisbane &amp; Murphy's Reef (2–8 NM)">
@@ -1769,17 +1770,18 @@
     // 2. HIGH-RESOLUTION COASTLINE, ESTUARIES, BATHYMETRY & REEF TOPOGRAPHY
     // =========================================================================
     const COASTLINE_POLYGONS = [
-      // Northern Mainland: Peregian -> Coolum Headland -> Pt Arkwright -> Marcoola -> Mudjimba -> Maroochy North Shore
+      // Northern Mainland: Noosa/Peregian -> Coolum Headland -> Pt Arkwright -> Marcoola -> Mudjimba -> Maroochy North Shore
       [
-        [-26.420, 153.065], [-26.420, 153.104], [-26.450, 153.101],
+        [-26.200, 152.700], [-26.200, 153.112], [-26.385, 153.115],
+        [-26.420, 153.104], [-26.450, 153.101],
         [-26.495, 153.097], [-26.528, 153.095], [-26.538, 153.102], // Coolum Headland
         [-26.548, 153.104], [-26.562, 153.100], // Point Arkwright
         [-26.588, 153.099], [-26.614, 153.099], [-26.632, 153.101],
-        [-26.643, 153.097], [-26.641, 153.082], [-26.635, 153.065]
+        [-26.643, 153.097], [-26.641, 153.082], [-26.635, 152.700]
       ],
-      // Central & Southern Mainland: Cotton Tree -> Alex Headland -> Mooloolaba -> Buddina/Minyama/Kawana -> Currimundi -> Caloundra -> Pumicestone
+      // Central & Southern Mainland: Cotton Tree -> Alex Headland -> Mooloolaba -> Buddina/Minyama/Kawana -> Currimundi -> Caloundra -> Pumicestone/Brisbane
       [
-        [-26.648, 153.065], [-26.647, 153.088], [-26.650, 153.105], // Cotton Tree Spit
+        [-26.648, 152.700], [-26.647, 153.088], [-26.650, 153.105], // Cotton Tree Spit
         [-26.659, 153.110], [-26.668, 153.115], [-26.673, 153.116], // Alex Headland
         [-26.679, 153.121], [-26.680, 153.131], // Mooloolaba Beach & Spit
         // Western bank of Mooloolah River & Minyama/Kawana Canals
@@ -1795,7 +1797,7 @@
         [-26.784, 153.141], [-26.790, 153.145], // Moffat Headland
         [-26.801, 153.148], [-26.807, 153.146], // Shelly & Kings Headland
         [-26.812, 153.135], [-26.802, 153.126], [-26.820, 153.118],
-        [-26.860, 153.114], [-26.860, 153.065]
+        [-26.860, 153.114], [-27.600, 153.120], [-27.600, 152.700]
       ],
       // Chambers Island (Maroochy River)
       [
@@ -2057,7 +2059,7 @@
         ]
       },
       {
-        waypointId: "hmas-brisbane-wreck",
+        waypointId: "dive-hmas-brisbane",
         name: "EX-HMAS BRISBANE & ALEX REEF",
         apron: [[-26.608, 153.140], [-26.608, 153.158], [-26.630, 153.158], [-26.630, 153.140]],
         outer: [
@@ -2646,18 +2648,6 @@
         keywords: ["coolum", "arkwright"]
       },
       {
-        id: "hmas-brisbane-wreck",
-        name: "Ex-HMAS Brisbane & Pinnacles",
-        shortCode: "BRISBANE",
-        zone: "Inshore & Harbour",
-        lat: -26.6168,
-        lng: 153.1488,
-        depth: "15m – 28m",
-        structure: "133m scuttled steel warship reef reserve (note exclusion zone buoys) plus adjacent Pinnacles rocky reef patches.",
-        vesselNote: "3.9 NM NNE of Mooloolaba bar. Fish the surrounding Pinnacles rubble outside the diving exclusion zone for cobia, trevally, and sweetlip.",
-        keywords: ["hmas brisbane", "pinnacles", "alex reef"]
-      },
-      {
         id: "bray-rock",
         name: "Bray Rock & Koffmans Reef",
         shortCode: "BRAY-RK",
@@ -3064,8 +3054,8 @@
       x: 0,
       y: 0,
       scale: 0.96,
-      minScale: 0.55,
-      maxScale: 6.0,
+      minScale: 0.45,
+      maxScale: 28.0,
       isDragging: false,
       dragStartX: 0,
       dragStartY: 0,
@@ -3080,6 +3070,7 @@
     const pinOverlayLayer = document.getElementById("pinOverlayLayer");
     const scaleBarLine = document.getElementById("scaleBarLine");
     const scaleBarText = document.getElementById("scaleBarText");
+    const zoomLevelReadout = document.getElementById("zoomLevelReadout");
 
     const gpsDeckBar = document.getElementById("gpsDeckBar");
     const gpsStatusPill = document.getElementById("gpsStatusPill");
@@ -3344,26 +3335,50 @@
       renderChartAndIntel();
     }
 
-    function toggleLiveGps() {
-      if (gpsState.active) {
-        if (gpsState.watchId !== null) {
-          navigator.geolocation.clearWatch(gpsState.watchId);
-          gpsState.watchId = null;
+    function onDeviceGpsFix(pos, { autoCenterOnFirstFix = false } = {}) {
+      const { latitude, longitude, accuracy, speed, heading } = pos.coords;
+      const hadFirstFix = gpsState.lat !== null && gpsState.lng !== null;
+
+      if (hadFirstFix && (heading === null || isNaN(heading))) {
+        const stepNav = calcDistanceNmAndBearing(gpsState.lat, gpsState.lng, latitude, longitude);
+        if (stepNav.nmNum > 0.005) gpsState.cogDeg = stepNav.brgNum;
+      } else if (heading !== null && !isNaN(heading)) {
+        gpsState.cogDeg = heading;
+      }
+
+      gpsState.active = true;
+      gpsState.simulated = false;
+      gpsState.lat = latitude;
+      gpsState.lng = longitude;
+      gpsState.accuracyMeters = accuracy || 15;
+      gpsState.sogKnots = (speed !== null && !isNaN(speed) && speed >= 0) ? speed * 1.94384 : 0.0;
+      gpsState.lastFixTime = Date.now();
+
+      toggleGpsBtn.textContent = "[📡 LIVE GPS: ON]";
+      toggleGpsBtn.classList.add("gps-on");
+
+      const distFromBar = calcDistanceNmAndBearing(HARBOUR_BAR_COORDS.lat, HARBOUR_BAR_COORDS.lng, latitude, longitude);
+      // Automatically pan to the user's real device location on first fix if they are within 35 NM of Mooloolaba, or anytime followVessel is enabled
+      if ((autoCenterOnFirstFix && !hadFirstFix && distFromBar.nmNum <= 35) || gpsState.followVessel) {
+        focusOnCoords(latitude, longitude, Math.max(viewState.scale, 1.9));
+      }
+
+      updateGpsHud();
+      renderChartAndIntel();
+    }
+
+    function startDeviceGps({ autoBoot = false } = {}) {
+      if (!("geolocation" in navigator)) {
+        if (!autoBoot) {
+          alert("Hardware Geolocation API is not available in this browser. Using Simulated Vessel Mode instead.");
+          setSimulatedPosition(-26.6620, 153.1550);
         }
-        gpsState.active = false;
-        gpsState.followVessel = false;
-        toggleGpsBtn.textContent = "[📡 LIVE GPS: OFF]";
-        toggleGpsBtn.classList.remove("gps-on");
-        centerVesselBtn.textContent = "[🎯 CENTER VESSEL]";
-        updateGpsHud();
-        renderChartAndIntel();
         return;
       }
 
-      if (!("geolocation" in navigator)) {
-        alert("Hardware Geolocation API is not available in this browser. Using Simulated Vessel Mode instead.");
-        setSimulatedPosition(-26.6620, 153.1550);
-        return;
+      if (gpsState.watchId !== null) {
+        navigator.geolocation.clearWatch(gpsState.watchId);
+        gpsState.watchId = null;
       }
 
       gpsState.simulated = false;
@@ -3375,65 +3390,91 @@
       gpsState.active = true;
       toggleGpsBtn.textContent = "[📡 ACQUIRING GPS...]";
       toggleGpsBtn.classList.add("gps-on");
-      gpsStatusPill.textContent = "GPS: ACQUIRING SATELLITES...";
+      gpsStatusPill.textContent = "GPS: ACQUIRING DEVICE LOCATION...";
       gpsStatusPill.className = "gps-status-pill live";
 
-      gpsState.watchId = navigator.geolocation.watchPosition(
-        (pos) => {
-          const { latitude, longitude, accuracy, speed, heading } = pos.coords;
-
-          if (gpsState.lat !== null && gpsState.lng !== null && (heading === null || isNaN(heading))) {
-            const stepNav = calcDistanceNmAndBearing(gpsState.lat, gpsState.lng, latitude, longitude);
-            if (stepNav.nmNum > 0.005) gpsState.cogDeg = stepNav.brgNum;
-          } else if (heading !== null && !isNaN(heading)) {
-            gpsState.cogDeg = heading;
-          }
-
-          gpsState.lat = latitude;
-          gpsState.lng = longitude;
-          gpsState.accuracyMeters = accuracy || 15;
-          gpsState.sogKnots = (speed !== null && !isNaN(speed) && speed >= 0) ? speed * 1.94384 : 0.0;
-          gpsState.lastFixTime = Date.now();
-
-          toggleGpsBtn.textContent = "[📡 LIVE GPS: ON]";
-
-          const distFromBar = calcDistanceNmAndBearing(HARBOUR_BAR_COORDS.lat, HARBOUR_BAR_COORDS.lng, latitude, longitude);
-          if (gpsState.followVessel && distFromBar.nmNum <= 45) {
-            focusOnCoords(latitude, longitude, Math.max(viewState.scale, 1.8));
-          }
-
-          updateGpsHud();
-          renderChartAndIntel();
+      // 1. Immediate fast position request (falls back to network/Wi-Fi location if high-accuracy satellite fix times out)
+      navigator.geolocation.getCurrentPosition(
+        (pos) => onDeviceGpsFix(pos, { autoCenterOnFirstFix: true }),
+        () => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => onDeviceGpsFix(pos, { autoCenterOnFirstFix: true }),
+            () => {},
+            { enableHighAccuracy: false, maximumAge: 60000, timeout: 10000 }
+          );
         },
+        { enableHighAccuracy: true, maximumAge: 15000, timeout: 6000 }
+      );
+
+      // 2. Continuous live hardware GPS stream
+      gpsState.watchId = navigator.geolocation.watchPosition(
+        (pos) => onDeviceGpsFix(pos, { autoCenterOnFirstFix: false }),
         (err) => {
-          console.warn("Geolocation error:", err);
-          gpsState.active = false;
-          toggleGpsBtn.textContent = "[📡 LIVE GPS: OFF]";
-          toggleGpsBtn.classList.remove("gps-on");
-          gpsStatusPill.textContent = `GPS ERR: ${err.code === 1 ? "PERMISSION DENIED" : "NO FIX"}`;
-          gpsStatusPill.className = "gps-status-pill sim";
+          console.warn("Geolocation watch error:", err);
+          if (err.code === 1) {
+            // Permission denied
+            gpsState.active = false;
+            toggleGpsBtn.textContent = "[📡 ENABLE DEVICE GPS]";
+            toggleGpsBtn.classList.remove("gps-on");
+            gpsStatusPill.textContent = "GPS: PERMISSION NEEDED (CLICK LIVE GPS)";
+            gpsStatusPill.className = "gps-status-pill sim";
+          } else if (gpsState.lat === null) {
+            gpsStatusPill.textContent = "GPS: WAITING FOR DEVICE FIX...";
+            gpsStatusPill.className = "gps-status-pill sim";
+          }
         },
         {
           enableHighAccuracy: true,
-          maximumAge: 3000,
-          timeout: 15000
+          maximumAge: 2500,
+          timeout: 20000
         }
       );
     }
+
+    function toggleLiveGps() {
+      if (gpsState.active) {
+        if (gpsState.watchId !== null) {
+          navigator.geolocation.clearWatch(gpsState.watchId);
+          gpsState.watchId = null;
+        }
+        gpsState.active = false;
+        gpsState.followVessel = false;
+        toggleGpsBtn.textContent = "[📡 LIVE GPS: OFF]";
+        toggleGpsBtn.classList.remove("gps-on");
+        centerVesselBtn.textContent = "[🎯 CENTER VESSEL]";
+        centerVesselBtn.classList.remove("gps-on");
+        updateGpsHud();
+        renderChartAndIntel();
+        return;
+      }
+      startDeviceGps({ autoBoot: false });
+    }
+
+    // Listen to Device Orientation / Compass Heading on mobile phones & tablets
+    window.addEventListener("deviceorientationabsolute", (e) => {
+      if (gpsState.active && e.alpha !== null && !isNaN(e.alpha)) {
+        gpsState.cogDeg = (360 - e.alpha) % 360;
+        updateGpsHud();
+        updatePinPositions();
+      }
+    }, true);
+
+    window.addEventListener("deviceorientation", (e) => {
+      if (gpsState.active && e.webkitCompassHeading !== undefined && !isNaN(e.webkitCompassHeading)) {
+        gpsState.cogDeg = e.webkitCompassHeading;
+        updateGpsHud();
+        updatePinPositions();
+      }
+    }, true);
 
     toggleGpsBtn.addEventListener("click", toggleLiveGps);
 
     centerVesselBtn.addEventListener("click", () => {
       if (gpsState.lat === null || gpsState.lng === null) return;
-      const distFromBar = calcDistanceNmAndBearing(HARBOUR_BAR_COORDS.lat, HARBOUR_BAR_COORDS.lng, gpsState.lat, gpsState.lng);
-      if (distFromBar.nmNum > 45) {
-        alert(`Your live GPS position (${formatMarineGps(gpsState.lat, gpsState.lng)}) is ${distFromBar.nm} NM from Mooloolaba Bar (outside the 0–28 NM chart bounds). Tip: Use [⚓ SIMULATE POS] to test vessel navigation directly on the Sunshine Coast reefs!`);
-        return;
-      }
       gpsState.followVessel = !gpsState.followVessel;
-      centerVesselBtn.textContent = gpsState.followVessel ? "[🎯 FOLLOWING VESSEL]" : "[🎯 CENTER VESSEL]";
+      centerVesselBtn.textContent = gpsState.followVessel ? "[🎯 FOLLOWING YOU]" : "[🎯 CENTER VESSEL]";
       centerVesselBtn.classList.toggle("gps-on", gpsState.followVessel);
-      focusOnCoords(gpsState.lat, gpsState.lng, Math.max(viewState.scale, 2.0));
+      focusOnCoords(gpsState.lat, gpsState.lng, Math.max(viewState.scale, 2.6));
     });
 
     simGpsBtn.addEventListener("click", () => {
@@ -3762,6 +3803,23 @@
         "transform",
         `translate(${viewState.x.toFixed(2)}, ${viewState.y.toFixed(2)}) scale(${viewState.scale.toFixed(4)})`
       );
+      if (zoomLevelReadout) {
+        zoomLevelReadout.textContent = `${viewState.scale.toFixed(1)}x`;
+      }
+
+      // Dynamically scale SVG text labels & pinnacle dots inversely with zoom so deep zoom (up to 28x) stays razor-sharp
+      const invFactor = 1 / Math.pow(Math.max(1, viewState.scale), 0.76);
+      chartTransformGroup.querySelectorAll(".reef-sub-label, .bathy-label, .depth-sounding, .nav-beacon-label, .range-ring-label, .vessel-course-label").forEach((el) => {
+        el.style.fontSize = `${(8.5 * invFactor).toFixed(2)}px`;
+      });
+      chartTransformGroup.querySelectorAll(".geo-label").forEach((el) => {
+        const base = el.classList.contains("sub") ? 8.5 : 11;
+        el.style.fontSize = `${(base * invFactor).toFixed(2)}px`;
+      });
+      chartTransformGroup.querySelectorAll(".reef-pinnacle-dot").forEach((el) => {
+        el.setAttribute("r", (2.4 * invFactor).toFixed(2));
+      });
+
       updatePinPositions();
       updateScaleBar();
     }
@@ -3802,7 +3860,16 @@
       const scaleRatio = Math.max(rect.width / VIEWBOX_W, rect.height / VIEWBOX_H);
       const pxPerNm = 60 * viewState.scale * scaleRatio;
 
-      if (pxPerNm >= 90) {
+      if (pxPerNm >= 1100) {
+        scaleBarLine.style.width = `${(pxPerNm * 0.05).toFixed(0)}px`;
+        scaleBarText.textContent = "0.05 NM (90m)";
+      } else if (pxPerNm >= 520) {
+        scaleBarLine.style.width = `${(pxPerNm * 0.1).toFixed(0)}px`;
+        scaleBarText.textContent = "0.10 NM (185m)";
+      } else if (pxPerNm >= 210) {
+        scaleBarLine.style.width = `${(pxPerNm * 0.25).toFixed(0)}px`;
+        scaleBarText.textContent = "0.25 NM";
+      } else if (pxPerNm >= 90) {
         scaleBarLine.style.width = `${(pxPerNm * 0.5).toFixed(0)}px`;
         scaleBarText.textContent = "0.5 NM";
       } else if (pxPerNm >= 40) {
@@ -3841,18 +3908,27 @@
 
     function focusOnCoords(lat, lng, targetScale = 1.65) {
       const pt = latLngToSvg(lat, lng);
-      viewState.scale = targetScale;
-      viewState.x = (VIEWBOX_W / 2) - pt.x * targetScale;
-      viewState.y = (VIEWBOX_H / 2) - pt.y * targetScale;
+      viewState.scale = Math.min(viewState.maxScale, Math.max(viewState.minScale, targetScale));
+      viewState.x = (VIEWBOX_W / 2) - pt.x * viewState.scale;
+      viewState.y = (VIEWBOX_H / 2) - pt.y * viewState.scale;
       applyViewportTransform();
     }
 
-    // Mouse & Wheel Interactions
+    // Mouse Wheel, Double-Click & Multi-Touch Pinch-to-Zoom Interactions
+    const activePointers = new Map();
+    let lastPinchDist = null;
+
     mapViewport.addEventListener("wheel", (e) => {
       e.preventDefault();
-      const factor = e.deltaY < 0 ? 1.18 : 0.85;
+      const factor = e.deltaY < 0 ? 1.24 : 0.81;
       zoomAtPoint(factor, e.clientX, e.clientY);
     }, { passive: false });
+
+    mapViewport.addEventListener("dblclick", (e) => {
+      if (e.target.closest(".tac-pin") || e.target.closest(".chart-zoom-controls")) return;
+      e.preventDefault();
+      zoomAtPoint(1.75, e.clientX, e.clientY);
+    });
 
     mapViewport.addEventListener("pointerdown", (e) => {
       if (e.target.closest(".tac-pin") || e.target.closest(".chart-zoom-controls") || e.target.closest(".vessel-gps-marker")) return;
@@ -3864,12 +3940,20 @@
         return;
       }
 
-      viewState.isDragging = true;
-      viewState.dragStartX = e.clientX;
-      viewState.dragStartY = e.clientY;
-      viewState.dragOriginX = viewState.x;
-      viewState.dragOriginY = viewState.y;
+      activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       mapViewport.setPointerCapture(e.pointerId);
+
+      if (activePointers.size === 2) {
+        viewState.isDragging = false;
+        const pts = [...activePointers.values()];
+        lastPinchDist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+      } else if (activePointers.size === 1) {
+        viewState.isDragging = true;
+        viewState.dragStartX = e.clientX;
+        viewState.dragStartY = e.clientY;
+        viewState.dragOriginX = viewState.x;
+        viewState.dragOriginY = viewState.y;
+      }
     });
 
     mapViewport.addEventListener("pointermove", (e) => {
@@ -3878,6 +3962,22 @@
       const origin = getReferenceOrigin();
       const nav = calcDistanceNmAndBearing(origin.lat, origin.lng, lat, lng);
       cursorTelemetry.textContent = `CURSOR: ${formatMarineGps(lat, lng)} // BRG: ${nav.brg}° // DIST: ${nav.nm} NM FROM ${origin.label}`;
+
+      if (activePointers.has(e.pointerId)) {
+        activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      }
+
+      if (activePointers.size === 2) {
+        const pts = [...activePointers.values()];
+        const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+        if (lastPinchDist && lastPinchDist > 10 && dist > 10) {
+          const midX = (pts[0].x + pts[1].x) / 2;
+          const midY = (pts[0].y + pts[1].y) / 2;
+          zoomAtPoint(dist / lastPinchDist, midX, midY);
+        }
+        lastPinchDist = dist;
+        return;
+      }
 
       if (!viewState.isDragging) return;
       const rect = tacticalSvgChart.getBoundingClientRect();
@@ -3889,12 +3989,19 @@
       applyViewportTransform();
     });
 
-    mapViewport.addEventListener("pointerup", (e) => {
-      if (viewState.isDragging) {
+    function handlePointerEnd(e) {
+      activePointers.delete(e.pointerId);
+      if (activePointers.size < 2) lastPinchDist = null;
+      if (activePointers.size === 0 && viewState.isDragging) {
         viewState.isDragging = false;
-        mapViewport.releasePointerCapture(e.pointerId);
       }
-    });
+      try {
+        mapViewport.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    }
+
+    mapViewport.addEventListener("pointerup", handlePointerEnd);
+    mapViewport.addEventListener("pointercancel", handlePointerEnd);
 
     window.addEventListener("resize", () => {
       updatePinPositions();
@@ -3972,7 +4079,10 @@
 
       hydrateFromFishJson(initialData);
 
-      // 2. Asynchronously refresh from ./fish.json when online/served
+      // 2. Automatically start taking live location data from the device
+      startDeviceGps({ autoBoot: true });
+
+      // 3. Asynchronously refresh from ./fish.json when online/served
       try {
         const response = await fetch("./fish.json", { cache: "no-store" });
         if (response.ok) {
@@ -4078,7 +4188,7 @@
     }
 
     // =========================================================================
-    // 10. FILTERING, PIN RENDERING, LIVE VESSEL OVERLAY & INTEL DRAWER
+    // 10. FILTERING, PIN ANTI-OVERLAP ENGINE, LIVE VESSEL OVERLAY & INTEL DRAWER
     // =========================================================================
     function sortSpeciesList(list, selectedMonth) {
       return [...list].sort((a, b) => {
@@ -4197,22 +4307,22 @@
       waypointCountBadge.textContent = `${reefCount} REEFS // ${diveCount} WRECKS & DIVES // ${uniqueSpeciesIds.size} SPECIES`;
 
       renderedPinsCache = evaluated;
-      let html = "";
+      let html = `<svg id="pinLeaderSvg"></svg>`;
 
       html += `<div id="homeBasePinEl" class="base-pin">${HOME_BASE_COORDS.label}</div>`;
 
       if ((gpsState.active || gpsState.simulated) && gpsState.lat !== null && gpsState.lng !== null) {
         const rot = gpsState.cogDeg !== null ? Math.round(gpsState.cogDeg) : 0;
-        const tagTxt = gpsState.simulated ? "SIM 520" : "SEA SPIRIT 520";
+        const tagTxt = gpsState.simulated ? "SIM 520" : "YOU // LIVE GPS";
         html += `
-          <div id="vesselGpsMarkerEl" class="vessel-gps-marker" title="Your Vessel Position (${formatMarineGps(gpsState.lat, gpsState.lng)})">
+          <div id="vesselGpsMarkerEl" class="vessel-gps-marker" title="Your Device GPS Position (${formatMarineGps(gpsState.lat, gpsState.lng)})">
             <div class="vessel-pulse-ring"></div>
             <div class="vessel-hull-icon" style="transform: rotate(${rot}deg);">
               <svg viewBox="0 0 24 24" width="20" height="20">
                 <polygon points="12,2 20,21 12,17 4,21" fill="#00e5ff" stroke="#06040b" stroke-width="1.5"/>
               </svg>
             </div>
-            <span class="vessel-tag-badge">${tagTxt}</span>
+            <span id="vesselTagBadgeEl" class="vessel-tag-badge">${tagTxt}</span>
           </div>
         `;
       }
@@ -4268,7 +4378,12 @@
       }
     }
 
+    // Screen-Space Collision-Avoidance & Leader-Line Pin Layout Engine
     function updatePinPositions() {
+      const vpRect = mapViewport.getBoundingClientRect();
+      const vpW = vpRect.width || 900;
+      const vpH = vpRect.height || 600;
+
       const homeEl = document.getElementById("homeBasePinEl");
       if (homeEl) {
         const homeSvg = latLngToSvg(HOME_BASE_COORDS.lat, HOME_BASE_COORDS.lng);
@@ -4277,22 +4392,147 @@
         homeEl.style.top = `${homeScreen.top.toFixed(1)}px`;
       }
 
+      // Position live device GPS marker (and clamp to viewport edge if user's physical location is off-screen so it's always visible)
       const vesselEl = document.getElementById("vesselGpsMarkerEl");
       if (vesselEl && gpsState.lat !== null && gpsState.lng !== null) {
         const vSvg = latLngToSvg(gpsState.lat, gpsState.lng);
         const vScreen = svgToScreen(vSvg.x, vSvg.y);
-        vesselEl.style.left = `${vScreen.left.toFixed(1)}px`;
-        vesselEl.style.top = `${vScreen.top.toFixed(1)}px`;
+        const pad = 28;
+        const isOffScreen = vScreen.left < pad || vScreen.left > vpW - pad || vScreen.top < pad || vScreen.top > vpH - pad;
+        const clampedX = Math.max(pad, Math.min(vpW - pad, vScreen.left));
+        const clampedY = Math.max(pad, Math.min(vpH - pad, vScreen.top));
+        vesselEl.style.left = `${clampedX.toFixed(1)}px`;
+        vesselEl.style.top = `${clampedY.toFixed(1)}px`;
+
+        const tagEl = document.getElementById("vesselTagBadgeEl");
+        if (tagEl) {
+          if (isOffScreen) {
+            const barNav = calcDistanceNmAndBearing(HARBOUR_BAR_COORDS.lat, HARBOUR_BAR_COORDS.lng, gpsState.lat, gpsState.lng);
+            tagEl.textContent = `YOU (${barNav.nm} NM)`;
+          } else {
+            tagEl.textContent = gpsState.simulated ? "SIM 520" : "YOU // LIVE GPS";
+          }
+        }
       }
 
-      renderedPinsCache.forEach((item) => {
+      const leaderSvg = document.getElementById("pinLeaderSvg");
+      if (!showPins || renderedPinsCache.length === 0) {
+        if (leaderSvg) leaderSvg.innerHTML = "";
+        return;
+      }
+
+      // 1. Collect pin nodes & their true screen-space GPS anchor coordinates (ax, ay)
+      const nodes = [];
+      renderedPinsCache.forEach((item, idx) => {
         const el = pinOverlayLayer.querySelector(`.tac-pin[data-wp-id="${item.waypoint.id}"]`);
         if (!el) return;
         const svgPt = latLngToSvg(item.waypoint.lat, item.waypoint.lng);
         const screenPt = svgToScreen(svgPt.x, svgPt.y);
-        el.style.left = `${screenPt.left.toFixed(1)}px`;
-        el.style.top = `${screenPt.top.toFixed(1)}px`;
+
+        // Skip collision solver for pins way outside the visible viewport
+        const inView = screenPt.left >= -120 && screenPt.left <= vpW + 120 && screenPt.top >= -120 && screenPt.top <= vpH + 120;
+        const w = (el.offsetWidth || 92) + 6;
+        const h = (el.offsetHeight || 22) + 5;
+
+        // Initial radial fan offset around anchor so nearby pins start slightly separated
+        const angle = ((idx * 137.5) % 360) * (Math.PI / 180);
+        const initR = 16;
+
+        let colorKey = "peak";
+        if (item.waypoint.isCustomUserMark) colorKey = "custom";
+        else if (item.waypoint.isDiveOrWreck) colorKey = item.waypoint.siteType === "wreck" ? "wreck" : "dive";
+        else if (item.peakCount === 0) colorKey = "avail";
+
+        nodes.push({
+          el,
+          id: item.waypoint.id,
+          ax: screenPt.left,
+          ay: screenPt.top,
+          bx: screenPt.left + Math.cos(angle) * (initR * 0.4),
+          by: screenPt.top - 16 + Math.sin(angle) * (initR * 0.35),
+          w,
+          h,
+          inView,
+          colorKey,
+          priority: item.waypoint.id === selectedWaypointId ? 3 : (item.peakCount > 0 ? 2 : 1)
+        });
       });
+
+      // 2. Iterative 2D Bounding-Box Anti-Overlap Solver (68 passes, pure separation on final 24 passes)
+      const visibleNodes = nodes.filter((n) => n.inView);
+      const iterations = 68;
+
+      for (let iter = 0; iter < iterations; iter++) {
+        // Gentle spring tether toward true GPS anchor + keep badge clear of its own anchor dot
+        if (iter < iterations - 24) {
+          for (let i = 0; i < visibleNodes.length; i++) {
+            const n = visibleNodes[i];
+            n.bx += (n.ax - n.bx) * 0.045;
+            n.by += ((n.ay - 16) - n.by) * 0.045;
+
+            const dAx = n.bx - n.ax;
+            const dAy = n.by - n.ay;
+            const distA = Math.hypot(dAx, dAy);
+            if (distA < 13) {
+              const push = (13 - distA);
+              const ux = distA > 0.1 ? dAx / distA : 0;
+              const uy = distA > 0.1 ? dAy / distA : -1;
+              n.bx += ux * push;
+              n.by += uy * push;
+            }
+          }
+        }
+
+        // Pairwise rectangle repulsion (runs last in every iteration to guarantee zero overlap)
+        for (let i = 0; i < visibleNodes.length; i++) {
+          const a = visibleNodes[i];
+          for (let j = i + 1; j < visibleNodes.length; j++) {
+            const b = visibleNodes[j];
+            let dx = b.bx - a.bx;
+            let dy = b.by - a.by;
+            const minW = (a.w + b.w) * 0.5;
+            const minH = (a.h + b.h) * 0.5;
+
+            if (Math.abs(dx) < minW && Math.abs(dy) < minH) {
+              if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+                const tieAngle = ((i + j + 1) * 1.85);
+                dx = Math.cos(tieAngle);
+                dy = Math.sin(tieAngle);
+              }
+              const overlapX = minW - Math.abs(dx);
+              const overlapY = minH - Math.abs(dy);
+
+              if (overlapX * 0.65 < overlapY) {
+                const pushX = (dx >= 0 ? 1 : -1) * overlapX * 0.54;
+                a.bx -= pushX;
+                b.bx += pushX;
+              } else {
+                const pushY = (dy >= 0 ? 1 : -1) * overlapY * 0.54;
+                a.by -= pushY;
+                b.by += pushY;
+              }
+            }
+          }
+        }
+      }
+
+      // 3. Apply de-conflicted screen positions & draw leader lines to exact GPS coordinates
+      let leaderHtml = "";
+      nodes.forEach((n) => {
+        n.el.style.left = `${n.bx.toFixed(1)}px`;
+        n.el.style.top = `${n.by.toFixed(1)}px`;
+
+        if (n.inView) {
+          leaderHtml += `
+            <line x1="${n.ax.toFixed(1)}" y1="${n.ay.toFixed(1)}" x2="${n.bx.toFixed(1)}" y2="${n.by.toFixed(1)}" fill="none" class="pin-leader-line ${n.colorKey}" />
+            <circle cx="${n.ax.toFixed(1)}" cy="${n.ay.toFixed(1)}" r="3.2" class="pin-anchor-dot ${n.colorKey}" />
+          `;
+        }
+      });
+
+      if (leaderSvg) {
+        leaderSvg.innerHTML = leaderHtml;
+      }
     }
 
     function renderWaypointDirectory(evaluatedList) {
@@ -4506,7 +4746,7 @@
       if (panTo) {
         const wp = getAllWaypointsWithCustom().find((w) => w.id === waypointId);
         if (wp) {
-          focusOnCoords(wp.lat, wp.lng, Math.max(viewState.scale, 1.85));
+          focusOnCoords(wp.lat, wp.lng, Math.max(viewState.scale, 3.2));
         }
       }
     }
@@ -4650,12 +4890,12 @@
       buildVectorChart();
     });
 
-    zoomInBtn.addEventListener("click", () => zoomAtPoint(1.3));
-    zoomOutBtn.addEventListener("click", () => zoomAtPoint(0.77));
-    zoomInshoreBtn.addEventListener("click", () => focusOnCoords(-26.6950, 153.1300, 3.3));
-    zoomReefsBtn.addEventListener("click", () => focusOnCoords(-26.6520, 153.2000, 2.35));
-    zoomCaloundraBtn.addEventListener("click", () => focusOnCoords(-26.7850, 153.2350, 1.9));
-    zoomBarwonBtn.addEventListener("click", () => focusOnCoords(-26.5750, 153.5250, 1.45));
+    zoomInBtn.addEventListener("click", () => zoomAtPoint(1.45));
+    zoomOutBtn.addEventListener("click", () => zoomAtPoint(0.69));
+    zoomInshoreBtn.addEventListener("click", () => focusOnCoords(-26.6920, 153.1310, 6.5));
+    zoomReefsBtn.addEventListener("click", () => focusOnCoords(-26.6470, 153.1950, 3.4));
+    zoomCaloundraBtn.addEventListener("click", () => focusOnCoords(-26.8050, 153.2350, 2.5));
+    zoomBarwonBtn.addEventListener("click", () => focusOnCoords(-26.5750, 153.5250, 1.8));
 
     function resetAllFilters() {
       zoneFilter.value = "all";

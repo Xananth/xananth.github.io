@@ -1634,6 +1634,14 @@ body.light-mode .map-frame-wrap::before {
   display: block;
 }
 
+#tacticalSvgChart polygon,
+#tacticalSvgChart polyline,
+#tacticalSvgChart circle,
+#tacticalSvgChart line,
+#tacticalSvgChart ellipse {
+  vector-effect: non-scaling-stroke;
+}
+
 /* SVG Vector Cartography Theme Styling */
 .bathy-line {
   fill: none !important;
@@ -2118,24 +2126,78 @@ body.light-mode .vessel-tag-badge {
   z-index: 30;
 }
 
+#pinLeaderSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.pin-leader-line {
+  fill: none !important;
+  stroke: var(--brand-lime);
+  stroke-width: 1.15;
+  stroke-opacity: 0.72;
+}
+
+.pin-leader-line.wreck {
+  stroke: var(--led-warm);
+}
+
+.pin-leader-line.dive {
+  stroke: #38bdf8;
+}
+
+.pin-leader-line.avail {
+  stroke: var(--horizon-jade);
+}
+
+.pin-leader-line.custom {
+  stroke: #00e5ff;
+}
+
+.pin-anchor-dot {
+  fill: var(--brand-lime);
+  stroke: #06040b;
+  stroke-width: 1;
+}
+
+.pin-anchor-dot.wreck {
+  fill: var(--led-warm);
+}
+
+.pin-anchor-dot.dive {
+  fill: #38bdf8;
+}
+
+.pin-anchor-dot.avail {
+  fill: var(--horizon-jade);
+}
+
+.pin-anchor-dot.custom {
+  fill: #00e5ff;
+}
+
 .tac-pin {
   position: absolute;
   pointer-events: auto;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 7px;
+  gap: 4px;
+  padding: 2px 6px;
   background: rgba(10, 7, 18, 0.94);
   border: 1px solid var(--brand-lime);
   border-radius: 2px;
   color: var(--brand-lime);
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 0 10px var(--brand-lime-glow), inset 1px 1px 0 rgba(255, 255, 255, 0.12);
-  transform: translate(-50%, -125%);
-  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7), 0 0 8px var(--brand-lime-glow);
+  transform: translate(-50%, -50%);
+  transition: background 0.12s ease, box-shadow 0.12s ease;
   cursor: pointer;
 }
 
@@ -2144,40 +2206,15 @@ body.light-mode .tac-pin {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-.tac-pin::before {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--brand-lime);
-  box-shadow: 0 0 6px var(--brand-lime);
-  transform: translateX(-50%);
-}
-
+.tac-pin::before,
 .tac-pin::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  width: 1px;
-  height: 5px;
-  background: var(--brand-lime);
-  transform: translateX(-50%);
+  display: none !important;
 }
 
 .tac-pin.avail-only {
   border-color: var(--horizon-jade);
   color: var(--text-primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-.tac-pin.avail-only::before,
-.tac-pin.avail-only::after {
-  background: var(--horizon-jade);
-  box-shadow: none;
 }
 
 .tac-pin.off-only {
@@ -2187,17 +2224,11 @@ body.light-mode .tac-pin {
   box-shadow: none;
 }
 
-.tac-pin.off-only::before,
-.tac-pin.off-only::after {
-  background: var(--text-muted);
-  box-shadow: none;
-}
-
 .tac-pin:hover,
 .tac-pin.selected {
   background: var(--brand-lime);
   color: #06040b;
-  transform: translate(-50%, -132%) scale(1.08);
+  transform: translate(-50%, -50%) scale(1.08);
   z-index: 100 !important;
   box-shadow: 0 0 18px var(--brand-lime-glow);
 }
