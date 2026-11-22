@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEARS // Giant Piloted Spinning Mech Arena</title>
+    
+<script type="module">
+import init, * as bindings from './gears_app-1828b2c283aeaa81.js';
+
+const wasm = await init({ module_or_path: './gears_app-9c3bd4f3d33e14bd_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #06040b;
+            background-image:
+                radial-gradient(ellipse 90% 55% at 50% 105%, rgba(141, 229, 0, 0.09) 0%, rgba(25, 84, 62, 0.18) 40%, transparent 75%),
+                radial-gradient(ellipse 75% 50% at 50% -5%, rgba(55, 37, 92, 0.42) 0%, transparent 70%),
+                linear-gradient(180deg, #06040b 0%, #0d0917 60%, #081312 88%, #050609 100%);
+            color: #f0ecf8;
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+        }
+        canvas {
+            display: block;
+            width: 100vw !important;
+            height: 100vh !important;
+            outline: none;
+        }
+        /* Subtle CRT scanline & corner vignette matching master.css */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(255, 255, 255, 0.004) 0px,
+                    rgba(255, 255, 255, 0.004) 1px,
+                    rgba(0, 0, 0, 0.14) 1px,
+                    rgba(0, 0, 0, 0.14) 3px
+                ),
+                radial-gradient(
+                    circle at 50% 50%,
+                    transparent 66%,
+                    rgba(3, 2, 7, 0.45) 100%
+                );
+        }
+    </style>
+<link rel="modulepreload" href="./gears_app-1828b2c283aeaa81.js" crossorigin="anonymous" integrity="sha384-+hzSpENmkz3KpKIrjJ5A93jIwoCj3PLQaoAWvDQBBlxkwSuSqE94C3iPtkZzxx4f"><link rel="preload" href="./gears_app-9c3bd4f3d33e14bd_bg.wasm" crossorigin="anonymous" integrity="sha384-XkA+u7CUTyMWZ3CcnyRa63elY23qjahPdyTwoYKLLkK4/pglLGnVDxu35XY1R98J" as="fetch" type="application/wasm"></head>
+<body>
+    <canvas id="gears-canvas"></canvas>
+</body>
+</html>
