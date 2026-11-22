@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHRONOFIRE — Solo Time-Loop Raid</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #090b10;
+        }
+        canvas {
+            display: block;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+    </style>
+<link rel="modulepreload" href="./chronofire-c9ece26f95a9ee4e.js" crossorigin="anonymous" integrity="sha384-CHjHFr/V3LKfMg7BIOWGgehGWEW2Fr6deRoudm0KULLp8H8bEgHqTPdXZL74amge"><link rel="preload" href="./chronofire-d63a0acaab0a3fec_bg.wasm" crossorigin="anonymous" integrity="sha384-0SzNI9c17D2GF86MS/ULRrEpD5hYQ64pMjNYbn6O4ogzQWSpGY6/HBl48BUhbnPi" as="fetch" type="application/wasm"></head>
+<body>
+    
+<script type="module">
+import init, * as bindings from './chronofire-c9ece26f95a9ee4e.js';
+
+const wasm = await init({ module_or_path: './chronofire-d63a0acaab0a3fec_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+</body>
+</html>
