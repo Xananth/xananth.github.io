@@ -1997,6 +1997,118 @@ body.light-mode .vessel-tag-badge {
   border: 1px solid #00e5ff;
 }
 
+/* Shipwreck & Dive Spot Pins & SVG Symbols */
+.tac-pin.dive-wreck-pin {
+  border-color: var(--led-warm);
+  color: var(--led-warm);
+  box-shadow: 0 0 10px rgba(255, 79, 43, 0.35);
+}
+
+.tac-pin.dive-wreck-pin::before,
+.tac-pin.dive-wreck-pin::after {
+  background: var(--led-warm);
+  box-shadow: 0 0 6px var(--led-warm);
+}
+
+.tac-pin.dive-wreck-pin .pin-count {
+  background: rgba(255, 79, 43, 0.22);
+  color: var(--led-warm);
+  border: 1px solid rgba(255, 79, 43, 0.6);
+}
+
+.tac-pin.dive-wreck-pin:hover,
+.tac-pin.dive-wreck-pin.selected {
+  background: var(--led-warm);
+  border-color: var(--led-amber);
+  color: #06040b;
+  box-shadow: 0 0 18px rgba(255, 79, 43, 0.65);
+}
+
+.tac-pin.dive-wreck-pin:hover .pin-count,
+.tac-pin.dive-wreck-pin.selected .pin-count {
+  background: #06040b;
+  color: var(--led-warm);
+}
+
+.tac-pin.dive-site-pin {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.tac-pin.dive-site-pin::before,
+.tac-pin.dive-site-pin::after {
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+.tac-pin.dive-site-pin .pin-count {
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.55);
+}
+
+.tac-pin.dive-site-pin:hover,
+.tac-pin.dive-site-pin.selected {
+  background: #38bdf8;
+  border-color: #7dd3fc;
+  color: #06040b;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.65);
+}
+
+.tac-pin.dive-site-pin:hover .pin-count,
+.tac-pin.dive-site-pin.selected .pin-count {
+  background: #06040b;
+  color: #38bdf8;
+}
+
+.zone-pill.wreck-pill {
+  background: rgba(255, 79, 43, 0.16);
+  color: var(--led-warm);
+  border-color: rgba(255, 79, 43, 0.5);
+}
+
+.zone-pill.dive-pill {
+  background: rgba(56, 189, 248, 0.16);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.5);
+}
+
+.season-badge.wreck-badge {
+  width: auto;
+  padding: 0 6px;
+  background: rgba(255, 79, 43, 0.18);
+  color: var(--led-warm);
+  border: 1px solid rgba(255, 79, 43, 0.55);
+}
+
+.season-badge.dive-badge {
+  width: auto;
+  padding: 0 6px;
+  background: rgba(56, 189, 248, 0.16);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.5);
+}
+
+.svg-wreck-zone {
+  fill: rgba(255, 79, 43, 0.09);
+  stroke: var(--led-warm);
+  stroke-width: 1.1;
+  stroke-dasharray: 3 3;
+}
+
+.svg-wreck-hull {
+  fill: rgba(255, 79, 43, 0.35);
+  stroke: var(--led-warm);
+  stroke-width: 1.3;
+}
+
+.svg-dive-reticle {
+  fill: rgba(56, 189, 248, 0.12);
+  stroke: #38bdf8;
+  stroke-width: 1.2;
+}
+
 /* HTML Pin Overlay Layer (Stays Crisp at Any Zoom Level) */
 #pinOverlayLayer {
   position: absolute;

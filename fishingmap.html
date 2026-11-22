@@ -127,13 +127,14 @@
           </div>
 
           <div class="field-group">
-            <label for="zoneFilter" class="field-label">Fishing Zone</label>
+            <label for="zoneFilter" class="field-label">Fishing / Dive Zone</label>
             <select id="zoneFilter" class="retro-select">
-              <option value="all">All Grounds</option>
+              <option value="all">All Grounds &amp; Dive Sites</option>
               <option value="Canal & Estuary">Canal &amp; Estuary</option>
               <option value="Inshore & Harbour">Inshore &amp; Harbour</option>
               <option value="Offshore Reef">Offshore Reef (5-28 NM)</option>
               <option value="Pelagic & Game">Offshore Pelagics</option>
+              <option value="Dive & Shipwrecks">Dive Sites &amp; Shipwrecks</option>
             </select>
           </div>
 
@@ -169,11 +170,22 @@
               <span class="season-badge off">-</span>
               <span>Off</span>
             </span>
+            <span class="legend-item">
+              <span class="season-badge wreck-badge">⚓ WRECK</span>
+              <span>Shipwreck</span>
+            </span>
+            <span class="legend-item">
+              <span class="season-badge dive-badge">🤿 DIVE</span>
+              <span>Dive Spot</span>
+            </span>
           </div>
 
           <div class="chart-layer-group">
             <button id="toggleReefDetailBtn" type="button" class="btn-action active" title="Toggle Detailed Multi-Tier Reef Ledges, Gutters, Aprons &amp; Bommie Callouts">
               [REEF TOPO: ON]
+            </button>
+            <button id="toggleDiveBtn" type="button" class="btn-action active" title="Toggle Shipwrecks &amp; Scuba / Freedive Site Markers">
+              [🤿 DIVE &amp; WRECKS: ON]
             </button>
             <button id="toggleBathyBtn" type="button" class="btn-action active" title="Toggle 5m–150m Bathymetric Contours, Depth Soundings &amp; EAC Vectors">
               [BATHYMETRY: ON]
@@ -2805,6 +2817,214 @@
     ];
 
     // =========================================================================
+    // 3B. SUNSHINE COAST SHIPWRECKS & SCUBA / FREEDIVE SITES DATABASE
+    // =========================================================================
+    const DIVE_AND_WRECK_SITES = [
+      {
+        id: "dive-hmas-brisbane",
+        isDiveOrWreck: true,
+        siteType: "wreck",
+        name: "Ex-HMAS Brisbane Destroyer Wreck",
+        shortCode: "WRECK-BNE",
+        zone: "Dive & Shipwrecks",
+        classification: "SHIPWRECK // MARINE PARK RESERVE",
+        certLevel: "Open Water to Advanced (15m–28m)",
+        lat: -26.6168,
+        lng: 153.1488,
+        depth: "15m – 28m",
+        hullHeading: 315,
+        exclusionRadiusNm: 0.25,
+        structure: "133m Royal Australian Navy Charles F. Adams-class guided missile destroyer scuttled July 31, 2005. Upright on a 28m sand bottom with funnel tops at 15m, bow facing NW (315°), and pre-cut penetration access hatches.",
+        marineLife: "Giant Queensland groper, spotted eagle rays, bull rays, lionfish, octopus, yellowtail kingfish schools, red emperor, and massive baitfish clouds.",
+        vesselNote: "3.9 NM NNE of Mooloolaba bar. Strict Conservation Park NO-FISHING & NO-ANCHORING exclusion zone inside yellow marker buoys. Tie off to one of the 5 public QPWS moorings (booking required for dive vessels)."
+      },
+      {
+        id: "dive-aarhus-wreck",
+        isDiveOrWreck: true,
+        siteType: "wreck",
+        name: "Barque Aarhus (1894) Historic Wreck",
+        shortCode: "WRECK-AAR",
+        zone: "Dive & Shipwrecks",
+        classification: "HISTORIC 1894 SHIPWRECK",
+        certLevel: "Open Water / Freedive (8m–16m)",
+        lat: -26.7985,
+        lng: 153.1645,
+        depth: "8m – 16m",
+        hullHeading: 45,
+        exclusionRadiusNm: 0.14,
+        structure: "640-ton iron-hulled Danish barque wrecked on Smith Rock on Feb 25, 1894 en route to Brisbane. Coral-encrusted iron ribs, hull plating, mast sections, winches, and ballast stones resting in rocky gutters.",
+        marineLife: "Wobbegong sharks, grey nurse sharks (winter), estuary cod, blue groper, cuttlefish, and schooling trevally.",
+        vesselNote: "7.4 NM SSE of Mooloolaba bar off Moffat/Shelly Headland. Watch for shallow 4.5m Smith Rock surge on long-period swells; dive on slack high tide."
+      },
+      {
+        id: "dive-ss-dicky",
+        isDiveOrWreck: true,
+        siteType: "wreck",
+        name: "SS Dicky (1893) Steamer Wreck Ledge",
+        shortCode: "WRECK-DCK",
+        zone: "Dive & Shipwrecks",
+        classification: "HISTORIC 1893 STEAMER SITE",
+        certLevel: "Snorkel / Freedive / Shore Dive (2m–8m)",
+        lat: -26.7825,
+        lng: 153.1395,
+        depth: "2m – 8m",
+        hullHeading: 290,
+        exclusionRadiusNm: 0.1,
+        structure: "Iron-hulled coastal steamer driven ashore by a cyclone in Feb 1893. Subsurface keel plates and adjacent coffee-rock reef ledges just off Dicky Beach.",
+        marineLife: "Ornate wobbegongs, bream, tarwhine, flathead, octopus, and macro nudibranchs.",
+        vesselNote: "6.2 NM S of Mooloolaba bar. Shallow surf-zone fringe—only approach by boat on flat glass-out mornings with <0.6m swell, or access as a shore dive."
+      },
+      {
+        id: "dive-12mile-wreck",
+        isDiveOrWreck: true,
+        siteType: "wreck",
+        name: "Caloundra 12 Mile Deep Barge & Wreck",
+        shortCode: "WRECK-12M",
+        zone: "Dive & Shipwrecks",
+        classification: "DEEP OFFSHORE WRECK",
+        certLevel: "Technical / Deep Trimix (48m–56m)",
+        lat: -26.8345,
+        lng: 153.2910,
+        depth: "48m – 56m",
+        hullHeading: 15,
+        exclusionRadiusNm: 0.18,
+        structure: "Sunken steel barge and trawler wreckage sitting upright on deep 54–56m wire-weed and gravel flats along the outer Caloundra 12 Mile.",
+        marineLife: "Monster cobia, yellowtail kingfish, amberjack, mulloway, scarlet seaperch (large-mouth nannygai), and bull sharks.",
+        vesselNote: "12.4 NM SE of Mooloolaba bar. Technical decompression depth for divers; also a premier vertical jigging and livebait mark for the Sea Spirit 520."
+      },
+      {
+        id: "dive-flinders-trawler",
+        isDiveOrWreck: true,
+        siteType: "wreck",
+        name: "Caloundra South Trawler Wreck",
+        shortCode: "WRECK-TRW",
+        zone: "Dive & Shipwrecks",
+        classification: "SUNKEN TRAWLER WRECK",
+        certLevel: "Advanced Open Water (24m–31m)",
+        lat: -26.8490,
+        lng: 153.2180,
+        depth: "24m – 31m",
+        hullHeading: 170,
+        exclusionRadiusNm: 0.15,
+        structure: "Broken trawler hull framework, winch gear, and stern gantry resting on a 30m sand and rubble apron south of the Caloundra shipping fairway.",
+        marineLife: "Jewfish (mulloway), cobia, wobbegong sharks, Moses perch, and dense clouds of yellowtail yakkas.",
+        vesselNote: "11.1 NM SSE of Mooloolaba bar. Keep clear of the active Brisbane North West Shipping Channel fairway when anchoring or drifting."
+      },
+      {
+        id: "dive-gneerings-caves",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "The Caves & Swim-Throughs (Inner Gneerings)",
+        shortCode: "DIVE-CAVE",
+        zone: "Dive & Shipwrecks",
+        classification: "CAVERNS & SWIM-THROUGHS",
+        certLevel: "Open Water (12m–22m)",
+        lat: -26.6478,
+        lng: 153.1665,
+        depth: "12m – 22m",
+        structure: "Labyrinth of volcanic rocky overhangs, undercut archways, and sponge-lined swim-through tunnels on the SW corner of Inner Gneerings.",
+        marineLife: "Leopard (zebra) sharks (Nov–Apr), ornate wobbegongs, painted crayfish,moray eels, glassfish, and nudibranchs.",
+        vesselNote: "2.6 NM NE of Mooloolaba bar. One of the Sunshine Coast's top scuba sites; anchor in sand edge clear of coral bommies and display Diver Below (Alpha) flag."
+      },
+      {
+        id: "dive-hanging-rock",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "Hanging Rock Wall & Amphitheatre",
+        shortCode: "DIVE-WALL",
+        zone: "Dive & Shipwrecks",
+        classification: "VERTICAL WALL & PINNACLE DIVE",
+        certLevel: "Advanced Open Water (14m–30m)",
+        lat: -26.6395,
+        lng: 153.2015,
+        depth: "14m – 30m",
+        structure: "Dramatic vertical reef wall dropping from a 14m crest down to 30m gravel with a massive undercut amphitheatre cavern and gorgonian fan garden.",
+        marineLife: "Black coral trees, sea fans, green and loggerhead turtles, coral trout, kingfish, and occasional manta rays.",
+        vesselNote: "4.3 NM ENE of Mooloolaba bar on Outer Gneerings. Check current drift before descending; live-boat pickup recommended if EAC eddy is running."
+      },
+      {
+        id: "dive-old-woman-island",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "Old Woman Island Turtle Gardens",
+        shortCode: "DIVE-OWI",
+        zone: "Dive & Shipwrecks",
+        classification: "ISLAND CORAL & TURTLE SANCTUARY",
+        certLevel: "Snorkel / Open Water (6m–16m)",
+        lat: -26.6138,
+        lng: 153.1188,
+        depth: "6m – 16m",
+        structure: "Sheltered leeward soft-coral gardens on the western side and high-energy boulder walls on the NE corner of Mudjimba (Old Woman) Island.",
+        marineLife: "Resident green and hawksbill turtles, over 200 species of nudibranchs, blue groper, clownfish, and wobbegongs.",
+        vesselNote: "4.1 NM NNW of Mooloolaba bar. Anchor on the sheltered western sand lee in SE winds; ideal shallow second-tank dive or freedive spot."
+      },
+      {
+        id: "dive-fairy-pools",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "Pt Arkwright Fairy Pools & Basalt Caves",
+        shortCode: "DIVE-ARK",
+        zone: "Dive & Shipwrecks",
+        classification: "HEADLAND CAVERNS & SHARK GUTTERS",
+        certLevel: "Open Water / Freedive (8m–20m)",
+        lat: -26.5495,
+        lng: 153.1115,
+        depth: "8m – 20m",
+        structure: "Submerged hexagonal basalt columns, deep boulder gutters, and kelp-lined overhangs off Point Arkwright headland.",
+        marineLife: "Grey nurse sharks (winter aggregation), bull rays, painted crayfish, drummer, and big schools of sweetlip.",
+        vesselNote: "7.9 NM N of Mooloolaba bar. Best dived on light offshore westerly winds with <0.8m swell."
+      },
+      {
+        id: "dive-la-balsa-muck",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "La Balsa River Wall Macro & Muck Dive",
+        shortCode: "DIVE-MUCK",
+        zone: "Dive & Shipwrecks",
+        classification: "MACRO PHOTOGRAPHY / SHORE DIVE",
+        certLevel: "All Levels — Slack High Tide Only (3m–9m)",
+        lat: -26.6838,
+        lng: 153.1338,
+        depth: "3m – 9m",
+        structure: "Tidal boulder training wall, sponge-covered pylons, and sloping sand/rubble river channel edge inside Mooloolaba Harbour.",
+        marineLife: "Striated & painted frogfish (anglerfish), thorny seahorses, pipefish, mimic & blue-ringed octopus, cuttlefish, and rare nudibranchs.",
+        vesselNote: "0.3 NM inside Mooloolaba bar. MUST be dived within 45 minutes either side of slack high tide for clear ocean water and manageable current; stay clear of main boat channel."
+      },
+      {
+        id: "dive-wobby-rock",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "Wobby Rock & Jew Shoal Pinnacles",
+        shortCode: "DIVE-WOB",
+        zone: "Dive & Shipwrecks",
+        classification: "SHARK & RAY CLEANING STATION",
+        certLevel: "Open Water to Advanced (12m–26m)",
+        lat: -26.4380,
+        lng: 153.1340,
+        depth: "12m – 26m",
+        structure: "Twin high-relief rocky pinnacles rising from 26m sand to a 12m crest with deep parallel gutters and cleaning stations.",
+        marineLife: "Dozens of spotted and banded wobbegong sharks, eagle rays, Queensland groper, mulloway, and cleaner shrimp.",
+        vesselNote: "14.5 NM N of Mooloolaba bar off Peregian/Marcus Beach. Great northern combo run with Coolum Reefs on calm mornings."
+      },
+      {
+        id: "dive-murphys-gardens",
+        isDiveOrWreck: true,
+        siteType: "dive",
+        name: "Murphy's Reef Coral Plateau & Sponges",
+        shortCode: "DIVE-MUR",
+        zone: "Dive & Shipwrecks",
+        classification: "OFFSHORE CORAL & SPONGE REEF",
+        certLevel: "Advanced Open Water (18m–34m)",
+        lat: -26.6660,
+        lng: 153.2420,
+        depth: "18m – 34m",
+        structure: "Clear bluewater coral plateau on Murphy's Reef topped with staghorn and plate coral tables, giant barrel sponges, and 34m drop-offs.",
+        marineLife: "Turtles, Maori wrasse, anemonefish, coral trout, redthroat emperor, and passing Spanish mackerel.",
+        vesselNote: "5.8 NM E of Mooloolaba bar. Often enjoys 20m+ bluewater visibility when the warm East Australian Current pushes onto the 25m line."
+      }
+    ];
+
+    // =========================================================================
     // 4. APPLICATION STATE & LIVE GPS / CUSTOM WAYPOINTS STATE
     // =========================================================================
     let SPECIES_DB = [];
@@ -2819,6 +3039,7 @@
     let selectedWaypointId = null;
     let currentModalSpecies = null;
     let showReefLayouts = true;
+    let showDiveSites = true;
     let showBathyContours = true;
     let showRangeRings = true;
     let showPins = true;
@@ -2885,6 +3106,7 @@
     const localJsonPicker = document.getElementById("localJsonPicker");
 
     const toggleReefDetailBtn = document.getElementById("toggleReefDetailBtn");
+    const toggleDiveBtn = document.getElementById("toggleDiveBtn");
     const toggleBathyBtn = document.getElementById("toggleBathyBtn");
     const togglePinsBtn = document.getElementById("togglePinsBtn");
     const toggleRangeBtn = document.getElementById("toggleRangeBtn");
@@ -3253,7 +3475,7 @@
     }
 
     function getAllWaypointsWithCustom() {
-      return [...WAYPOINTS_DB, ...CUSTOM_MARKS];
+      return [...WAYPOINTS_DB, ...DIVE_AND_WRECK_SITES, ...CUSTOM_MARKS];
     }
 
     dropCustomMarkBtn.addEventListener("click", () => {
@@ -3455,6 +3677,40 @@
             <text x="6" y="3" class="nav-beacon-label">${b.name}</text>
           </g>
         `;
+      });
+      svgHtml += `</g>`;
+
+      // D2. Shipwrecks & Scuba / Freedive Sites Vector Layer
+      svgHtml += `<g id="layer-dives" class="${showDiveSites ? "" : "hidden"}">`;
+      DIVE_AND_WRECK_SITES.forEach((ds) => {
+        const pt = latLngToSvg(ds.lat, ds.lng);
+        const isSelected = ds.id === selectedWaypointId;
+
+        if (ds.siteType === "wreck") {
+          const radPx = (ds.exclusionRadiusNm || 0.16) * 60;
+          const hdg = ds.hullHeading || 315;
+          svgHtml += `
+            <g class="reef-zone-group ${isSelected ? "selected" : ""}" onclick="selectWaypoint('${ds.id}', { panTo: false })">
+              <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${radPx.toFixed(1)}" fill="rgba(255,79,43,0.09)" class="svg-wreck-zone" />
+              <g transform="translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)}) rotate(${hdg})">
+                <polygon points="0,-9 3.2,-3 3.2,7 0,9 -3.2,7 -3.2,-3" class="svg-wreck-hull" />
+                <line x1="-5" y1="0" x2="5" y2="0" fill="none" class="reef-wreck-cross" />
+              </g>
+              <text x="${(pt.x + radPx + 4).toFixed(1)}" y="${(pt.y + 3).toFixed(1)}" class="reef-sub-label" style="fill:var(--led-warm); font-weight:700;">⚓ ${ds.shortCode} (${ds.depth})</text>
+            </g>
+          `;
+        } else {
+          svgHtml += `
+            <g class="reef-zone-group ${isSelected ? "selected" : ""}" onclick="selectWaypoint('${ds.id}', { panTo: false })">
+              <g transform="translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})">
+                <circle cx="0" cy="0" r="6.5" fill="rgba(56,189,248,0.12)" class="svg-dive-reticle" />
+                <polygon points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="#38bdf8" />
+                <line x1="-3" y1="-3" x2="3" y2="3" stroke="#ffffff" stroke-width="1.2" />
+              </g>
+              <text x="${(pt.x + 9).toFixed(1)}" y="${(pt.y + 3).toFixed(1)}" class="reef-sub-label" style="fill:#38bdf8; font-weight:600;">🤿 ${ds.shortCode}</text>
+            </g>
+          `;
+        }
       });
       svgHtml += `</g>`;
 
@@ -3767,8 +4023,12 @@
       monthSelect.value = String(currentMonth);
 
       if (Array.isArray(data.zones) && data.zones.length > 0) {
-        zoneFilter.innerHTML = data.zones
-          .map((z) => `<option value="${z.value}">${z.label}</option>`)
+        const zonesWithDive = [...data.zones];
+        if (!zonesWithDive.some((z) => z.value === "Dive & Shipwrecks")) {
+          zonesWithDive.push({ value: "Dive & Shipwrecks", label: "Dive Sites & Shipwrecks" });
+        }
+        zoneFilter.innerHTML = zonesWithDive
+          .map((z) => `<option value="${z.value}">${z.value === "all" ? "All Grounds & Dive Sites" : z.label}</option>`)
           .join("");
       }
 
@@ -3839,41 +4099,60 @@
 
       const results = [];
 
-      WAYPOINTS_DB.forEach((wp) => {
-        let matchingSpecies = SPECIES_DB.filter((sp) => sp._resolvedWaypointIds.includes(wp.id));
+      // 1. Standard Fishing Grounds & Reef Complexes (unless filtered strictly to Dive & Shipwrecks)
+      if (selectedZone !== "Dive & Shipwrecks") {
+        WAYPOINTS_DB.forEach((wp) => {
+          let matchingSpecies = SPECIES_DB.filter((sp) => sp._resolvedWaypointIds.includes(wp.id));
 
-        if (selectedZone !== "all") {
-          matchingSpecies = matchingSpecies.filter((sp) => sp.zone === selectedZone);
-        }
+          if (selectedZone !== "all") {
+            matchingSpecies = matchingSpecies.filter((sp) => sp.zone === selectedZone);
+          }
 
-        if (selectedSpeciesId !== "all") {
-          matchingSpecies = matchingSpecies.filter((sp) => sp.id === selectedSpeciesId);
-        }
+          if (selectedSpeciesId !== "all") {
+            matchingSpecies = matchingSpecies.filter((sp) => sp.id === selectedSpeciesId);
+          }
 
-        matchingSpecies = matchingSpecies.filter((sp) => {
-          const val = sp.seasons[selectedMonth];
-          if (activityMode === "peak") return val === 2;
-          if (activityMode === "active") return val >= 1;
-          return true;
+          matchingSpecies = matchingSpecies.filter((sp) => {
+            const val = sp.seasons[selectedMonth];
+            if (activityMode === "peak") return val === 2;
+            if (activityMode === "active") return val >= 1;
+            return true;
+          });
+
+          if (matchingSpecies.length === 0) return;
+
+          const sortedSpecies = sortSpeciesList(matchingSpecies, selectedMonth);
+          const peakCount = sortedSpecies.filter((s) => s.seasons[selectedMonth] === 2).length;
+          const availCount = sortedSpecies.filter((s) => s.seasons[selectedMonth] === 1).length;
+          const nav = calcDistanceNmAndBearing(origin.lat, origin.lng, wp.lat, wp.lng);
+
+          results.push({
+            waypoint: wp,
+            speciesList: sortedSpecies,
+            peakCount,
+            availCount,
+            totalCount: sortedSpecies.length,
+            nav
+          });
         });
+      }
 
-        if (matchingSpecies.length === 0) return;
-
-        const sortedSpecies = sortSpeciesList(matchingSpecies, selectedMonth);
-        const peakCount = sortedSpecies.filter((s) => s.seasons[selectedMonth] === 2).length;
-        const availCount = sortedSpecies.filter((s) => s.seasons[selectedMonth] === 1).length;
-        const nav = calcDistanceNmAndBearing(origin.lat, origin.lng, wp.lat, wp.lng);
-
-        results.push({
-          waypoint: wp,
-          speciesList: sortedSpecies,
-          peakCount,
-          availCount,
-          totalCount: sortedSpecies.length,
-          nav
+      // 2. Shipwrecks & Scuba / Freedive Sites
+      if ((showDiveSites || selectedZone === "Dive & Shipwrecks") && (selectedZone === "all" || selectedZone === "Dive & Shipwrecks") && selectedSpeciesId === "all") {
+        DIVE_AND_WRECK_SITES.forEach((ds) => {
+          const nav = calcDistanceNmAndBearing(origin.lat, origin.lng, ds.lat, ds.lng);
+          results.push({
+            waypoint: ds,
+            speciesList: [],
+            peakCount: 0,
+            availCount: 0,
+            totalCount: 0,
+            nav
+          });
         });
-      });
+      }
 
+      // 3. Custom Skipper-Logged Offline GPS Marks
       CUSTOM_MARKS.forEach((cm) => {
         const nav = calcDistanceNmAndBearing(origin.lat, origin.lng, cm.lat, cm.lng);
         results.push({
@@ -3890,8 +4169,11 @@
         if (a.waypoint.isCustomUserMark !== b.waypoint.isCustomUserMark) {
           return a.waypoint.isCustomUserMark ? -1 : 1;
         }
-        if (gpsState.active || gpsState.simulated) {
+        if (gpsState.active || gpsState.simulated || selectedZone === "Dive & Shipwrecks") {
           return a.nav.nmNum - b.nav.nmNum;
+        }
+        if (a.waypoint.isDiveOrWreck !== b.waypoint.isDiveOrWreck) {
+          return a.waypoint.isDiveOrWreck ? 1 : -1;
         }
         if (b.peakCount !== a.peakCount) return b.peakCount - a.peakCount;
         return a.nav.nmNum - b.nav.nmNum;
@@ -3910,7 +4192,9 @@
       const evaluated = getEvaluatedWaypoints();
       const uniqueSpeciesIds = new Set();
       evaluated.forEach((e) => e.speciesList.forEach((s) => uniqueSpeciesIds.add(s.id)));
-      waypointCountBadge.textContent = `${evaluated.length} WAYPOINTS // ${uniqueSpeciesIds.size} SPECIES`;
+      const diveCount = evaluated.filter((e) => e.waypoint.isDiveOrWreck).length;
+      const reefCount = evaluated.length - diveCount;
+      waypointCountBadge.textContent = `${reefCount} REEFS // ${diveCount} WRECKS & DIVES // ${uniqueSpeciesIds.size} SPECIES`;
 
       renderedPinsCache = evaluated;
       let html = "";
@@ -3939,20 +4223,30 @@
           const isSelected = waypoint.id === selectedWaypointId;
 
           let stateClass = "off-only";
-          if (waypoint.isCustomUserMark) stateClass = "custom-user-pin";
-          else if (peakCount > 0) stateClass = "peak-active";
-          else if (availCount > 0) stateClass = "avail-only";
+          let badgeText = "";
+          if (waypoint.isCustomUserMark) {
+            stateClass = "custom-user-pin";
+            badgeText = "MARK";
+          } else if (waypoint.isDiveOrWreck) {
+            stateClass = waypoint.siteType === "wreck" ? "dive-wreck-pin" : "dive-site-pin";
+            badgeText = waypoint.siteType === "wreck" ? "⚓ WRECK" : "🤿 DIVE";
+          } else if (peakCount > 0) {
+            stateClass = "peak-active";
+            badgeText = `✓${peakCount}/${totalCount}`;
+          } else if (availCount > 0) {
+            stateClass = "avail-only";
+            badgeText = `•${totalCount}`;
+          } else {
+            badgeText = `•${totalCount}`;
+          }
 
-          const badgeText = waypoint.isCustomUserMark
-            ? "MARK"
-            : (peakCount > 0 ? `✓${peakCount}/${totalCount}` : `•${totalCount}`);
           const codeLabel = waypoint.shortCode || waypoint.name.slice(0, 8).toUpperCase();
 
           html += `
             <div
               class="tac-pin ${stateClass} ${isSelected ? "selected" : ""}"
               data-wp-id="${waypoint.id}"
-              style="z-index: ${isSelected ? 95 : 30 + peakCount};"
+              style="z-index: ${isSelected ? 95 : (waypoint.isDiveOrWreck ? 42 : 30 + peakCount)};"
               onclick="selectWaypoint('${waypoint.id}', { panTo: false })"
             >
               <span>${codeLabel}</span>
@@ -4008,7 +4302,7 @@
       intelDetailView.classList.add("hidden");
       intelDirectoryView.classList.remove("hidden");
       if (!gpsState.simPickMode) {
-        chartModeReadout.textContent = "DRAG PAN // SCROLL ZOOM // CLICK REEF";
+        chartModeReadout.textContent = "DRAG PAN // SCROLL ZOOM // CLICK REEF OR WRECK";
       }
 
       if (evaluatedList.length === 0) {
@@ -4023,23 +4317,41 @@
 
       intelDirectoryView.innerHTML = evaluatedList
         .map(({ waypoint, peakCount, availCount, totalCount, nav }) => {
+          let pillClass = "zone-pill";
+          let pillText = waypoint.zone;
+          let rightBadgesHtml = "";
+
+          if (waypoint.isCustomUserMark) {
+            pillText = "Custom GPS Mark";
+          } else if (waypoint.isDiveOrWreck) {
+            pillClass = waypoint.siteType === "wreck" ? "zone-pill wreck-pill" : "zone-pill dive-pill";
+            pillText = waypoint.classification || (waypoint.siteType === "wreck" ? "Shipwreck" : "Dive Site");
+            rightBadgesHtml = waypoint.siteType === "wreck"
+              ? `<span class="season-badge wreck-badge">⚓ WRECK</span>`
+              : `<span class="season-badge dive-badge">🤿 DIVE</span>`;
+          } else {
+            rightBadgesHtml = `
+              ${peakCount > 0 ? `<span class="season-badge peak" title="${peakCount} Peak Season Species">✓${peakCount}</span>` : ""}
+              ${availCount > 0 ? `<span class="season-badge avail" title="${availCount} Available Species">•${availCount}</span>` : ""}
+            `;
+          }
+
           return `
             <div class="waypoint-card" onclick="selectWaypoint('${waypoint.id}', { panTo: true })">
               <div class="waypoint-card-top">
                 <div>
-                  <span class="zone-pill">${waypoint.isCustomUserMark ? "Custom GPS Mark" : waypoint.zone}</span>
+                  <span class="${pillClass}">${pillText}</span>
                   <h3 class="waypoint-card-title">${waypoint.name}</h3>
                 </div>
                 <div style="display:flex; gap:4px; align-items:center;">
-                  ${peakCount > 0 ? `<span class="season-badge peak" title="${peakCount} Peak Season Species">✓${peakCount}</span>` : ""}
-                  ${availCount > 0 ? `<span class="season-badge avail" title="${availCount} Available Species">•${availCount}</span>` : ""}
+                  ${rightBadgesHtml}
                 </div>
               </div>
               <div class="waypoint-meta-row">
                 <span>DEPTH: <strong>${waypoint.depth}</strong></span>
                 <span>&bull;</span>
                 <span>${origin.label} DIST: <strong class="dist-highlight">${nav.nm} NM (${nav.brg}°)</strong></span>
-                ${!waypoint.isCustomUserMark ? `<span>&bull;</span><span>${totalCount} SPECIES</span>` : ""}
+                ${(!waypoint.isCustomUserMark && !waypoint.isDiveOrWreck) ? `<span>&bull;</span><span>${totalCount} SPECIES</span>` : ""}
               </div>
             </div>
           `;
@@ -4079,6 +4391,27 @@
         `
         : "";
 
+      const diveSpecsHtml = waypoint.isDiveOrWreck
+        ? `
+          <div class="dossier-grid-2">
+            <div class="data-panel">
+              <span class="stat-label">Dive Classification</span>
+              <span class="stat-value" style="font-size:0.86rem; color:${waypoint.siteType === "wreck" ? "var(--led-warm)" : "#38bdf8"};">${waypoint.classification || "DIVE SITE"}</span>
+            </div>
+            <div class="data-panel">
+              <span class="stat-label">Recommended Profile</span>
+              <span class="stat-value" style="font-size:0.86rem;">${waypoint.certLevel || waypoint.depth}</span>
+            </div>
+          </div>
+          ${waypoint.marineLife ? `
+            <div class="data-panel">
+              <span class="stat-label">Resident Marine Life &amp; Pelagics</span>
+              <div class="spec-line" style="color:var(--text-primary);">${waypoint.marineLife}</div>
+            </div>
+          ` : ""}
+        `
+        : "";
+
       const deleteBtnHtml = waypoint.isCustomUserMark
         ? `<button type="button" class="btn-action" style="border-color:var(--led-warm); color:var(--led-warm);" onclick="deleteCustomMark('${waypoint.id}')">[DELETE CUSTOM MARK]</button>`
         : "";
@@ -4110,11 +4443,15 @@
         })
         .join("");
 
+      const pillClass = waypoint.isDiveOrWreck
+        ? (waypoint.siteType === "wreck" ? "zone-pill wreck-pill" : "zone-pill dive-pill")
+        : "zone-pill";
+
       intelDetailView.innerHTML = `
         <div class="dossier-header" style="padding-bottom:0.55rem;">
           <div>
             <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-              <span class="zone-pill">${waypoint.zone}</span>
+              <span class="${pillClass}">${waypoint.classification || waypoint.zone}</span>
               <span style="font-size:0.72rem; color:var(--text-secondary);">DEPTH: <strong style="color:var(--text-primary);">${waypoint.depth}</strong></span>
               <span style="font-size:0.72rem; color:var(--brand-lime); font-weight:700;">${nav.nm} NM (${nav.brg}° FROM ${origin.label})</span>
             </div>
@@ -4134,19 +4471,20 @@
           </button>
         </div>
 
+        ${diveSpecsHtml}
         ${microMarksHtml}
 
         <div class="data-panel">
-          <span class="stat-label">Bottom Structure &amp; Habitat</span>
+          <span class="stat-label">${waypoint.isDiveOrWreck ? "Wreck History &amp; Underwater Topography" : "Bottom Structure &amp; Habitat"}</span>
           <div class="spec-line" style="color:var(--text-primary);">${waypoint.structure}</div>
         </div>
 
         <div class="skipper-tip-box" style="margin-top:0;">
-          <strong>Sea Spirit 520 Approach //</strong>
+          <strong>${waypoint.isDiveOrWreck ? "Skipper &amp; Diver Safety Briefing //" : "Sea Spirit 520 Approach //"}</strong>
           <span>${waypoint.vesselNote}</span>
         </div>
 
-        ${!waypoint.isCustomUserMark ? `
+        ${(!waypoint.isCustomUserMark && !waypoint.isDiveOrWreck) ? `
           <div class="intel-section-bar">
             <span class="control-section-label">
               MANIFEST (${monthShort}): ${peakCount} PEAK / ${availCount} AVAIL
@@ -4282,6 +4620,13 @@
       toggleReefDetailBtn.textContent = showReefLayouts ? "[REEF TOPO: ON]" : "[REEF TOPO: OFF]";
       toggleReefDetailBtn.classList.toggle("active", showReefLayouts);
       buildVectorChart();
+    });
+
+    toggleDiveBtn.addEventListener("click", () => {
+      showDiveSites = !showDiveSites;
+      toggleDiveBtn.textContent = showDiveSites ? "[🤿 DIVE & WRECKS: ON]" : "[🤿 DIVE & WRECKS: OFF]";
+      toggleDiveBtn.classList.toggle("active", showDiveSites);
+      renderChartAndIntel();
     });
 
     toggleBathyBtn.addEventListener("click", () => {
